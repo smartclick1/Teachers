@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Complete Vocabulary Guide — Mega Goal 2</title>
 
-  <!-- Google Fonts: Amiri & Cairo for refined Arabic typography, Playfair Display & Inter for sophisticated academic English -->
+  <!-- Google Fonts: Cairo & Tajawal for refined Arabic typography, Playfair Display & Inter for sophisticated academic English -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -43,8 +43,8 @@
             },
           },
           fontFamily: {
-            arabic: ['Cairo', 'sans-serif'],
-            serifAr: ['Amiri', 'serif'],
+            arabic: ['Cairo', 'Tajawal', 'sans-serif'],
+            tajawal: ['Tajawal', 'Cairo', 'sans-serif'],
             english: ['Inter', 'sans-serif'],
             serifEn: ['Playfair Display', 'serif'],
           },
@@ -52,10 +52,6 @@
       },
     };
   </script>
-
-  <!-- Export Libraries (html2canvas & jsPDF for high-res PNG/PDF unit certificate download) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <style>
     :root {
@@ -92,6 +88,9 @@
       width: 100%;
       max-width: 100%;
       display: flex;
+      flex-direction: column;
+    }
+
     /* Single shared layout wrapper for all screens with compact 16px mobile top padding */
     .shared-screen-layout {
       width: 100%;
@@ -351,9 +350,9 @@
     /* Landscape Certificate Styling (Fixed high-legibility proportions that scale cleanly) */
     .certificate-paper {
       background-color: #FAF7F0;
-      background-image:
-        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.88) 0%, rgba(250, 247, 240, 0.96) 72%),
-        url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L40 20L20 40L0 20z' fill='none' stroke='%23C6A15B' stroke-width='0.4' stroke-opacity='0.18'/%3E%3C/svg%3E");
+    /* Landscape Certificate Styling (Unified Canvas Display & Export) */
+    .certificate-paper {
+      background-color: #FAF7F0;
       border: 2px solid #C6A15B;
       box-shadow: 0 20px 50px -15px rgba(36, 59, 83, 0.22);
       position: relative;
@@ -362,17 +361,17 @@
       width: 100%;
     }
 
-    /* Proportional A4 Landscape Certificate Scaling Frame (keeps identical layout on mobile & desktop) */
     .cert-scale-host {
       width: 100%;
       position: relative;
       overflow: hidden;
     }
 
-    .cert-fixed-canvas {
-      width: 1000px;
-      height: 707px; /* Exact 297:210 A4 landscape ratio */
-      transform-origin: top right;
+    .cert-unified-canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 297 / 210;
     }
   </style>
 </head>
@@ -1642,10 +1641,458 @@
 
     /**
      * =========================================================================
-     * 7. HIGH-RESOLUTION UNIT CERTIFICATE EXPORT (PNG & PDF)
+     * 7. UNIFIED HIGH-RESOLUTION CANVAS CERTIFICATE RENDERER & PNG EXPORT
      * =========================================================================
      */
-    async function exportUnitCertificate(unitId, format = 'png', customCertRecord = null) {
+    const CERT_LOGICAL_WIDTH = 1485;
+    const CERT_LOGICAL_HEIGHT = 1050; // Exact 297:210 A4 landscape ratio
+
+    let certificateFontsReadyPromise = null;
+
+    function ensureCertificateFontsLoaded() {
+      if (!certificateFontsReadyPromise) {
+        certificateFontsReadyPromise = (async () => {
+          try {
+            if (document.fonts) {
+              await Promise.allSettled([
+                document.fonts.load('700 32px "Cairo"'),
+                document.fonts.load('800 54px "Cairo"'),
+                document.fonts.load('700 30px "Tajawal"'),
+                document.fonts.load('800 44px "Cairo"'),
+                document.fonts.load('700 34px "Playfair Display"'),
+                document.fonts.load('700 24px "Inter"'),
+              ]);
+              await document.fonts.ready;
+            }
+          } catch (e) {
+            console.warn('Font preload notice:', e);
+          }
+        })();
+      }
+      return certificateFontsReadyPromise;
+    }
+
+    function drawRoundRectPath(ctx, x, y, width, height, radius) {
+      const r = Math.min(radius, width / 2, height / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + width, y, x + width, y + height, r);
+      ctx.arcTo(x + width, y + height, x, y + height, r);
+      ctx.arcTo(x, y + height, x, y, r);
+      ctx.arcTo(x, y, x + width, y, r);
+      ctx.closePath();
+    }
+
+    function fitTextFontSize(ctx, text, maxWidth, startSize, minSize, buildFontStr) {
+      let size = startSize;
+      while (size > minSize) {
+        ctx.font = buildFontStr(size);
+        if (ctx.measureText(text).width <= maxWidth) {
+          break;
+        }
+        size -= 1;
+      }
+      ctx.font = buildFontStr(size);
+      return size;
+    }
+
+    /**
+     * Renders the exact certificate onto any HTMLCanvasElement (used identically
+     * for on-screen display and high-resolution PNG file download).
+     */
+    function renderCertificateToCanvas(canvas, certData, pixelRatio = 2) {
+      if (!canvas || !certData) return;
+
+      const W = CERT_LOGICAL_WIDTH;
+      const H = CERT_LOGICAL_HEIGHT;
+      const dpr = Math.min(Math.max(pixelRatio || 2, 2), 3);
+
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      ctx.save();
+      ctx.scale(dpr, dpr);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      // 1. Opaque Warm Ivory Background (#FAF7F0) + Radial Soft Luminance
+      ctx.fillStyle = '#FAF7F0';
+      ctx.fillRect(0, 0, W, H);
+
+      const radialGrad = ctx.createRadialGradient(W / 2, H / 2, 60, W / 2, H / 2, W * 0.62);
+      radialGrad.addColorStop(0, 'rgba(255, 255, 255, 0.88)');
+      radialGrad.addColorStop(0.75, 'rgba(250, 247, 240, 0.35)');
+      radialGrad.addColorStop(1, 'rgba(242, 236, 225, 0.55)');
+      ctx.fillStyle = radialGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Subtle diamond watermark lattice matching original background
+      ctx.save();
+      ctx.strokeStyle = 'rgba(198, 161, 91, 0.14)';
+      ctx.lineWidth = 1;
+      const tile = 56;
+      for (let gx = 0; gx < W + tile; gx += tile) {
+        for (let gy = 0; gy < H + tile; gy += tile) {
+          ctx.beginPath();
+          ctx.moveTo(gx + tile / 2, gy);
+          ctx.lineTo(gx + tile, gy + tile / 2);
+          ctx.lineTo(gx + tile / 2, gy + tile);
+          ctx.lineTo(gx, gy + tile / 2);
+          ctx.closePath();
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+
+      // 2. Outer Gold Border & Inner Botanical Frame
+      const outerPad = 32;
+      const innerPad = 48;
+
+      ctx.strokeStyle = '#C6A15B';
+      ctx.lineWidth = 4;
+      drawRoundRectPath(ctx, outerPad, outerPad, W - outerPad * 2, H - outerPad * 2, 18);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(83, 125, 93, 0.78)';
+      ctx.lineWidth = 3.5;
+      drawRoundRectPath(ctx, innerPad, innerPad, W - innerPad * 2, H - innerPad * 2, 14);
+      ctx.stroke();
+
+      // Decorative Gold Corner Accents
+      const cornerInset = innerPad + 16;
+      const cornerLen = 38;
+      ctx.strokeStyle = '#C6A15B';
+      ctx.lineWidth = 3;
+
+      // Top-Right
+      ctx.beginPath();
+      ctx.moveTo(W - cornerInset - cornerLen, cornerInset);
+      ctx.lineTo(W - cornerInset, cornerInset);
+      ctx.lineTo(W - cornerInset, cornerInset + cornerLen);
+      ctx.stroke();
+
+      // Top-Left
+      ctx.beginPath();
+      ctx.moveTo(cornerInset + cornerLen, cornerInset);
+      ctx.lineTo(cornerInset, cornerInset);
+      ctx.lineTo(cornerInset, cornerInset + cornerLen);
+      ctx.stroke();
+
+      // Bottom-Right
+      ctx.beginPath();
+      ctx.moveTo(W - cornerInset - cornerLen, H - cornerInset);
+      ctx.lineTo(W - cornerInset, H - cornerInset);
+      ctx.lineTo(W - cornerInset, H - cornerInset - cornerLen);
+      ctx.stroke();
+
+      // Bottom-Left
+      ctx.beginPath();
+      ctx.moveTo(cornerInset + cornerLen, H - cornerInset);
+      ctx.lineTo(cornerInset, H - cornerInset);
+      ctx.lineTo(cornerInset, H - cornerInset - cornerLen);
+      ctx.stroke();
+
+      // Helper for centered single-line text with clean RTL/LTR handling
+      const drawCenteredText = (text, centerX, centerY, direction) => {
+        ctx.save();
+        ctx.direction = direction;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        const m = ctx.measureText(text);
+        const ascent = m.actualBoundingBoxAscent || 20;
+        const descent = m.actualBoundingBoxDescent || 6;
+        const baselineY = centerY + (ascent - descent) / 2;
+        ctx.fillText(text, centerX, baselineY);
+        ctx.restore();
+      };
+
+      const cx = W / 2;
+      const contentMaxWidth = W - 220;
+
+      // 3. Evenly Distributed Vertical Layout Across Full Certificate Height (1050px)
+      // School Name (Top)
+      ctx.fillStyle = '#243B53';
+      ctx.font = '700 31px "Cairo", "Tajawal", sans-serif';
+      drawCenteredText('ثانوية أضم للبنات', cx, 114, 'rtl');
+
+      // Main Title: شهادة إتمام
+      ctx.fillStyle = '#3E6046';
+      ctx.font = '800 58px "Cairo", "Tajawal", sans-serif';
+      drawCenteredText('شهادة إتمام', cx, 188, 'rtl');
+
+      // Gold Ornamental Divider under Title
+      const divY = 238;
+      ctx.strokeStyle = 'rgba(198, 161, 91, 0.8)';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.moveTo(cx - 125, divY);
+      ctx.lineTo(cx - 18, divY);
+      ctx.moveTo(cx + 18, divY);
+      ctx.lineTo(cx + 125, divY);
+      ctx.stroke();
+
+      ctx.save();
+      ctx.translate(cx, divY);
+      ctx.rotate(Math.PI / 4);
+      ctx.fillStyle = '#C6A15B';
+      ctx.fillRect(-6, -6, 12, 12);
+      ctx.restore();
+
+      // Introductory Appreciation Line
+      ctx.fillStyle = '#243B53';
+      fitTextFontSize(
+        ctx,
+        'تتقدم معلمة مادة اللغة الإنجليزية بالثناء والشكر للطالبة',
+        contentMaxWidth,
+        30,
+        22,
+        (s) => `700 ${s}px "Tajawal", "Cairo", sans-serif`
+      );
+      drawCenteredText(
+        'تتقدم معلمة مادة اللغة الإنجليزية بالثناء والشكر للطالبة',
+        cx,
+        304,
+        'rtl'
+      );
+
+      // Student Name Box — True Horizontal & Vertical Centering Using Actual Rendered Glyph Bounds
+      const nameBoxW = 780;
+      const nameBoxH = 88;
+      const nameBoxX = cx - nameBoxW / 2;
+      const nameBoxY = 344;
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.72)';
+      drawRoundRectPath(ctx, nameBoxX, nameBoxY, nameBoxW, nameBoxH, 14);
+      ctx.fill();
+
+      ctx.strokeStyle = '#C6A15B';
+      ctx.lineWidth = 2.4;
+      drawRoundRectPath(ctx, nameBoxX, nameBoxY, nameBoxW, nameBoxH, 14);
+      ctx.stroke();
+
+      const studentDisplayName = String(certData.studentName || '').trim();
+      fitTextFontSize(
+        ctx,
+        studentDisplayName,
+        nameBoxW - 64,
+        44,
+        24,
+        (s) => `800 ${s}px "Cairo", "Tajawal", sans-serif`
+      );
+      ctx.save();
+      ctx.direction = 'rtl';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillStyle = '#243B53';
+      const nameMetrics = ctx.measureText(studentDisplayName);
+      const nameAscent = nameMetrics.actualBoundingBoxAscent || 28;
+      const nameDescent = nameMetrics.actualBoundingBoxDescent || 8;
+      const boxCenterY = nameBoxY + nameBoxH / 2;
+      const exactNameBaselineY = boxCenterY + (nameAscent - nameDescent) / 2;
+      ctx.fillText(studentDisplayName, cx, exactNameBaselineY);
+      ctx.restore();
+
+      // "لتميزها واجتيازها"
+      ctx.fillStyle = '#243B53';
+      ctx.font = '700 29px "Tajawal", "Cairo", sans-serif';
+      drawCenteredText('لتميزها واجتيازها', cx, 476, 'rtl');
+
+      // Assessment Main Title: Complete Vocabulary Guide
+      ctx.fillStyle = '#243B53';
+      ctx.font = '700 38px "Playfair Display", Georgia, serif';
+      drawCenteredText('Complete Vocabulary Guide', cx, 536, 'ltr');
+
+      // Unit Subtitle: Mega Goal 2 – [Unit Title]
+      const unitLine = `Mega Goal 2 – ${String(certData.unitTitle || '')}`;
+      ctx.fillStyle = '#3E6046';
+      fitTextFontSize(
+        ctx,
+        unitLine,
+        contentMaxWidth,
+        28,
+        20,
+        (s) => `700 ${s}px "Inter", sans-serif`
+      );
+      drawCenteredText(unitLine, cx, 586, 'ltr');
+
+      // Mastery Percentage Line: بتقدير [X]%
+      const pctText = `${certData.masteryPercentage}%`;
+      const labelText = 'بتقدير';
+      ctx.save();
+      ctx.font = '700 31px "Cairo", "Tajawal", sans-serif';
+      const labelW = ctx.measureText(labelText).width;
+      ctx.font = '700 44px "Playfair Display", Georgia, serif';
+      const pctW = ctx.measureText(pctText).width;
+      const gap = 16;
+      const totalRowW = labelW + gap + pctW;
+      const rowCenterY = 656;
+
+      // In RTL visual order: "بتقدير" on the right, percentage on the left
+      const labelCenterX = cx + totalRowW / 2 - labelW / 2;
+      const pctCenterX = cx - totalRowW / 2 + pctW / 2;
+
+      ctx.fillStyle = '#243B53';
+      ctx.font = '700 31px "Cairo", "Tajawal", sans-serif';
+      drawCenteredText(labelText, labelCenterX, rowCenterY, 'rtl');
+
+      ctx.fillStyle = '#3E6046';
+      ctx.font = '700 44px "Playfair Display", Georgia, serif';
+      drawCenteredText(pctText, pctCenterX, rowCenterY, 'ltr');
+      ctx.restore();
+
+      // Closing Sentence: متمنية لها دوام التفوق والتميز
+      ctx.fillStyle = '#243B53';
+      ctx.font = '700 30px "Cairo", "Tajawal", sans-serif';
+      drawCenteredText('متمنية لها دوام التفوق والتميز', cx, 724, 'rtl');
+
+      // Completion Date
+      ctx.fillStyle = 'rgba(36, 59, 83, 0.72)';
+      ctx.font = '600 20px "Inter", sans-serif';
+      drawCenteredText(String(certData.completionDate || ''), cx, 774, 'ltr');
+
+      // 4. Strict 3-Column Horizontal Footer: Far Right (Teacher) | Center (Seal) | Far Left (Principal)
+      const footerTopY = 816;
+      ctx.strokeStyle = 'rgba(198, 161, 91, 0.55)';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(innerPad + 36, footerTopY);
+      ctx.lineTo(W - innerPad - 36, footerTopY);
+      ctx.stroke();
+
+      const footerMidY = 892;
+
+      // FAR RIGHT: Teacher (سميرة فهد المتعاني)
+      const rightColX = W - innerPad - 46;
+      ctx.save();
+      ctx.direction = 'rtl';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillStyle = '#3E6046';
+      ctx.font = '700 23px "Tajawal", "Cairo", sans-serif';
+      ctx.fillText('المعلمة', rightColX, footerMidY - 12);
+
+      ctx.fillStyle = '#243B53';
+      ctx.font = '800 26px "Cairo", "Tajawal", sans-serif';
+      ctx.fillText('سميرة فهد المتعاني', rightColX, footerMidY + 26);
+      ctx.restore();
+
+      // FAR LEFT: Principal (غالية المالكي)
+      const leftColX = innerPad + 46;
+      ctx.save();
+      ctx.direction = 'rtl';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillStyle = '#3E6046';
+      ctx.font = '700 23px "Tajawal", "Cairo", sans-serif';
+      ctx.fillText('مديرة المدرسة', leftColX, footerMidY - 12);
+
+      ctx.fillStyle = '#243B53';
+      ctx.font = '800 26px "Cairo", "Tajawal", sans-serif';
+      ctx.fillText('غالية المالكي', leftColX, footerMidY + 26);
+      ctx.restore();
+
+      // CENTER: Decorative Gold Seal
+      const sealR = 40;
+      const sealGrad = ctx.createLinearGradient(
+        cx - sealR,
+        footerMidY - sealR,
+        cx + sealR,
+        footerMidY + sealR
+      );
+      sealGrad.addColorStop(0, '#D9BC82');
+      sealGrad.addColorStop(0.5, '#C6A15B');
+      sealGrad.addColorStop(1, '#A8843E');
+
+      ctx.save();
+      ctx.shadowColor = 'rgba(16, 42, 67, 0.25)';
+      ctx.shadowBlur = 12;
+      ctx.shadowOffsetY = 4;
+      ctx.fillStyle = sealGrad;
+      ctx.beginPath();
+      ctx.arc(cx, footerMidY, sealR, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.92)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(cx, footerMidY, sealR, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.arc(cx, footerMidY, sealR - 9, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // 5-Point Star inside Seal
+      ctx.save();
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      const spikes = 5;
+      const outerStarR = 16;
+      const innerStarR = 7;
+      for (let i = 0; i < spikes * 2; i++) {
+        const r = i % 2 === 0 ? outerStarR : innerStarR;
+        const angle = (i * Math.PI) / spikes - Math.PI / 2;
+        const sx = cx + Math.cos(angle) * r;
+        const sy = footerMidY + Math.sin(angle) * r;
+        if (i === 0) ctx.moveTo(sx, sy);
+        else ctx.lineTo(sx, sy);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    function paintVisibleCertificateCanvas() {
+      const canvas = document.getElementById('visible-certificate-canvas');
+      if (!canvas) return;
+      const rec = appState.store.units[appState.activeUnitId];
+      const certData = appState.activeCertificateData || (rec ? rec.certificateRecord : null);
+      if (!certData) return;
+
+      const dpr = Math.min(Math.max(window.devicePixelRatio || 2, 2), 2.5);
+      renderCertificateToCanvas(canvas, certData, dpr);
+
+      ensureCertificateFontsLoaded().then(() => {
+        const latestCanvas = document.getElementById('visible-certificate-canvas');
+        if (latestCanvas) {
+          renderCertificateToCanvas(latestCanvas, certData, dpr);
+        }
+      });
+    }
+
+    function triggerBlobDownload(blob, fileName) {
+      const url = URL.createObjectURL(blob);
+      const isIOS =
+        /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.rel = 'noopener';
+
+      if (isIOS) {
+        link.target = '_blank';
+      }
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+      }, 60000);
+    }
+
+    async function exportUnitCertificate(unitId, customCertRecord = null) {
       const rec = appState.store.units[unitId];
       const certData = customCertRecord || (rec ? rec.certificateRecord : null);
       if (!certData || appState.isExporting) return;
@@ -1653,56 +2100,31 @@
       appState.isExporting = true;
       updateExportButtonsUI();
 
-      let tempHost = null;
       try {
-        if (typeof html2canvas !== 'function') {
-          throw new Error('Certificate export library is still loading. Please try again in a moment.');
-        }
+        await ensureCertificateFontsLoaded();
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
-        if (document.fonts && document.fonts.ready) {
-          await document.fonts.ready;
-        }
-
-        tempHost = document.createElement('div');
-        tempHost.style.position = 'fixed';
-        tempHost.style.left = '-9999px';
-        tempHost.style.top = '0';
-        tempHost.style.width = '1188px';
-        tempHost.style.height = '840px';
-        tempHost.style.zIndex = '-1';
-        tempHost.innerHTML = buildPureCertificateMarkup(certData, true);
-        document.body.appendChild(tempHost);
-
-        const targetEl = tempHost.firstElementChild;
-
-        const canvas = await html2canvas(targetEl, {
-          scale: 2.5,
-          useCORS: true,
-          backgroundColor: '#FAF7F0',
-          logging: false,
-        });
+        // Render using the exact same unified high-resolution Canvas renderer
+        const exportCanvas = document.createElement('canvas');
+        renderCertificateToCanvas(exportCanvas, certData, 2);
 
         const unitSlug = certData.unitTitle.replace(/\s+/g, '');
-        const fileBaseName = `MegaGoal2_${unitSlug}_Certificate`;
+        const fileName = `MegaGoal2_${unitSlug}_Certificate.png`;
 
-        if (format === 'pdf' && window.jspdf) {
-          const { jsPDF } = window.jspdf;
-          const imgData = canvas.toDataURL('image/png', 1.0);
-          const pdf = new jsPDF({
-            orientation: 'landscape',
-            unit: 'mm',
-            format: 'a4',
-          });
-          pdf.addImage(imgData, 'PNG', 0, 0, 297, 210);
-          pdf.save(`${fileBaseName}.pdf`);
-        } else {
-          const link = document.createElement('a');
-          link.download = `${fileBaseName}.png`;
-          link.href = canvas.toDataURL('image/png', 1.0);
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }
+        await new Promise((resolve, reject) => {
+          exportCanvas.toBlob(
+            (pngBlob) => {
+              if (!pngBlob) {
+                reject(new Error('تعذر إنشاء صورة الشهادة PNG.'));
+                return;
+              }
+              triggerBlobDownload(pngBlob, fileName);
+              resolve();
+            },
+            'image/png',
+            1.0
+          );
+        });
       } catch (err) {
         console.error('Certificate export error:', err);
         appState.modal = 'export-error';
@@ -1710,9 +2132,6 @@
           err && err.message ? err.message : 'تعذر تصدير الشهادة حاليًا، يرجى المحاولة مرة أخرى.';
         renderApp();
       } finally {
-        if (tempHost && tempHost.parentNode) {
-          tempHost.parentNode.removeChild(tempHost);
-        }
         appState.isExporting = false;
         updateExportButtonsUI();
       }
@@ -2217,7 +2636,7 @@
             <button
               type="button"
               data-export-btn
-              onclick="exportUnitCertificate('${rec.unitId}', 'png')"
+              onclick="exportUnitCertificate('${rec.unitId}')"
               class="py-2.5 px-3 rounded-xl bg-ivory hover:bg-sage text-navy border border-navy/15 font-bold text-xs transition-colors cursor-pointer"
             >
               تحميل الشهادة
@@ -2457,138 +2876,25 @@
     }
 
     /* --- 8D. SINGLE REUSABLE INDIVIDUAL UNIT CERTIFICATE COMPONENT --- */
-    function buildPureCertificateMarkup(certData, isExportClone = false) {
-      return `
-        <div
-          dir="rtl"
-          class="certificate-paper ${isExportClone ? 'w-full h-full' : 'cert-fixed-canvas rounded-2xl'} p-8 text-navy select-none flex flex-col justify-between"
-        >
-          <div class="border-[2.5px] border-botanical/70 rounded-xl h-full w-full px-12 py-7 relative flex flex-col justify-between">
-            <!-- Decorative Corner Accents -->
-            <div class="absolute top-2.5 right-2.5 w-7 h-7 border-t-2 border-r-2 border-gold"></div>
-            <div class="absolute top-2.5 left-2.5 w-7 h-7 border-t-2 border-l-2 border-gold"></div>
-            <div class="absolute bottom-2.5 right-2.5 w-7 h-7 border-b-2 border-r-2 border-gold"></div>
-            <div class="absolute bottom-2.5 left-2.5 w-7 h-7 border-b-2 border-l-2 border-gold"></div>
-
-            <!-- Top Header: School Name & Main Title -->
-            <div class="text-center">
-              <p class="font-serifAr text-xl font-bold text-navy/90 tracking-wide">
-                ثانوية أضم للبنات
-              </p>
-              <div class="mt-2 inline-flex flex-col items-center">
-                <h2 class="font-serifAr text-[2.65rem] font-bold text-botanical-dark leading-tight">
-                  شهادة إتمام
-                </h2>
-                <div class="mt-1.5 flex items-center gap-3">
-                  <span class="h-[1.5px] w-16 bg-gold/70"></span>
-                  <span class="w-2 h-2 rotate-45 bg-gold"></span>
-                  <span class="h-[1.5px] w-16 bg-gold/70"></span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Central Appreciation Content -->
-            <div class="text-center flex flex-col items-center justify-center my-auto space-y-2.5">
-              <p class="font-arabic text-[1.28rem] font-semibold text-navy/90 whitespace-nowrap">
-                تتقدم معلمة مادة اللغة الإنجليزية بالثناء والشكر للطالبة
-              </p>
-
-              <div class="px-10 py-1.5 border-b-2 border-gold min-w-[420px]">
-                <p class="font-arabic text-[2.25rem] font-extrabold text-navy leading-snug">
-                  ${escapeHtml(certData.studentName)}
-                </p>
-              </div>
-
-              <p class="font-arabic text-[1.22rem] font-semibold text-navy/85 pt-0.5">
-                لتميزها واجتيازها
-              </p>
-
-              <div dir="ltr" class="text-center pt-0.5">
-                <p class="font-serifEn text-[1.75rem] font-bold text-navy tracking-tight leading-tight">
-                  Complete Vocabulary Guide
-                </p>
-                <p class="font-english text-[1.22rem] font-bold text-botanical-dark tracking-wide mt-0.5">
-                  Mega Goal 2 – ${escapeHtml(certData.unitTitle)}
-                </p>
-              </div>
-
-              <div class="pt-1 flex items-baseline justify-center gap-2.5">
-                <span class="font-arabic text-[1.35rem] font-bold text-navy">بتقدير</span>
-                <span dir="ltr" class="font-serifEn text-[2.15rem] font-bold text-botanical-dark tracking-tight">
-                  ${certData.masteryPercentage}%
-                </span>
-              </div>
-
-              <p class="font-serifAr text-[1.35rem] font-bold text-navy/90 pt-0.5">
-                متمنية لها دوام التفوق والتميز
-              </p>
-
-              <p dir="ltr" class="font-english text-[0.88rem] font-semibold text-navy/65 tracking-wider pt-0.5">
-                ${escapeHtml(certData.completionDate)}
-              </p>
-            </div>
-
-            <!-- Strict 3-Column Horizontal Footer: Far Right (Teacher) | Center (Seal) | Far Left (Principal) -->
-            <div dir="ltr" class="pt-3.5 border-t border-gold/40 flex items-center justify-between w-full px-2">
-              <!-- FAR LEFT: Principal -->
-              <div dir="rtl" class="text-left w-64">
-                <p class="font-arabic text-[0.95rem] font-bold text-botanical-dark leading-snug">
-                  مديرة المدرسة
-                </p>
-                <p class="font-arabic text-[1.1rem] font-extrabold text-navy mt-0.5">
-                  غالية المالكي
-                </p>
-              </div>
-
-              <!-- CENTER: Decorative Gold Seal -->
-              <div class="flex items-center justify-center shrink-0">
-                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-gold-light via-gold to-gold-dark flex items-center justify-center shadow-md border-2 border-white/90">
-                  <div class="w-10 h-10 rounded-full border border-white/60 flex items-center justify-center">
-                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              <!-- FAR RIGHT: Teacher -->
-              <div dir="rtl" class="text-right w-64">
-                <p class="font-arabic text-[0.95rem] font-bold text-botanical-dark leading-snug">
-                  المعلمة
-                </p>
-                <p class="font-arabic text-[1.1rem] font-extrabold text-navy mt-0.5">
-                  سميرة فهد المتعاني
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
     function renderCertificateComponent(certData, stageClass) {
       return `
         <div
           id="living-certificate-node"
           class="certificate-living-node ${stageClass}"
         >
-          <div id="cert-proportional-host" class="cert-scale-host">
-            ${buildPureCertificateMarkup(certData, false)}
+          <div id="cert-proportional-host" class="cert-scale-host certificate-paper rounded-2xl">
+            <canvas
+              id="visible-certificate-canvas"
+              class="cert-unified-canvas"
+              aria-label="شهادة إتمام ${escapeHtml(certData.unitTitle)}"
+            ></canvas>
           </div>
         </div>
       `;
     }
 
     function syncCertificateProportionalScale() {
-      const host = document.getElementById('cert-proportional-host');
-      if (!host) return;
-      const fixedCanvas = host.querySelector('.cert-fixed-canvas');
-      if (!fixedCanvas) return;
-
-      const availableWidth = host.clientWidth || host.parentElement?.clientWidth || 840;
-      const scale = Math.min(availableWidth / 1000, 1);
-      fixedCanvas.style.transform = `scale(${scale})`;
-      host.style.height = `${Math.round(707 * scale)}px`;
+      paintVisibleCertificateCanvas();
     }
 
     window.addEventListener('resize', syncCertificateProportionalScale);
@@ -2695,29 +3001,17 @@
               ${renderCertificateComponent(certData, certStageClass)}
             </div>
 
-            <div class="mt-6 flex items-center justify-center gap-2.5 sm:gap-3">
+            <div class="mt-6 flex items-center justify-center">
               <button
                 type="button"
                 data-export-btn
-                onclick="exportUnitCertificate('${rec.unitId}', 'png', appState.activeCertificateData)"
-                class="flex-1 sm:flex-initial justify-center px-4 sm:px-6 py-3.5 rounded-2xl bg-navy hover:bg-navy-light text-white font-bold text-xs sm:text-base shadow-md border border-gold/40 flex items-center gap-2 transition-all cursor-pointer"
+                onclick="exportUnitCertificate('${rec.unitId}', appState.activeCertificateData)"
+                class="w-full sm:w-auto justify-center px-8 py-3.5 rounded-2xl bg-navy hover:bg-navy-light text-white font-bold text-sm sm:text-base shadow-md border border-gold/40 flex items-center gap-2.5 transition-all cursor-pointer"
               >
-                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gold-light shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <svg class="w-5 h-5 text-gold-light shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
                 <span>تحميل الشهادة (PNG)</span>
-              </button>
-
-              <button
-                type="button"
-                data-export-btn
-                onclick="exportUnitCertificate('${rec.unitId}', 'pdf', appState.activeCertificateData)"
-                class="flex-1 sm:flex-initial justify-center px-4 sm:px-6 py-3.5 rounded-2xl bg-botanical hover:bg-botanical-dark text-white font-bold text-xs sm:text-base shadow-md flex items-center gap-2 transition-all cursor-pointer"
-              >
-                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-ivory shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-                <span>تحميل الشهادة (PDF)</span>
               </button>
             </div>
 
@@ -3070,7 +3364,7 @@
       const allCerts = getAllEarnedCertificates();
       const chosen = allCerts[listIndex];
       if (!chosen) return;
-      exportUnitCertificate(chosen.unitId, 'png', chosen);
+      exportUnitCertificate(chosen.unitId, chosen);
     }
 
     function renderProgressRing(percentage) {
@@ -3391,6 +3685,20 @@
       alignContentBelowToolbar();
     });
 
+    function renderSmartClickFooter() {
+      return `
+        <footer dir="ltr" class="w-full py-5 px-4 text-center text-xs sm:text-sm text-navy/65 font-english">
+          <span>Powered by </span>
+          <a
+            href="https://www.tiktok.com/@smart.clk?_r=1&_t=ZS-9BjH3TGMBKX"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold text-botanical-dark hover:text-navy underline decoration-gold/70 underline-offset-4 transition-colors"
+          >smart click | <span class="font-arabic">نقرة ذكية</span></a>
+        </footer>
+      `;
+    }
+
     function renderApp() {
       const root = document.getElementById('app');
       if (!root) return;
@@ -3432,6 +3740,7 @@
             <div id="viewport-content-anchor"></div>
             ${screenHTML}
           </div>
+          ${renderSmartClickFooter()}
           ${renderActiveModal()}
         `;
 
@@ -3441,7 +3750,7 @@
         }
 
         if (activeScreen === 'unit-results') {
-          requestAnimationFrame(syncCertificateProportionalScale);
+          requestAnimationFrame(paintVisibleCertificateCanvas);
         }
       } catch (err) {
         console.error('Application render error:', err);
