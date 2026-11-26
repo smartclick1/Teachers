@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -15,38 +17,39 @@
           colors: {
             plum: {
               DEFAULT: '#49304F',
+              light: '#614169',
               dark: '#35213A',
-              light: '#62426A',
+              muted: '#7B5E82'
             },
             lavender: {
               DEFAULT: '#B5A3C7',
-              light: '#DDD3E7',
-              soft: '#EFEBF4',
+              light: '#D5C9E0',
+              soft: '#EAE3F1'
             },
             blush: {
               DEFAULT: '#F5E7EB',
               light: '#FAF2F5',
+              dark: '#E7CFD6'
             },
             ivory: {
               DEFAULT: '#FFFDF8',
-              warm: '#FBF7EE',
+              warm: '#FBF7EE'
             },
             gold: {
               DEFAULT: '#C8A46A',
-              dark: '#A48247',
               light: '#E3CCA3',
-              pale: '#F6EEDF',
+              dark: '#A48247'
             }
           },
           fontFamily: {
-            arabic: ['Tajawal', 'Cairo', 'system-ui', 'sans-serif'],
-            serifAr: ['Amiri', 'Georgia', 'serif'],
-            english: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
+            arabic: ['Tajawal', 'Cairo', 'sans-serif'],
+            serifAr: ['Amiri', 'Tajawal', 'serif'],
+            english: ['Plus Jakarta Sans', 'sans-serif']
           },
           boxShadow: {
-            academic: '0 10px 30px -8px rgba(73, 48, 79, 0.09)',
-            card: '0 4px 20px -2px rgba(73, 48, 79, 0.06)',
-            goldGlow: '0 8px 25px -4px rgba(200, 164, 106, 0.35)',
+            academic: '0 14px 38px -12px rgba(73, 48, 79, 0.13), 0 4px 12px -4px rgba(73, 48, 79, 0.06)',
+            cardHover: '0 20px 44px -12px rgba(73, 48, 79, 0.18), 0 6px 16px -4px rgba(200, 164, 106, 0.16)',
+            goldGlow: '0 10px 28px -6px rgba(200, 164, 106, 0.45)'
           }
         }
       }
@@ -61,1799 +64,1307 @@
       --gold: #C8A46A;
     }
 
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     html {
       scroll-behavior: auto;
+      background-color: #FFFDF8;
+      height: auto;
       overflow-x: hidden;
     }
 
     body {
-      background-color: #FFFDF8;
-      color: #49304F;
-      font-family: 'Tajawal', 'Cairo', system-ui, -apple-system, sans-serif;
-      overflow-x: hidden;
       margin: 0;
       padding: 0;
-      -webkit-overflow-scrolling: touch;
+      background-color: #FFFDF8;
+      color: var(--plum);
+      font-family: 'Tajawal', 'Cairo', sans-serif;
+      height: auto;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Shared application wrapper outside individual page components */
+    /* Full-screen background layer */
+    .academic-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-color: #FFFDF8;
+      background-image:
+        radial-gradient(circle at 8% 10%, rgba(181, 163, 199, 0.24) 0%, transparent 45%),
+        radial-gradient(circle at 92% 14%, rgba(245, 231, 235, 0.72) 0%, transparent 50%),
+        radial-gradient(circle at 82% 88%, rgba(200, 164, 106, 0.15) 0%, transparent 46%),
+        radial-gradient(circle at 14% 85%, rgba(181, 163, 199, 0.18) 0%, transparent 45%),
+        linear-gradient(180deg, #FFFDF8 0%, #FAF5F2 55%, #FFFDF8 100%);
+    }
+
+    /* Shared application wrapper with consistent compact 16px top spacing */
     .app-content-wrapper {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: flex-start;
-      padding-top: calc(16px + env(safe-area-inset-top, 0px));
-    }
-
-    /* Google Sites & iPhone Safari top-aligned main container */
-    .safe-main-shell {
-      width: 100%;
-      max-width: 56rem;
-      margin-left: auto;
-      margin-right: auto;
-      padding-top: 1.25rem;
-      padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
-      padding-left: max(0.875rem, env(safe-area-inset-left, 0px));
-      padding-right: max(0.875rem, env(safe-area-inset-right, 0px));
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: flex-start;
-    }
-
-    .envelope-rig {
       position: relative;
-      width: min(88vw, 400px);
-      height: 230px;
-      margin: 2px auto 0;
-      perspective: 1400px;
-      cursor: pointer;
-      transition:
-        opacity 0.55s ease,
-        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-        height 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-        margin 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: 1;
+      width: 100%;
+      padding-top: calc(16px + env(safe-area-inset-top, 0px));
+      padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+      padding-left: env(safe-area-inset-left, 0px);
+      padding-right: env(safe-area-inset-right, 0px);
     }
 
-    .envelope-rig.stage-expanded {
-      height: 0px;
-      margin-top: 0px;
-      opacity: 0;
-      transform: translateY(24px) scale(0.92);
-      pointer-events: none;
+    /* Prevent iOS Safari automatic zoom on input focus */
+    #student-name-input,
+    input[type="text"] {
+      font-size: 16px !important;
+      line-height: 1.5;
     }
 
-    .env-back-wall {
-      position: absolute;
-      inset: 0;
+    .font-en {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    /* Refined academic card surface */
+    .academic-card {
+      background: linear-gradient(165deg, rgba(255, 253, 248, 0.98) 0%, rgba(252, 248, 243, 0.95) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(200, 164, 106, 0.34);
+      box-shadow:
+        0 14px 36px -12px rgba(73, 48, 79, 0.12),
+        0 4px 12px -4px rgba(73, 48, 79, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    .gold-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(200, 164, 106, 0.65), transparent);
+    }
+
+    /* Option Card Micro-interactions */
+    .option-card {
+      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+                  background-color 0.18s ease,
+                  border-color 0.18s ease,
+                  box-shadow 0.18s ease;
+    }
+
+    .option-card:hover {
+      transform: translateY(-2px);
+      border-color: #C8A46A;
+      background-color: #FAF2F5;
+    }
+
+    .option-card.selected {
+      background: linear-gradient(135deg, #49304F 0%, #5B3D63 100%);
+      border-color: #C8A46A;
+      color: #FFFDF8;
+      box-shadow: 0 12px 26px -8px rgba(73, 48, 79, 0.38);
+    }
+
+    .option-card.selected .option-badge {
+      background-color: #C8A46A;
+      color: #49304F;
+      border-color: #E3CCA3;
+    }
+
+    /* Screen Transitions */
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .screen-enter {
+      animation: fadeSlideUp 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* =====================================================================
+       UNIFIED ENVELOPE -> REAL CERTIFICATE REVEAL
+       ===================================================================== */
+    .reveal-stage {
+      position: relative;
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .reveal-viewport {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem 0;
+    }
+
+    .envelope-shell {
+      position: relative;
+      width: min(92vw, 390px);
+      aspect-ratio: 16 / 10.5;
+      margin: 1.5rem auto 1rem auto;
+      border-radius: 16px;
+      background: linear-gradient(160deg, #3D2643 0%, #49304F 60%, #593C60 100%);
+      box-shadow: 0 20px 44px -14px rgba(73, 48, 79, 0.42);
+      border: 1.5px solid rgba(200, 164, 106, 0.65);
+      transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
       z-index: 10;
-      background: linear-gradient(155deg, #3A2440 0%, #2C1A31 100%);
-      border-radius: 16px;
-      border: 2px solid #C8A46A;
-      box-shadow: 0 16px 36px -12px rgba(73, 48, 79, 0.32);
     }
 
-    .env-front-pocket {
+    .envelope-shell.envelope-receded {
+      opacity: 0;
+      transform: translateY(30px) scale(0.92);
+      pointer-events: none;
       position: absolute;
       inset: 0;
-      z-index: 30;
+      margin: auto;
+    }
+
+    .envelope-lining {
+      position: absolute;
+      inset: 6px;
+      border-radius: 11px;
+      background: linear-gradient(180deg, #F5E7EB 0%, #FFFDF8 100%);
+      z-index: 11;
+    }
+
+    .envelope-pocket-front {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      z-index: 25;
       pointer-events: none;
-      border-radius: 16px;
       overflow: hidden;
     }
 
-    .env-front-pocket::before {
-      content: '';
+    .envelope-pocket-front::before {
+      content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, #523659 0%, #3E2644 100%);
-      clip-path: polygon(0 26%, 50% 63%, 100% 26%, 100% 100%, 0 100%);
-      border-bottom: 2px solid #C8A46A;
+      background: linear-gradient(135deg, #523759 0%, #49304F 100%);
+      clip-path: polygon(0 0, 52% 55%, 0 100%);
+      border-right: 1px solid rgba(200, 164, 106, 0.3);
     }
 
-    .env-pocket-trim {
+    .envelope-pocket-front::after {
+      content: "";
       position: absolute;
       inset: 0;
-      z-index: 31;
+      background: linear-gradient(225deg, #523759 0%, #49304F 100%);
+      clip-path: polygon(100% 0, 48% 55%, 100% 100%);
+    }
+
+    .envelope-pocket-bottom {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      background: linear-gradient(0deg, #3B2440 0%, #4E3455 85%);
+      clip-path: polygon(0 100%, 50% 46%, 100% 100%);
+      z-index: 26;
       pointer-events: none;
+      border-top: 1px solid rgba(200, 164, 106, 0.5);
     }
 
-    .env-top-flap {
+    .envelope-top-flap {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       height: 58%;
-      z-index: 40;
-      background: linear-gradient(180deg, #614169 0%, #49304F 100%);
+      background: linear-gradient(180deg, #5E4066 0%, #49304F 100%);
       clip-path: polygon(0 0, 100% 0, 50% 100%);
       transform-origin: top center;
-      transition: transform 0.65s cubic-bezier(0.34, 1.25, 0.64, 1), z-index 0s linear 0.28s;
-      border-top: 2px solid #C8A46A;
+      transform: rotateX(0deg);
+      transition: transform 0.72s cubic-bezier(0.34, 1.32, 0.64, 1), z-index 0s linear 0.32s;
+      z-index: 30;
+      border-top-left-radius: 14px;
+      border-top-right-radius: 14px;
       pointer-events: none;
     }
 
-    .envelope-rig.is-open .env-top-flap {
+    .envelope-shell.is-open .envelope-top-flap {
       transform: rotateX(180deg);
       z-index: 12;
     }
 
-    .env-wax-seal {
+    .envelope-wax-seal {
       position: absolute;
       top: 48%;
       left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 45;
-      width: 56px;
-      height: 56px;
+      transform: translate(-50%, -50%) scale(1);
+      width: 54px;
+      height: 54px;
       border-radius: 9999px;
-      background: radial-gradient(circle at 35% 30%, #EFE0BE, #C8A46A 58%, #9A763C 100%);
+      background: radial-gradient(circle at 32% 30%, #E3CCA3 0%, #C8A46A 58%, #9B7940 100%);
       border: 2px solid #FFFDF8;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+      box-shadow: 0 8px 20px rgba(34, 19, 38, 0.45);
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      transition: opacity 0.35s ease, transform 0.4s ease;
-    }
-
-    .envelope-rig.is-open .env-wax-seal {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0.55);
+      color: #49304F;
+      z-index: 35;
+      transition: opacity 0.32s ease, transform 0.35s ease;
       pointer-events: none;
     }
 
-    /* Single Real Certificate Element */
-    .single-certificate-stage {
-      position: relative;
+    .envelope-shell.is-open .envelope-wax-seal {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5);
+    }
+
+    /* SINGLE REUSABLE REAL CERTIFICATE CONTAINER */
+    .unified-certificate-holder {
       width: 100%;
-      max-width: 860px;
-      margin: 0 auto;
-      transform-origin: top center;
       transition:
-        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.5s ease,
-        margin-top 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.55s ease,
+        box-shadow 0.85s ease;
+      will-change: transform, opacity;
     }
 
-    .single-certificate-stage.cert-in-pocket {
-      z-index: 20;
-      margin-top: -205px;
-      transform: scale(0.42) translateY(20px);
-      opacity: 0.96;
-      pointer-events: none;
-      clip-path: inset(0 0 28% 0 round 14px);
-    }
-
-    .single-certificate-stage.cert-emerging {
-      z-index: 50;
-      margin-top: -215px;
-      transform: scale(0.6) translateY(-75px);
-      opacity: 1;
-      clip-path: inset(0 0 0 0 round 14px);
-    }
-
-    .single-certificate-stage.cert-full-focus {
-      z-index: 50;
-      margin-top: 0px;
-      transform: scale(1) translateY(0);
-      opacity: 1;
-      clip-path: none;
-    }
-
-    @media (max-width: 640px) {
-      .envelope-rig {
-        height: 180px;
-      }
-      .single-certificate-stage.cert-in-pocket {
-        margin-top: -160px;
-        transform: scale(0.48) translateY(12px);
-      }
-      .single-certificate-stage.cert-emerging {
-        margin-top: -170px;
-        transform: scale(0.72) translateY(-55px);
-      }
-    }
-
-    .gold-sparkle {
+    .unified-certificate-holder.stage-inside {
       position: absolute;
-      color: #C8A46A;
-      pointer-events: none;
-      z-index: 48;
+      top: 14%;
+      left: 50%;
+      width: 820px;
+      max-width: none;
+      transform: translateX(-50%) translateY(12px) scale(0.36);
+      transform-origin: top center;
       opacity: 0;
-      animation: sparkleFloat 1.3s ease-out forwards;
+      z-index: 18;
+      pointer-events: none;
     }
 
-    @keyframes sparkleFloat {
-      0% {
-        opacity: 0;
-        transform: translateY(6px) scale(0.5);
-      }
-      35% {
-        opacity: 0.9;
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-24px) scale(1);
-      }
+    .unified-certificate-holder.stage-emerging {
+      position: absolute;
+      top: 6%;
+      left: 50%;
+      width: 820px;
+      max-width: none;
+      transform: translateX(-50%) translateY(-48px) scale(0.46);
+      transform-origin: top center;
+      opacity: 1;
+      z-index: 28;
+      pointer-events: none;
     }
 
-    /* Horizontal A4 Landscape Rectangle (297 / 210) on Mobile & Desktop */
+    .unified-certificate-holder.stage-expanded {
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 100%;
+      max-width: 840px;
+      margin: 0 auto;
+      transform: translateX(0) translateY(0) scale(1);
+      opacity: 1;
+      z-index: 40;
+      pointer-events: auto;
+    }
+
+    /* Horizontal A4 Landscape Certificate (297 x 210 aspect ratio on all viewports) */
     .certificate-frame {
-      background:
-        radial-gradient(circle at 50% 45%, rgba(255, 253, 248, 0.99) 42%, rgba(245, 231, 235, 0.34) 100%),
-        linear-gradient(155deg, #FFFDF8 0%, #FAF4E8 100%);
-      border: 2px solid #C8A46A;
       position: relative;
       width: 100%;
       aspect-ratio: 297 / 210;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255, 253, 248, 0.99) 35%, rgba(245, 231, 235, 0.45) 100%),
+        linear-gradient(135deg, #FFFDF8 0%, #FAF3E6 100%);
+      border: 2px solid #C8A46A;
+      border-radius: 14px;
+      padding: clamp(6px, 1.3vw, 12px);
+      box-shadow: 0 18px 42px -12px rgba(73, 48, 79, 0.24);
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      padding: clamp(5px, 1.3vw, 13px);
-      box-sizing: border-box;
-      overflow: hidden;
-      box-shadow:
-        0 16px 38px -12px rgba(73, 48, 79, 0.18),
-        0 4px 12px -2px rgba(200, 164, 106, 0.2);
     }
 
     .certificate-inner-border {
-      border: 1px solid rgba(200, 164, 106, 0.75);
       position: relative;
       flex: 1;
       width: 100%;
       height: 100%;
+      border: 1px solid rgba(200, 164, 106, 0.72);
+      border-radius: 9px;
+      padding: clamp(8px, 2.2vw, 24px) clamp(12px, 3.2vw, 34px);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: clamp(7px, 1.9vw, 22px) clamp(10px, 2.8vw, 34px);
-      box-sizing: border-box;
+      text-align: center;
       overflow: hidden;
     }
 
+    /* Proportional Certificate Typography */
     .cert-school-badge {
-      font-size: clamp(8.5px, 1.55vw, 13px);
-      padding: clamp(2px, 0.45vw, 5px) clamp(9px, 2vw, 18px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(2px, 0.5vw, 5px) clamp(10px, 2vw, 20px);
+      border-radius: 9999px;
+      background-color: #49304F;
+      color: #E3CCA3;
+      border: 1px solid #C8A46A;
+      font-weight: 700;
+      font-size: clamp(9px, 1.55vw, 13.5px);
+      line-height: 1.25;
+      letter-spacing: 0.01em;
     }
 
     .cert-main-title {
-      font-size: clamp(13px, 3vw, 29px);
-      line-height: 1.2;
-      margin-top: clamp(3px, 0.8vw, 9px);
+      font-family: 'Amiri', 'Tajawal', serif;
+      font-weight: 700;
+      color: #49304F;
+      font-size: clamp(14px, 3.3vw, 31px);
+      line-height: 1.18;
+      margin-top: clamp(3px, 0.9vw, 10px);
     }
 
     .cert-divider-line {
-      width: clamp(60px, 15vw, 150px);
-      height: 1px;
-      margin: clamp(3px, 0.65vw, 7px) auto 0;
+      width: clamp(70px, 18vw, 170px);
+      height: 1.5px;
+      margin: clamp(3px, 0.7vw, 8px) auto 0 auto;
       background: linear-gradient(90deg, transparent, #C8A46A, transparent);
     }
 
     .cert-intro-text {
-      font-size: clamp(8.5px, 1.6vw, 14.5px);
+      color: rgba(73, 48, 79, 0.86);
+      font-weight: 500;
+      font-size: clamp(8.5px, 1.65vw, 15px);
       line-height: 1.3;
     }
 
     .cert-student-name {
-      font-size: clamp(14px, 3.2vw, 32px);
-      line-height: 1.22;
-      padding: clamp(1px, 0.35vw, 4px) clamp(10px, 2.6vw, 24px);
-      margin: clamp(2px, 0.7vw, 7px) auto;
+      display: inline-block;
+      margin: clamp(3px, 0.9vw, 10px) auto;
+      padding: clamp(1px, 0.4vw, 4px) clamp(12px, 2.8vw, 28px);
+      border-bottom: 1.5px solid #C8A46A;
+      font-family: 'Amiri', 'Tajawal', serif;
+      font-weight: 700;
+      color: #49304F;
+      font-size: clamp(14px, 3.6vw, 34px);
+      line-height: 1.2;
+      max-width: 92%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .cert-program-text {
-      font-size: clamp(8.5px, 1.6vw, 14.5px);
-      line-height: 1.3;
+      color: rgba(73, 48, 79, 0.9);
+      font-weight: 500;
+      font-size: clamp(8.5px, 1.65vw, 15px);
+      line-height: 1.35;
+    }
+
+    .cert-program-name {
+      font-weight: 800;
+      color: #49304F;
     }
 
     .cert-metrics-row {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: clamp(6px, 1.5vw, 14px);
+      gap: clamp(6px, 1.6vw, 16px);
       width: 100%;
-      max-width: clamp(230px, 64%, 520px);
-      margin: clamp(4px, 1.1vw, 12px) auto 0;
+      max-width: clamp(230px, 68%, 540px);
+      margin: clamp(4px, 1.1vw, 12px) auto 0 auto;
     }
 
     .cert-metric-box {
-      padding: clamp(3px, 0.8vw, 8px) clamp(6px, 1.3vw, 12px);
       border-radius: clamp(7px, 1.2vw, 12px);
+      background-color: #FAF2F5;
+      border: 1px solid rgba(200, 164, 106, 0.65);
+      padding: clamp(3px, 0.9vw, 9px) clamp(6px, 1.4vw, 14px);
+      text-align: center;
     }
 
     .cert-metric-label {
-      font-size: clamp(7px, 1.2vw, 11px);
+      color: rgba(73, 48, 79, 0.78);
+      font-weight: 700;
+      font-size: clamp(7.5px, 1.25vw, 11.5px);
       line-height: 1.2;
     }
 
     .cert-metric-value {
+      color: #49304F;
+      font-weight: 800;
       font-size: clamp(9.5px, 1.9vw, 17px);
-      line-height: 1.22;
+      line-height: 1.25;
       margin-top: 2px;
+      white-space: nowrap;
     }
 
     .cert-signatures-row {
-      padding-top: clamp(4px, 0.9vw, 10px);
+      width: 100%;
+      padding-top: clamp(4px, 1vw, 10px);
       border-top: 1px solid rgba(200, 164, 106, 0.45);
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
       align-items: flex-end;
-      width: 100%;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .cert-sig-right {
+      text-align: right;
+    }
+
+    .cert-sig-left {
+      text-align: left;
     }
 
     .cert-sig-role {
-      font-size: clamp(7.5px, 1.3vw, 11.5px);
+      color: #A48247;
+      font-weight: 700;
+      font-size: clamp(7.5px, 1.3vw, 12px);
       line-height: 1.2;
     }
 
     .cert-sig-name {
-      font-size: clamp(9px, 1.75vw, 15.5px);
-      line-height: 1.22;
-      margin-top: 2px;
+      color: #49304F;
+      font-weight: 800;
+      font-size: clamp(9.5px, 1.85vw, 17px);
+      line-height: 1.25;
+      margin-top: 1px;
+      white-space: nowrap;
     }
 
-    @media print {
-      @page {
-        size: A4 landscape;
-        margin: 8mm;
+    /* Restrained Gold Sparkles */
+    @keyframes sparkleFloat {
+      0% {
+        opacity: 0;
+        transform: translateY(8px) scale(0.4) rotate(0deg);
       }
-      body {
-        background: #FFFDF8 !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
+      28% {
+        opacity: 0.95;
       }
-      header,
-      .top-safe-spacer,
-      #toast-container,
-      #modal-backdrop,
-      #certificate-actions-bar,
-      section:not(#printable-certificate-section) {
+      100% {
+        opacity: 0;
+        transform: translateY(-48px) scale(1.1) rotate(95deg);
+      }
+    }
+
+    .gold-sparkle {
+      position: absolute;
+      pointer-events: none;
+      animation: sparkleFloat 2.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      z-index: 45;
+    }
+
+    /* Reduced Motion Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .envelope-shell {
         display: none !important;
       }
-      main {
-        padding: 0 !important;
-        margin: 0 !important;
-        max-width: 100% !important;
-      }
-      #printable-certificate-section {
-        display: block !important;
+      .unified-certificate-holder {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
         width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-      .single-certificate-stage {
         transform: none !important;
         opacity: 1 !important;
-        margin: 0 auto !important;
-        max-width: 100% !important;
-        clip-path: none !important;
-      }
-      .certificate-frame {
-        box-shadow: none !important;
-        width: 100% !important;
-        max-height: 185mm !important;
       }
     }
   </style>
 </head>
-<body class="academic-bg font-arabic antialiased selection:bg-blush selection:text-plum">
+<body class="selection:bg-gold/30 selection:text-plum">
 
-  <!-- Toast Notification Container (No alert()) -->
-  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 w-[92vw] max-w-md pointer-events-none"></div>
+  <!-- Full-screen Academic Background Layer -->
+  <div class="academic-bg" aria-hidden="true"></div>
 
-  <!-- Custom Modal / Confirmation Dialog Container (No confirm()) -->
-  <div id="modal-backdrop" class="fixed inset-0 z-[90] bg-plum-dark/55 hidden items-center justify-center p-4">
-    <div id="modal-card" class="bg-ivory border border-gold/60 rounded-3xl max-w-md w-full p-6 shadow-2xl fade-in-panel"></div>
+  <!-- Shared Application Wrapper with 16px top padding + safe-area inset -->
+  <div id="app-wrapper" class="app-content-wrapper">
+    <main id="app-root" class="max-w-4xl mx-auto px-3 sm:px-6"></main>
   </div>
 
-  <!-- Shared Application Wrapper (keeps only background behind Safari address bar across ALL screens) -->
-  <div id="app-wrapper" class="app-content-wrapper">
-    <!-- Minimal Top Header Bar -->
-    <header class="z-40 bg-ivory/95 border-b border-lavender-light/70">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 min-h-[3.5rem] sm:min-h-[4rem] py-1.5 flex items-center justify-between gap-3">
-        <!-- Right side in RTL: School & Program Title -->
-        <button type="button" onclick="navigateHome()" class="flex items-center gap-2.5 text-right group focus:outline-none">
-          <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-plum text-gold-light flex items-center justify-center font-serifAr font-bold text-base shadow-sm group-hover:bg-plum-light transition-colors shrink-0">
-            ض
-          </span>
-          <div class="leading-tight">
-            <p class="text-xs sm:text-sm font-extrabold text-plum">خطة علاجية لمهارات الاختبار التشخيصي</p>
-            <p class="text-[11px] text-plum/70 font-medium">ثانوية أضم للبنات</p>
-          </div>
-        </button>
+  <!-- Confirmation / Reset Modal -->
+  <div id="modal-backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-plum/55 backdrop-blur-sm p-4" role="dialog" aria-modal="true">
+    <div id="modal-box" class="bg-ivory border border-gold/45 rounded-2xl max-w-md w-full p-6 shadow-2xl text-right">
+      <div id="modal-icon" class="w-12 h-12 rounded-full bg-blush flex items-center justify-center text-plum mb-4"></div>
+      <h3 id="modal-title" class="text-xl font-bold text-plum mb-2"></h3>
+      <p id="modal-body" class="text-sm sm:text-base text-plum/80 leading-relaxed mb-6"></p>
+      <div id="modal-actions" class="flex flex-wrap items-center justify-end gap-3"></div>
+    </div>
+  </div>
 
-        <!-- Left side in RTL: Student badge, Fullscreen & Reset -->
-        <div class="flex items-center gap-1.5 sm:gap-2">
-          <span id="header-student-pill" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blush/85 border border-lavender-light text-xs font-bold text-plum max-w-[180px] truncate"></span>
-
-          <button type="button" onclick="toggleFullscreen()" title="ملء الشاشة" aria-label="ملء الشاشة"
-            class="p-2 rounded-xl text-plum/80 hover:text-plum hover:bg-lavender-soft/80 transition-colors">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
-            </svg>
-          </button>
-
-          <button type="button" id="header-reset-btn" onclick="confirmResetProgress()" title="إعادة ضبط التقدم" aria-label="إعادة ضبط التقدم"
-            class="hidden items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold text-rose-800 bg-rose-50/80 hover:bg-rose-100 border border-rose-200/80 transition-colors">
-            <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-            </svg>
-            <span class="hidden sm:inline">إعادة ضبط</span>
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <!-- Main Content Container -->
-    <main id="app-root" class="safe-main-shell"></main>
+  <!-- Toast Feedback -->
+  <div id="toast-banner" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden items-center gap-2.5 bg-plum text-ivory px-5 py-3 rounded-full shadow-xl border border-gold/40 text-sm font-medium">
+    <span class="w-2 h-2 rounded-full bg-gold"></span>
+    <span id="toast-text"></span>
   </div>
 
   <script>
     /*************************************************************************
-     * 1. APPROVED METADATA & PLAN 1 QUESTION BANK (60 QUESTIONS, 12 SKILLS)
+     * 1. AUTHORITATIVE QUESTION BANK — PLAN 1 ONLY (60 APPROVED QUESTIONS)
      *************************************************************************/
-    const PROGRAM_META = Object.freeze({
+    const PROGRAM_META = {
       title: "خطة علاجية لمهارات الاختبار التشخيصي",
+      certificateTitle: "شهادة إتمام الخطة العلاجية",
       school: "ثانوية أضم للبنات",
       teacher: "سميرة فهد المتعاني",
       principal: "غالية المالكي",
-      certificateTitle: "شهادة إتمام الخطة العلاجية",
-      totalQuestions: 60,
       totalSkills: 12,
-      questionsPerSkill: 5
-    });
+      totalQuestions: 60
+    };
 
-    const SKILLS_DATA = Object.freeze([
-      {
-        id: 1,
-        enTitle: "Present Perfect Tense",
-        arTitle: "المضارع التام",
-        questions: [
-          {
-            id: "q1",
-            number: 1,
-            text: "Sara ______ her homework already.",
-            options: { A: "finish", B: "finished", C: "has finished", D: "finishing" },
-            correct: "C",
-            explanation: "يُستخدم المضارع التام (has/have + التصريف الثالث) مع كلمة already، ومع المفرد Sara نستخدم has finished."
-          },
-          {
-            id: "q2",
-            number: 2,
-            text: "We ______ in this city since 2020.",
-            options: { A: "have lived", B: "lived", C: "are living", D: "live" },
-            correct: "A",
-            explanation: "وجود since متبوعًا بنقطة بداية زمنية (2020) يدل على المضارع التام، ومع We نستخدم have lived."
-          },
-          {
-            id: "q3",
-            number: 3,
-            text: "Have you ______ visited London?",
-            options: { A: "never", B: "ever", C: "yet", D: "since" },
-            correct: "B",
-            explanation: "تُستخدم ever في السؤال عن الخبرة الحياتية في زمن المضارع التام."
-          },
-          {
-            id: "q4",
-            number: 4,
-            text: "My brother hasn't cleaned his room ______.",
-            options: { A: "already", B: "since", C: "for", D: "yet" },
-            correct: "D",
-            explanation: "تُستخدم yet في نهاية الجملة المنفية أو السؤال للدلالة على عدم حدوث الفعل حتى الآن."
-          },
-          {
-            id: "q5",
-            number: 5,
-            text: "They ______ three books this month.",
-            options: { A: "reads", B: "have read", C: "reading", D: "has read" },
-            correct: "B",
-            explanation: "مع الجمع They في المضارع التام نستخدم have + التصريف الثالث للفعل (have read)."
-          }
-        ]
-      },
-      {
-        id: 2,
-        enTitle: "Vocabulary: Personality Traits (Honesty)",
-        arTitle: "صفات الشخصية",
-        questions: [
-          {
-            id: "q6",
-            number: 6,
-            text: "An honest person always tells the ______.",
-            options: { A: "truth", B: "joke", C: "secret", D: "story" },
-            correct: "A",
-            explanation: "الشخص الصادق يقول الحقيقة دائمًا (tells the truth)."
-          },
-          {
-            id: "q7",
-            number: 7,
-            text: "Someone who never lies is ______.",
-            options: { A: "lazy", B: "rude", C: "honest", D: "selfish" },
-            correct: "C",
-            explanation: "الشخص الذي لا يكذب أبدًا يوصف بأنه صادق (honest)."
-          },
-          {
-            id: "q8",
-            number: 8,
-            text: "Fatimah returned the money she found because she is ______.",
-            options: { A: "careless", B: "trustworthy", C: "impatient", D: "jealous" },
-            correct: "B",
-            explanation: "إعادة المال المفقود تدل على الأمانة ومحل الثقة (trustworthy)."
-          },
-          {
-            id: "q9",
-            number: 9,
-            text: "Which word is the opposite of \"honest\"?",
-            options: { A: "polite", B: "generous", C: "friendly", D: "dishonest" },
-            correct: "D",
-            explanation: "إضافة البادئة dis إلى honest تعطي الضد: dishonest (غير صادق / مخادع)."
-          },
-          {
-            id: "q10",
-            number: 10,
-            text: "A person who admits a mistake instead of hiding it shows ______.",
-            options: { A: "honesty", B: "laziness", C: "anger", D: "fear" },
-            correct: "A",
-            explanation: "الاعتراف بالخطأ بدل إخفائه يُظهر الصدق والأمانة (honesty)."
-          }
-        ]
-      },
-      {
-        id: 3,
-        enTitle: "Superlative Adjectives",
-        arTitle: "صيغة التفضيل العليا",
-        questions: [
-          {
-            id: "q11",
-            number: 11,
-            text: "Mount Everest is ______ mountain in the world.",
-            options: { A: "higher", B: "the highest", C: "high", D: "highest than" },
-            correct: "B",
-            explanation: "للمقارنة بين شيء ومجموعة كاملة (في العالم) نستخدم صيغة التفضيل العليا: the + صفة + est."
-          },
-          {
-            id: "q12",
-            number: 12,
-            text: "This is ______ movie I have ever watched.",
-            options: { A: "interesting", B: "more interesting", C: "the most interesting", D: "most interesting than" },
-            correct: "C",
-            explanation: "الصفة الطويلة interesting تأخذ the most في صيغة التفضيل العليا: the most interesting."
-          },
-          {
-            id: "q13",
-            number: 13,
-            text: "Of all the students in the class, Amal is ______.",
-            options: { A: "the tallest", B: "taller", C: "tall", D: "most tall" },
-            correct: "A",
-            explanation: "عبارة Of all the students تدل على التفضيل الأعلى، والصفة القصيرة tall تصبح the tallest."
-          },
-          {
-            id: "q14",
-            number: 14,
-            text: "Which sentence is correct?",
-            options: {
-              A: "This is the goodest restaurant in town.",
-              B: "This is the better restaurant in town.",
-              C: "This is the most good restaurant in town.",
-              D: "This is the best restaurant in town."
-            },
-            correct: "D",
-            explanation: "صفة good شاذة في صيغة التفضيل العليا وتصبح the best."
-          },
-          {
-            id: "q15",
-            number: 15,
-            text: "February is ______ month of the year.",
-            options: { A: "shorter", B: "the shortest", C: "shortest than", D: "the most short" },
-            correct: "B",
-            explanation: "للمقارنة بين شهر وبقية أشهر السنة نستخدم صيغة التفضيل العليا: the shortest."
-          }
-        ]
-      },
-      {
-        id: 4,
-        enTitle: "Modal Verbs (Should / Shouldn’t)",
-        arTitle: "الأفعال الناقصة",
-        questions: [
-          {
-            id: "q16",
-            number: 16,
-            text: "You ______ drink enough water every day.",
-            options: { A: "shouldn't", B: "should", C: "don't", D: "aren't" },
-            correct: "B",
-            explanation: "نستخدم should لإعطاء نصيحة إيجابية مفيدة: شرب كمية كافية من الماء يوميًا."
-          },
-          {
-            id: "q17",
-            number: 17,
-            text: "Students ______ use their phones during an exam.",
-            options: { A: "should", B: "are", C: "shouldn't", D: "have" },
-            correct: "C",
-            explanation: "نستخدم shouldn't للنصح بعدم القيام بفعل غير مناسب أثناء الاختبار."
-          },
-          {
-            id: "q18",
-            number: 18,
-            text: "You look tired. You ______ get some rest.",
-            options: { A: "should", B: "shouldn't", C: "doesn't", D: "aren't" },
-            correct: "A",
-            explanation: "الشخص المتعب يُنصح بأخذ قسط من الراحة باستخدام should."
-          },
-          {
-            id: "q19",
-            number: 19,
-            text: "Which sentence gives correct advice?",
-            options: {
-              A: "You should to study every day.",
-              B: "You should studying every day.",
-              C: "You should studies every day.",
-              D: "You should study every day."
-            },
-            correct: "D",
-            explanation: "يأتي بعد should الفعل في المصدر المجرد (base verb) دون to أو s أو ing."
-          },
-          {
-            id: "q20",
-            number: 20,
-            text: "People ______ throw rubbish in the street.",
-            options: { A: "should", B: "shouldn't", C: "can to", D: "should to" },
-            correct: "B",
-            explanation: "رمي النفايات في الشارع سلوك خاطئ، لذا نستخدم shouldn't."
-          }
-        ]
-      },
-      {
-        id: 5,
-        enTitle: "Quantifiers (Much / Many / Few)",
-        arTitle: "أدوات الكمية",
-        questions: [
-          {
-            id: "q21",
-            number: 21,
-            text: "How ______ students are there in your classroom?",
-            options: { A: "much", B: "many", C: "little", D: "any" },
-            correct: "B",
-            explanation: "كلمة students اسم جمع معدود، فنسأل عنه بـ How many."
-          },
-          {
-            id: "q22",
-            number: 22,
-            text: "There isn't ______ milk left in the refrigerator.",
-            options: { A: "many", B: "few", C: "much", D: "several" },
-            correct: "C",
-            explanation: "كلمة milk اسم غير معدود، وفي الجملة المنفية نستخدم much."
-          },
-          {
-            id: "q23",
-            number: 23,
-            text: "Only a ______ students attended the extra lesson.",
-            options: { A: "few", B: "much", C: "little", D: "any" },
-            correct: "A",
-            explanation: "تُستخدم a few مع الأسماء المعدودة الجمع (students) للدلالة على عدد قليل."
-          },
-          {
-            id: "q24",
-            number: 24,
-            text: "How ______ time do we have before the exam starts?",
-            options: { A: "many", B: "few", C: "several", D: "much" },
-            correct: "D",
-            explanation: "كلمة time هنا غير معدودة، لذا نستخدم How much للسؤال عن الكمية/المدة."
-          },
-          {
-            id: "q25",
-            number: 25,
-            text: "Which sentence is grammatically correct?",
-            options: {
-              A: "There are much books on the shelf.",
-              B: "There is many water in the bottle.",
-              C: "There are a few apples in the basket.",
-              D: "There are little chairs in the room."
-            },
-            correct: "C",
-            explanation: "apples اسم جمع معدود، لذا يصح معه There are a few."
-          }
-        ]
-      },
-      {
-        id: 6,
-        enTitle: "Future with Be Going To",
-        arTitle: "المستقبل باستخدام Going To",
-        questions: [
-          {
-            id: "q26",
-            number: 26,
-            text: "I ______ visit my grandmother next weekend.",
-            options: { A: "am going to", B: "is going to", C: "are going to", D: "going to" },
-            correct: "A",
-            explanation: "الضمير I يأخذ am متبوعًا بـ going to + المصدر."
-          },
-          {
-            id: "q27",
-            number: 27,
-            text: "Look at those dark clouds! It ______ rain.",
-            options: { A: "are going to", B: "is going to", C: "am going to", D: "going" },
-            correct: "B",
-            explanation: "الضمير It يأخذ is going to للتنبؤ المبني على دليل واضح (الغيوم الداكنة)."
-          },
-          {
-            id: "q28",
-            number: 28,
-            text: "They ______ travel to Jeddah tomorrow.",
-            options: { A: "is going to", B: "am going to", C: "are going to", D: "going to" },
-            correct: "C",
-            explanation: "الضمير They يأخذ are going to للتعبير عن خطة أو نية مستقبلية."
-          },
-          {
-            id: "q29",
-            number: 29,
-            text: "Which sentence is correct?",
-            options: {
-              A: "She going to buy a new bag.",
-              B: "She is going buy a new bag.",
-              C: "She are going to buy a new bag.",
-              D: "She is going to buy a new bag."
-            },
-            correct: "D",
-            explanation: "الصيغة الصحيحة هي فاعل + (am/is/are) + going to + مصدر الفعل: She is going to buy..."
-          },
-          {
-            id: "q30",
-            number: 30,
-            text: "______ you going to study English tonight?",
-            options: { A: "Is", B: "Are", C: "Am", D: "Do" },
-            correct: "B",
-            explanation: "في السؤال مع الضمير you في صيغة going to نبدأ بـ Are."
-          }
-        ]
-      },
-      {
-        id: 7,
-        enTitle: "Relative Pronouns (Who / Which / Whose / Where)",
-        arTitle: "ضمائر الوصل",
-        questions: [
-          {
-            id: "q31",
-            number: 31,
-            text: "The teacher ______ helped me is very kind.",
-            options: { A: "which", B: "where", C: "who", D: "whose" },
-            correct: "C",
-            explanation: "نستخدم ضمير الوصل who للإشارة إلى العاقل (The teacher)."
-          },
-          {
-            id: "q32",
-            number: 32,
-            text: "This is the book ______ I bought yesterday.",
-            options: { A: "which", B: "who", C: "where", D: "whose" },
-            correct: "A",
-            explanation: "نستخدم ضمير الوصل which للإشارة إلى غير العاقل (the book)."
-          },
-          {
-            id: "q33",
-            number: 33,
-            text: "The girl ______ father is a doctor is my friend.",
-            options: { A: "which", B: "who", C: "where", D: "whose" },
-            correct: "D",
-            explanation: "نستخدم whose للدلالة على الملكية (والد الفتاة: whose father)."
-          },
-          {
-            id: "q34",
-            number: 34,
-            text: "This is the school ______ my mother works.",
-            options: { A: "who", B: "where", C: "whose", D: "which" },
-            correct: "B",
-            explanation: "نستخدم where للإشارة إلى المكان الذي يحدث فيه الفعل (تعمل فيه والدتي)."
-          },
-          {
-            id: "q35",
-            number: 35,
-            text: "The man ______ lives next door is an engineer.",
-            options: { A: "who", B: "which", C: "whose", D: "where" },
-            correct: "A",
-            explanation: "نستخدم who مع الاسم العاقل (The man)."
-          }
-        ]
-      },
-      {
-        id: 8,
-        enTitle: "Adjectives and Adverbs",
-        arTitle: "الصفات والظروف",
-        questions: [
-          {
-            id: "q36",
-            number: 36,
-            text: "The student answered the question ______.",
-            options: { A: "correct", B: "correctly", C: "correction", D: "correcting" },
-            correct: "B",
-            explanation: "نحتاج إلى ظرف حال (adverb) ليصف كيفية حدوث الفعل answered، لذا نختار correctly."
-          },
-          {
-            id: "q37",
-            number: 37,
-            text: "She is a ______ driver.",
-            options: { A: "carefully", B: "care", C: "careful", D: "caring" },
-            correct: "C",
-            explanation: "نحتاج إلى صفة (adjective) قبل الاسم المفرد driver، فنختار careful."
-          },
-          {
-            id: "q38",
-            number: 38,
-            text: "The children played ______ in the garden.",
-            options: { A: "happy", B: "happiness", C: "happier", D: "happily" },
-            correct: "D",
-            explanation: "نصف الفعل played بالظرف happily (بسعادة)."
-          },
-          {
-            id: "q39",
-            number: 39,
-            text: "The exam was very ______.",
-            options: { A: "easy", B: "easily", C: "ease", D: "easiest" },
-            correct: "A",
-            explanation: "بعد الفعل الناسخ was نستخدم صفة تصف الاختبار: easy."
-          },
-          {
-            id: "q40",
-            number: 40,
-            text: "Which sentence uses an adverb correctly?",
-            options: {
-              A: "He speaks English fluent.",
-              B: "He speaks English fluency.",
-              C: "He speaks English fluently.",
-              D: "He speaks English more fluent."
-            },
-            correct: "C",
-            explanation: "الظرف fluently يصف طريقة التحدث (speaks English fluently) بشكل صحيح."
-          }
-        ]
-      },
-      {
-        id: 9,
-        enTitle: "Gerunds and Infinitives",
-        arTitle: "المصدر باستخدام ing أو to + verb",
-        questions: [
-          {
-            id: "q41",
-            number: 41,
-            text: "I enjoy ______ English stories.",
-            options: { A: "read", B: "reading", C: "to reading", D: "reads" },
-            correct: "B",
-            explanation: "الفعل enjoy يتبعه عادةً فعل بصيغة Gerund (verb + ing): reading."
-          },
-          {
-            id: "q42",
-            number: 42,
-            text: "She decided ______ a new language.",
-            options: { A: "learn", B: "learning", C: "learns", D: "to learn" },
-            correct: "D",
-            explanation: "الفعل decide يتبعه المصدر to + verb: to learn."
-          },
-          {
-            id: "q43",
-            number: 43,
-            text: "They want ______ a new computer.",
-            options: { A: "to buy", B: "buying", C: "buy", D: "buys" },
-            correct: "A",
-            explanation: "الفعل want يتبعه to + verb: to buy."
-          },
-          {
-            id: "q44",
-            number: 44,
-            text: "My sister is interested in ______ photographs.",
-            options: { A: "take", B: "to take", C: "taking", D: "takes" },
-            correct: "C",
-            explanation: "بعد حروف الجر مثل in نستخدم صيغة verb + ing: taking."
-          },
-          {
-            id: "q45",
-            number: 45,
-            text: "Which sentence is correct?",
-            options: {
-              A: "He hopes passing the exam.",
-              B: "He hopes to pass the exam.",
-              C: "He hopes pass the exam.",
-              D: "He hopes to passing the exam."
-            },
-            correct: "B",
-            explanation: "الفعل hope يتبعه to + المصدر المجرد: He hopes to pass the exam."
-          }
-        ]
-      },
-      {
-        id: 10,
-        enTitle: "Past Continuous Tense",
-        arTitle: "الماضي المستمر",
-        questions: [
-          {
-            id: "q46",
-            number: 46,
-            text: "I ______ TV when my mother called me.",
-            options: { A: "watch", B: "watched", C: "was watching", D: "am watching" },
-            correct: "C",
-            explanation: "حدث كان مستمرًا في الماضي عندما قطعه حدث آخر يستخدم الماضي المستمر: was watching."
-          },
-          {
-            id: "q47",
-            number: 47,
-            text: "They ______ football at five o'clock yesterday.",
-            options: { A: "were playing", B: "was playing", C: "are playing", D: "play" },
-            correct: "A",
-            explanation: "تحديد وقت محدد في الماضي (at five o'clock yesterday) مع الجمع They يأخذ were playing."
-          },
-          {
-            id: "q48",
-            number: 48,
-            text: "While Sara ______ her sister was reading.",
-            options: { A: "cook", B: "cooks", C: "is cooking", D: "was cooking" },
-            correct: "D",
-            explanation: "مع الرابط While وحدث مستمر في الماضي مع المفرد Sara نستخدم was cooking."
-          },
-          {
-            id: 49,
-            number: 49,
-            text: "What ______ you doing when the lights went out?",
-            options: { A: "was", B: "were", C: "are", D: "did" },
-            correct: "B",
-            explanation: "في صيغة السؤال بالماضي المستمر مع الضمير you نستخدم were."
-          },
-          {
-            id: "q50",
-            number: 50,
-            text: "Which sentence is correct?",
-            options: {
-              A: "The students was studying when the bell rang.",
-              B: "The students were study when the bell rang.",
-              C: "The students were studying when the bell rang.",
-              D: "The students are studying when the bell rang."
-            },
-            correct: "C",
-            explanation: "الفاعل الجمع The students يأخذ were + verb-ing: were studying."
-          }
-        ]
-      },
-      {
-        id: 11,
-        enTitle: "First Conditional",
-        arTitle: "الحالة الشرطية الأولى",
-        questions: [
-          {
-            id: "q51",
-            number: 51,
-            text: "If it rains tomorrow, we ______ at home.",
-            options: { A: "stay", B: "stayed", C: "staying", D: "will stay" },
-            correct: "D",
-            explanation: "في الحالة الشرطية الأولى يكون جواب الشرط مستقبلًا باستخدام will + المصدر: will stay."
-          },
-          {
-            id: "q52",
-            number: 52,
-            text: "If you study hard, you ______ the exam.",
-            options: { A: "will pass", B: "passed", C: "passing", D: "passes" },
-            correct: "A",
-            explanation: "جملة الشرط في المضارع البسيط (study) وجواب الشرط يستخدم will pass."
-          },
-          {
-            id: "q53",
-            number: 53,
-            text: "If she ______ early, she will catch the bus.",
-            options: { A: "leave", B: "leaves", C: "will leave", D: "leaving" },
-            correct: "B",
-            explanation: "في جملة If بالحالة الأولى نستخدم المضارع البسيط، ومع المفرد she نضيف s: leaves."
-          },
-          {
-            id: "q54",
-            number: 54,
-            text: "Which sentence uses the first conditional correctly?",
-            options: {
-              A: "If I will have time, I will call you.",
-              B: "If I had time, I will call you.",
-              C: "If I have time, I will call you.",
-              D: "If I having time, I will call you."
-            },
-            correct: "C",
-            explanation: "الصيغة الصحيحة: If + مضارع بسيط (I have time)، والنتيجة will + مصدر (I will call you)."
-          },
-          {
-            id: "q55",
-            number: 55,
-            text: "We will go to the park if the weather ______ nice.",
-            options: { A: "will be", B: "was", C: "being", D: "is" },
-            correct: "D",
-            explanation: "بعد if في الحالة الأولى نستخدم المضارع البسيط، ومع المفرد the weather نختار is."
-          }
-        ]
-      },
-      {
-        id: 12,
-        enTitle: "Reported Speech",
-        arTitle: "الكلام المنقول",
-        questions: [
-          {
-            id: "q56",
-            number: 56,
-            text: "Direct: \"I am tired,\" Sara said. Choose the reported speech.",
-            options: {
-              A: "Sara said that she was tired.",
-              B: "Sara said that I am tired.",
-              C: "Sara said that she is tire.",
-              D: "Sara said that she were tired."
-            },
-            correct: "A",
-            explanation: "في الكلام المنقول يتحول الضمير I إلى she والزمن من am إلى was."
-          },
-          {
-            id: "q57",
-            number: 57,
-            text: "Direct: \"I like English,\" Huda said. Choose the reported speech.",
-            options: {
-              A: "Huda said that she liking English.",
-              B: "Huda said that she liked English.",
-              C: "Huda said that I like English.",
-              D: "Huda said that she likes English yesterday."
-            },
-            correct: "B",
-            explanation: "يتحول المضارع البسيط like إلى ماضٍ بسيط liked مع تغيير الضمير إلى she."
-          },
-          {
-            id: "q58",
-            number: 58,
-            text: "Direct: \"We are studying,\" the students said. Choose the reported speech.",
-            options: {
-              A: "The students said that they are study.",
-              B: "The students said that we were studying.",
-              C: "The students said that they were studying.",
-              D: "The students said that they studying."
-            },
-            correct: "C",
-            explanation: "تتحول We إلى they ويتحول المضارع المستمر are studying إلى ماضٍ مستمر were studying."
-          },
-          {
-            id: "q59",
-            number: 59,
-            text: "Direct: \"I will help you,\" Ali told Omar. Choose the reported speech.",
-            options: {
-              A: "Ali told Omar that I will help him.",
-              B: "Ali told Omar that he will helped him.",
-              C: "Ali told Omar that he helps him yesterday.",
-              D: "Ali told Omar that he would help him."
-            },
-            correct: "D",
-            explanation: "تتحول will إلى would مع تحويل الضمائر لتناسب المتكلم والمخاطب: he would help him."
-          },
-          {
-            id: "q60",
-            number: 60,
-            text: "Direct: \"I have finished my homework,\" Maha said. Choose the reported speech.",
-            options: {
-              A: "Maha said that she has finish her homework.",
-              B: "Maha said that she had finished her homework.",
-              C: "Maha said that I have finished my homework.",
-              D: "Maha said that she finishing her homework."
-            },
-            correct: "B",
-            explanation: "يتحول المضارع التام have finished إلى ماضٍ تام had finished مع الضمير she."
-          }
-        ]
-      }
-    ]);
+    const SKILLS_DATA = [
+      { id: 1, number: 1, englishTitle: "Present Perfect Tense", arabicTitle: "المضارع التام" },
+      { id: 2, number: 2, englishTitle: "Vocabulary: Personality Traits (Honesty)", arabicTitle: "صفات الشخصية" },
+      { id: 3, number: 3, englishTitle: "Superlative Adjectives", arabicTitle: "صيغة التفضيل العليا" },
+      { id: 4, number: 4, englishTitle: "Modal Verbs (Should / Shouldn’t)", arabicTitle: "الأفعال الناقصة" },
+      { id: 5, number: 5, englishTitle: "Quantifiers (Much / Many / Few)", arabicTitle: "أدوات الكمية" },
+      { id: 6, number: 6, englishTitle: "Future with Be Going To", arabicTitle: "المستقبل باستخدام Going To" },
+      { id: 7, number: 7, englishTitle: "Relative Pronouns (Who / Which / Whose / Where)", arabicTitle: "ضمائر الوصل" },
+      { id: 8, number: 8, englishTitle: "Adjectives and Adverbs", arabicTitle: "الصفات والظروف" },
+      { id: 9, number: 9, englishTitle: "Gerunds and Infinitives", arabicTitle: "المصدر باستخدام ing أو to + verb" },
+      { id: 10, number: 10, englishTitle: "Past Continuous Tense", arabicTitle: "الماضي المستمر" },
+      { id: 11, number: 11, englishTitle: "First Conditional", arabicTitle: "الحالة الشرطية الأولى" },
+      { id: 12, number: 12, englishTitle: "Reported Speech", arabicTitle: "الكلام المنقول" }
+    ];
 
-    const ALL_QUESTIONS = SKILLS_DATA.flatMap((skill, sIdx) =>
-      skill.questions.map((q, qIdx) => ({
-        ...q,
-        questionNumber: sIdx * 5 + qIdx + 1,
-        skillId: skill.id,
-        skillNumber: sIdx + 1,
-        skillEnTitle: skill.enTitle,
-        skillArTitle: skill.arTitle
-      }))
-    );
+    const QUESTIONS_BANK = [
+      // Skill 1: Present Perfect Tense (1–5)
+      { id: 1, skillId: 1, text: "Sara ______ her homework already.", options: { A: "finish", B: "finished", C: "has finished", D: "finishing" }, correct: "C", explanation: "نستخدم المضارع التام (has + V3) مع الفاعل المفرد Sara وكلمة already." },
+      { id: 2, skillId: 1, text: "We ______ in this city since 2020.", options: { A: "have lived", B: "lived", C: "are living", D: "live" }, correct: "A", explanation: "كلمة since تدل على حدث بدأ في الماضي وما زال مستمرًا، لذا نستخدم have lived." },
+      { id: 3, skillId: 1, text: "Have you ______ visited London?", options: { A: "never", B: "ever", C: "yet", D: "since" }, correct: "B", explanation: "في صيغة السؤال في المضارع التام نستخدم ever للسؤال عن الخبرات السابقة." },
+      { id: 4, skillId: 1, text: "My brother hasn't cleaned his room ______.", options: { A: "already", B: "since", C: "for", D: "yet" }, correct: "D", explanation: "تُستخدم yet في نهاية الجمل المنفية في زمن المضارع التام." },
+      { id: 5, skillId: 1, text: "They ______ three books this month.", options: { A: "reads", B: "have read", C: "reading", D: "has read" }, correct: "B", explanation: "الفاعل الجمع They يأخذ have متبوعة بالتصريف الثالث read." },
+
+      // Skill 2: Vocabulary: Personality Traits (Honesty) (6–10)
+      { id: 6, skillId: 2, text: "An honest person always tells the ______.", options: { A: "truth", B: "joke", C: "secret", D: "story" }, correct: "A", explanation: "الشخص الصادق (honest) يقول الحقيقة (truth) دائمًا." },
+      { id: 7, skillId: 2, text: "Someone who never lies is ______.", options: { A: "lazy", B: "rude", C: "honest", D: "selfish" }, correct: "C", explanation: "الصفة honest تعني صادق، أي الشخص الذي لا يكذب أبدًا." },
+      { id: 8, skillId: 2, text: "Fatimah returned the money she found because she is ______.", options: { A: "careless", B: "trustworthy", C: "impatient", D: "jealous" }, correct: "B", explanation: "إعادة النقود المفقودة تدل على الأمانة والموثوقية (trustworthy)." },
+      { id: 9, skillId: 2, text: "Which word is the opposite of \"honest\"?", options: { A: "polite", B: "generous", C: "friendly", D: "dishonest" }, correct: "D", explanation: "عكس كلمة honest (صادق) هو dishonest (غير صادق) بإضافة البادئة dis-." },
+      { id: 10, skillId: 2, text: "A person who admits a mistake instead of hiding it shows ______.", options: { A: "honesty", B: "laziness", C: "anger", D: "fear" }, correct: "A", explanation: "الاعتراف بالخطأ بدلًا من إخفائه يعبر عن الصدق والأمانة (honesty)." },
+
+      // Skill 3: Superlative Adjectives (11–15)
+      { id: 11, skillId: 3, text: "Mount Everest is ______ mountain in the world.", options: { A: "higher", B: "the highest", C: "high", D: "highest than" }, correct: "B", explanation: "للمقارنة بين واحد ومجموعة (in the world) نستخدم صيغة التفضيل العليا the + adj-est." },
+      { id: 12, skillId: 3, text: "This is ______ movie I have ever watched.", options: { A: "interesting", B: "more interesting", C: "the most interesting", D: "most interesting than" }, correct: "C", explanation: "الصفة الطويلة interesting تأخذ the most في صيغة التفضيل العليا." },
+      { id: 13, skillId: 3, text: "Of all the students in the class, Amal is ______.", options: { A: "the tallest", B: "taller", C: "tall", D: "most tall" }, correct: "A", explanation: "عبارة Of all the students تدل على التفضيل الأعلى، لذا نختار the tallest." },
+      { id: 14, skillId: 3, text: "Which sentence is correct?", options: { A: "This is the goodest restaurant in town.", B: "This is the better restaurant in town.", C: "This is the most good restaurant in town.", D: "This is the best restaurant in town." }, correct: "D", explanation: "صيغة التفضيل العليا الشاذة من الصفة good هي the best." },
+      { id: 15, skillId: 3, text: "February is ______ month of the year.", options: { A: "shorter", B: "the shortest", C: "shortest than", D: "the most short" }, correct: "B", explanation: "الصفة القصيرة short تأخذ the shortest في صيغة التفضيل العليا." },
+
+      // Skill 4: Modal Verbs (Should / Shouldn’t) (16–20)
+      { id: 16, skillId: 4, text: "You ______ drink enough water every day.", options: { A: "shouldn't", B: "should", C: "don't", D: "aren't" }, correct: "B", explanation: "نستخدم should لتقديم نصيحة إيجابية مفيدة للصحة." },
+      { id: 17, skillId: 4, text: "Students ______ use their phones during an exam.", options: { A: "should", B: "are", C: "shouldn't", D: "have" }, correct: "C", explanation: "نستخدم shouldn't للنصيحة بعدم القيام بسلوك غير مسموح به أثناء الاختبار." },
+      { id: 18, skillId: 4, text: "You look tired. You ______ get some rest.", options: { A: "should", B: "shouldn't", C: "doesn't", D: "aren't" }, correct: "A", explanation: "نستخدم should لنصح الشخص المتعب بأخذ قسط من الراحة." },
+      { id: 19, skillId: 4, text: "Which sentence gives correct advice?", options: { A: "You should to study every day.", B: "You should studying every day.", C: "You should studies every day.", D: "You should study every day." }, correct: "D", explanation: "يأتي بعد الفعل الناقص should الفعل في المصدر المجرد بدون to أو إضافات." },
+      { id: 20, skillId: 4, text: "People ______ throw rubbish in the street.", options: { A: "should", B: "shouldn't", C: "can to", D: "should to" }, correct: "B", explanation: "نستخدم shouldn't للنهي عن السلوك الخاطئ كرمي النفايات في الشارع." },
+
+      // Skill 5: Quantifiers (Much / Many / Few) (21–25)
+      { id: 21, skillId: 5, text: "How ______ students are there in your classroom?", options: { A: "much", B: "many", C: "little", D: "any" }, correct: "B", explanation: "كلمة students اسم جمع معدود، لذا نستخدم معها How many." },
+      { id: 22, skillId: 5, text: "There isn't ______ milk left in the refrigerator.", options: { A: "many", B: "few", C: "much", D: "several" }, correct: "C", explanation: "كلمة milk اسم غير معدود في جملة منفية، لذا نستخدم much." },
+      { id: 23, skillId: 5, text: "Only a ______ students attended the extra lesson.", options: { A: "few", B: "much", C: "little", D: "any" }, correct: "A", explanation: "نستخدم a few مع الأسماء المعدودة الجمع مثل students للدلالة على عدد قليل." },
+      { id: 24, skillId: 5, text: "How ______ time do we have before the exam starts?", options: { A: "many", B: "few", C: "several", D: "much" }, correct: "D", explanation: "كلمة time اسم غير معدود، لذا نستخدم How much للسؤال عن الكمية." },
+      { id: 25, skillId: 5, text: "Which sentence is grammatically correct?", options: { A: "There are much books on the shelf.", B: "There is many water in the bottle.", C: "There are a few apples in the basket.", D: "There are little chairs in the room." }, correct: "C", explanation: "التعبير a few يُستخدم بشكل صحيح مع الاسم المعدود الجمع apples." },
+
+      // Skill 6: Future with Be Going To (26–30)
+      { id: 26, skillId: 6, text: "I ______ visit my grandmother next weekend.", options: { A: "am going to", B: "is going to", C: "are going to", D: "going to" }, correct: "A", explanation: "الضمير I يأخذ am going to للتعبير عن خطة مستقبلية." },
+      { id: 27, skillId: 6, text: "Look at those dark clouds! It ______ rain.", options: { A: "are going to", B: "is going to", C: "am going to", D: "going" }, correct: "B", explanation: "الضمير المفرد It يأخذ is going to للتنبؤ المبني على دليل واضح." },
+      { id: 28, skillId: 6, text: "They ______ travel to Jeddah tomorrow.", options: { A: "is going to", B: "am going to", C: "are going to", D: "going to" }, correct: "C", explanation: "الضمير الجمع They يأخذ are going to." },
+      { id: 29, skillId: 6, text: "Which sentence is correct?", options: { A: "She going to buy a new bag.", B: "She is going buy a new bag.", C: "She are going to buy a new bag.", D: "She is going to buy a new bag." }, correct: "D", explanation: "التركيب الصحيح للمفرد المؤنث هو: She + is going to + الفعل المجرد." },
+      { id: 30, skillId: 6, text: "______ you going to study English tonight?", options: { A: "Is", B: "Are", C: "Am", D: "Do" }, correct: "B", explanation: "في السؤال مع الفاعل you نبدأ بالفعل المساعد Are." },
+
+      // Skill 7: Relative Pronouns (Who / Which / Whose / Where) (31–35)
+      { id: 31, skillId: 7, text: "The teacher ______ helped me is very kind.", options: { A: "which", B: "where", C: "who", D: "whose" }, correct: "C", explanation: "نستخدم ضمير الوصل who للإشارة إلى الشخص العاقل (The teacher)." },
+      { id: 32, skillId: 7, text: "This is the book ______ I bought yesterday.", options: { A: "which", B: "who", C: "where", D: "whose" }, correct: "A", explanation: "نستخدم which للإشارة إلى غير العاقل والأشياء مثل the book." },
+      { id: 33, skillId: 7, text: "The girl ______ father is a doctor is my friend.", options: { A: "which", B: "who", C: "where", D: "whose" }, correct: "D", explanation: "نستخدم whose للتعبير عن الملكية (والد الفتاة)." },
+      { id: 34, skillId: 7, text: "This is the school ______ my mother works.", options: { A: "who", B: "where", C: "whose", D: "which" }, correct: "B", explanation: "نستخدم where للإشارة إلى المكان الذي يحدث فيه الفعل (the school)." },
+      { id: 35, skillId: 7, text: "The man ______ lives next door is an engineer.", options: { A: "who", B: "which", C: "whose", D: "where" }, correct: "A", explanation: "نستخدم who للإشارة إلى الإنسان العاقل (The man)." },
+
+      // Skill 8: Adjectives and Adverbs (36–40)
+      { id: 36, skillId: 8, text: "The student answered the question ______.", options: { A: "correct", B: "correctly", C: "correction", D: "correcting" }, correct: "B", explanation: "نحتاج إلى ظرف (correctly) لوصف طريقة حدوث الفعل answered." },
+      { id: 37, skillId: 8, text: "She is a ______ driver.", options: { A: "carefully", B: "care", C: "careful", D: "caring" }, correct: "C", explanation: "نحتاج إلى صفة (careful) قبل الاسم driver لوصف السائقة." },
+      { id: 38, skillId: 8, text: "The children played ______ in the garden.", options: { A: "happy", B: "happiness", C: "happier", D: "happily" }, correct: "D", explanation: "نستخدم الظرف happily لوصف كيفية لعب الأطفال." },
+      { id: 39, skillId: 8, text: "The exam was very ______.", options: { A: "easy", B: "easily", C: "ease", D: "easiest" }, correct: "A", explanation: "بعد فعل الكينونة was نستخدم الصفة easy لوصف الاختبار." },
+      { id: 40, skillId: 8, text: "Which sentence uses an adverb correctly?", options: { A: "He speaks English fluent.", B: "He speaks English fluency.", C: "He speaks English fluently.", D: "He speaks English more fluent." }, correct: "C", explanation: "الظرف fluently يصف الفعل speaks بشكل صحيح." },
+
+      // Skill 9: Gerunds and Infinitives (41–45)
+      { id: 41, skillId: 9, text: "I enjoy ______ English stories.", options: { A: "read", B: "reading", C: "to reading", D: "reads" }, correct: "B", explanation: "الفعل enjoy يتبعه دائمًا الفعل مضافًا إليه ing (Gerund)." },
+      { id: 42, skillId: 9, text: "She decided ______ a new language.", options: { A: "learn", B: "learning", C: "learns", D: "to learn" }, correct: "D", explanation: "الفعل decide يتبعه المصدر المسبوق بـ to (to learn)." },
+      { id: 43, skillId: 9, text: "They want ______ a new computer.", options: { A: "to buy", B: "buying", C: "buy", D: "buys" }, correct: "A", explanation: "الفعل want يتبعه to + المصدر المجرد (to buy)." },
+      { id: 44, skillId: 9, text: "My sister is interested in ______ photographs.", options: { A: "take", B: "to take", C: "taking", D: "takes" }, correct: "C", explanation: "بعد حروف الجر مثل in يأتي الفعل بصيغة -ing (taking)." },
+      { id: 45, skillId: 9, text: "Which sentence is correct?", options: { A: "He hopes passing the exam.", B: "He hopes to pass the exam.", C: "He hopes pass the exam.", D: "He hopes to passing the exam." }, correct: "B", explanation: "الفعل hope يتبعه دائمًا to + الفعل المجرد (to pass)." },
+
+      // Skill 10: Past Continuous Tense (46–50)
+      { id: 46, skillId: 10, text: "I ______ TV when my mother called me.", options: { A: "watch", B: "watched", C: "was watching", D: "am watching" }, correct: "C", explanation: "الحدث المستمر في الماضي مع الضمير I يُصاغ بـ was watching." },
+      { id: 47, skillId: 10, text: "They ______ football at five o'clock yesterday.", options: { A: "were playing", B: "was playing", C: "are playing", D: "play" }, correct: "A", explanation: "الفاعل الجمع They في الماضي المستمر يأخذ were playing." },
+      { id: 48, skillId: 10, text: "While Sara ______, her sister was reading.", options: { A: "cook", B: "cooks", C: "is cooking", D: "was cooking" }, correct: "D", explanation: "تُستخدم while لربط حدثين كانا مستمرين في نفس الوقت في الماضي." },
+      { id: 49, skillId: 10, text: "What ______ you doing when the lights went out?", options: { A: "was", B: "were", C: "are", D: "did" }, correct: "B", explanation: "الفاعل you يأخذ الفعل المساعد were في زمن الماضي المستمر." },
+      { id: 50, skillId: 10, text: "Which sentence is correct?", options: { A: "The students was studying when the bell rang.", B: "The students were study when the bell rang.", C: "The students were studying when the bell rang.", D: "The students are studying when the bell rang." }, correct: "C", explanation: "الفاعل الجمع The students يأخذ were + الفعل مضافًا إليه ing." },
+
+      // Skill 11: First Conditional (51–55)
+      { id: 51, skillId: 11, text: "If it rains tomorrow, we ______ at home.", options: { A: "stay", B: "stayed", C: "staying", D: "will stay" }, correct: "D", explanation: "في الحالة الشرطية الأولى: If + مضارع بسيط، والنتيجة will + المصدر." },
+      { id: 52, skillId: 11, text: "If you study hard, you ______ the exam.", options: { A: "will pass", B: "passed", C: "passing", D: "passes" }, correct: "A", explanation: "جواب الشرط في الحالة الشرطية الأولى يتكون من will + pass." },
+      { id: 53, skillId: 11, text: "If she ______ early, she will catch the bus.", options: { A: "leave", B: "leaves", C: "will leave", D: "leaving" }, correct: "B", explanation: "في جملة فعل الشرط بعد If نستخدم المضارع البسيط leaves مع الفاعل المفرد she." },
+      { id: 54, skillId: 11, text: "Which sentence uses the first conditional correctly?", options: { A: "If I will have time, I will call you.", B: "If I had time, I will call you.", C: "If I have time, I will call you.", D: "If I having time, I will call you." }, correct: "C", explanation: "التركيب الصحيح للحالة الشرطية الأولى: If I have..., I will call..." },
+      { id: 55, skillId: 11, text: "We will go to the park if the weather ______ nice.", options: { A: "will be", B: "was", C: "being", D: "is" }, correct: "D", explanation: "فعل الشرط بعد if يأتي في زمن المضارع البسيط (is)." },
+
+      // Skill 12: Reported Speech (56–60)
+      { id: 56, skillId: 12, text: "Direct: \"I am tired,\" Sara said. Choose the reported speech.", options: { A: "Sara said that she was tired.", B: "Sara said that I am tired.", C: "Sara said that she is tire.", D: "Sara said that she were tired." }, correct: "A", explanation: "عند تحويل الكلام المباشر إلى منقول يتحول الضمير I إلى she والفعل am إلى was." },
+      { id: 57, skillId: 12, text: "Direct: \"I like English,\" Huda said. Choose the reported speech.", options: { A: "Huda said that she liking English.", B: "Huda said that she liked English.", C: "Huda said that I like English.", D: "Huda said that she likes English yesterday." }, correct: "B", explanation: "يتحول المضارع البسيط like إلى الماضي البسيط liked في الكلام المنقول." },
+      { id: 58, skillId: 12, text: "Direct: \"We are studying,\" the students said. Choose the reported speech.", options: { A: "The students said that they are study.", B: "The students said that we were studying.", C: "The students said that they were studying.", D: "The students said that they studying." }, correct: "C", explanation: "يتحول الضمير We إلى they وتتحول are studying إلى were studying." },
+      { id: 59, skillId: 12, text: "Direct: \"I will help you,\" Ali told Omar. Choose the reported speech.", options: { A: "Ali told Omar that I will help him.", B: "Ali told Omar that he will helped him.", C: "Ali told Omar that he helps him yesterday.", D: "Ali told Omar that he would help him." }, correct: "D", explanation: "تتحول will في الكلام المباشر إلى would في الكلام المنقول." },
+      { id: 60, skillId: 12, text: "Direct: \"I have finished my homework,\" Maha said. Choose the reported speech.", options: { A: "Maha said that she has finish her homework.", B: "Maha said that she had finished her homework.", C: "Maha said that I have finished my homework.", D: "Maha said that she finishing her homework." }, correct: "B", explanation: "يتحول المضارع التام have finished إلى الماضي التام had finished." }
+    ];
 
     /*************************************************************************
-     * 2. PERSISTENT STATE MANAGEMENT (LOCALSTORAGE)
+     * 2. STATE MANAGEMENT & LOCAL STORAGE PERSISTENCE
      *************************************************************************/
-    const STORAGE_KEY = "adham_girls_high_diag_remedial_plan1_v1";
+    const STORAGE_KEY = "adham_secondary_remedial_plan1_continuous_v2";
 
-    function createDefaultState() {
-      return {
-        studentName: "",
-        currentQuestionIndex: 0,
-        answers: {},
-        isSubmitted: false,
-        completionDate: null,
-        reviewFilter: "all",
-        reviewExpanded: false
-      };
-    }
+    const DEFAULT_STATE = {
+      studentName: "",
+      currentQuestionIndex: 0,
+      answers: {},
+      examSubmitted: false,
+      completionDate: null,
+      screen: "welcome", // "welcome" | "exam" | "final"
+      reviewOpen: false
+    };
+
+    let state = loadState();
+    let lastRenderedScreen = null;
+    let envelopeStage = "expanded"; // "closed" | "opening" | "emerging" | "expanded"
+    let envelopeTimers = [];
 
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return createDefaultState();
+        if (!raw) return { ...DEFAULT_STATE };
         const parsed = JSON.parse(raw);
-        if (!parsed || typeof parsed !== "object") return createDefaultState();
-        return {
-          ...createDefaultState(),
+        const merged = {
+          ...DEFAULT_STATE,
           ...parsed,
-          answers: parsed.answers && typeof parsed.answers === "object" ? parsed.answers : {}
+          answers: (parsed && typeof parsed.answers === "object" && parsed.answers !== null) ? parsed.answers : {}
         };
-      } catch (err) {
-        return createDefaultState();
-      }
-    }
-
-    let state = loadState();
-    let revealTimers = [];
-    let currentScreenKey = "";
-
-    function resetScrollToTop() {
-      try {
-        window.scrollTo(0, 0);
-        if (document.documentElement) document.documentElement.scrollTop = 0;
-        if (document.body) document.body.scrollTop = 0;
-        window.requestAnimationFrame(() => {
-          window.scrollTo(0, 0);
-          if (document.documentElement) document.documentElement.scrollTop = 0;
-          if (document.body) document.body.scrollTop = 0;
-        });
+        if (merged.examSubmitted) {
+          merged.screen = "final";
+        } else if (merged.studentName && merged.studentName.trim().length > 0 && merged.screen === "exam") {
+          merged.screen = "exam";
+        } else {
+          merged.screen = "welcome";
+        }
+        return merged;
       } catch (e) {
-        // Ignore scroll errors safely
+        return { ...DEFAULT_STATE };
       }
     }
 
     function saveState() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      } catch (err) {
-        // Ignore storage errors safely
+      } catch (e) {
+        // Ignore storage quota issues safely
       }
     }
 
-    function hasAnyProgress() {
-      return Boolean(
-        (state.studentName && state.studentName.trim()) ||
-        Object.keys(state.answers).length > 0 ||
-        state.isSubmitted
-      );
+    /*************************************************************************
+     * 3. SCORING & ANALYTICS ENGINE
+     *************************************************************************/
+    function getSkillById(skillId) {
+      return SKILLS_DATA.find(s => s.id === skillId) || SKILLS_DATA[0];
     }
 
-    /*************************************************************************
-     * 3. SCORING & MASTERY HELPERS
-     *************************************************************************/
-    function calculateSkillScore(skill) {
-      let correct = 0;
-      skill.questions.forEach(q => {
-        if (state.answers[q.id] === q.correct) {
-          correct += 1;
+    function getSkillQuestions(skillId) {
+      return QUESTIONS_BANK.filter(q => q.skillId === skillId);
+    }
+
+    function getAnsweredCount() {
+      return Object.keys(state.answers).filter(qId => {
+        const val = state.answers[qId];
+        return ["A", "B", "C", "D"].includes(val);
+      }).length;
+    }
+
+    function getUnansweredIndices() {
+      const missing = [];
+      QUESTIONS_BANK.forEach((q, idx) => {
+        if (!["A", "B", "C", "D"].includes(state.answers[q.id])) {
+          missing.push(idx);
         }
       });
-      const percentage = Math.round((correct / skill.questions.length) * 100);
+      return missing;
+    }
+
+    function getMasteryClassification(percentage) {
+      if (percentage >= 90) {
+        return { label: "إتقان ممتاز", badgeClass: "bg-emerald-50 text-emerald-800 border-emerald-200", barColor: "#10B981" };
+      }
+      if (percentage >= 80) {
+        return { label: "إتقان جيد جدًا", badgeClass: "bg-plum/10 text-plum border-plum/25", barColor: "#49304F" };
+      }
+      if (percentage >= 60) {
+        return { label: "إتقان جيد ويحتاج تعزيزًا", badgeClass: "bg-amber-50 text-amber-800 border-amber-200", barColor: "#C8A46A" };
+      }
+      return { label: "تحتاج المهارة إلى مراجعة", badgeClass: "bg-rose-50 text-rose-800 border-rose-200", barColor: "#B5A3C7" };
+    }
+
+    function computeSkillStats(skillId) {
+      const questions = getSkillQuestions(skillId);
+      let correct = 0;
+      questions.forEach(q => {
+        if (state.answers[q.id] === q.correct) correct++;
+      });
+      const total = questions.length;
+      const percentage = Math.round((correct / total) * 100);
       return {
-        score: correct,
-        total: skill.questions.length,
-        percentage,
+        skillId,
         correct,
-        incorrect: skill.questions.length - correct
+        incorrect: total - correct,
+        total,
+        percentage,
+        mastery: getMasteryClassification(percentage)
       };
     }
 
     function getOverallStats() {
       let totalCorrect = 0;
-      ALL_QUESTIONS.forEach(q => {
-        if (state.answers[q.id] === q.correct) {
-          totalCorrect += 1;
-        }
+      QUESTIONS_BANK.forEach(q => {
+        if (state.answers[q.id] === q.correct) totalCorrect++;
       });
-      const total = ALL_QUESTIONS.length;
-      const totalIncorrect = total - totalCorrect;
-      const rawPct = (totalCorrect / total) * 100;
-      const roundedPct = Math.round(rawPct * 10) / 10;
-      const formattedPercentage = Number.isInteger(roundedPct) ? `${roundedPct}%` : `${roundedPct.toFixed(1)}%`;
+      const totalQuestions = PROGRAM_META.totalQuestions;
+      const rawPercentage = (totalCorrect / totalQuestions) * 100;
+      const roundedPercentage = Math.round(rawPercentage);
+      const formattedPercentage = Number.isInteger(rawPercentage) ? `${rawPercentage}%` : `${rawPercentage.toFixed(1)}%`;
 
       return {
         totalCorrect,
-        totalIncorrect,
-        total,
-        percentage: roundedPct,
-        formattedPercentage
+        totalIncorrect: totalQuestions - totalCorrect,
+        totalQuestions,
+        rawPercentage,
+        roundedPercentage,
+        formattedPercentage,
+        mastery: getMasteryClassification(roundedPercentage)
       };
     }
 
-    function getMasteryClassification(percentage) {
-      if (percentage >= 90) {
-        return {
-          label: "إتقان ممتاز",
-          badgeClass: "bg-emerald-50 text-emerald-900 border-emerald-300",
-          barColor: "#15803D"
-        };
-      }
-      if (percentage >= 80) {
-        return {
-          label: "إتقان جيد جدًا",
-          badgeClass: "bg-teal-50 text-teal-900 border-teal-300",
-          barColor: "#0F766E"
-        };
-      }
-      if (percentage >= 60) {
-        return {
-          label: "إتقان جيد ويحتاج تعزيزًا",
-          badgeClass: "bg-gold-pale text-plum border-gold",
-          barColor: "#C8A46A"
-        };
-      }
-      return {
-        label: "تحتاج المهارة إلى مراجعة",
-        badgeClass: "bg-rose-50 text-rose-900 border-rose-300",
-        barColor: "#BE123C"
-      };
-    }
-
-    function formatArabicDate(isoOrDate) {
+    function formatArabicDate(isoDateString) {
+      const dateObj = isoDateString ? new Date(isoDateString) : new Date();
       try {
-        const d = isoOrDate ? new Date(isoOrDate) : new Date();
-        if (Number.isNaN(d.getTime())) {
-          return new Date().toLocaleDateString("ar-SA-u-nu-latn", {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-          });
-        }
-        return d.toLocaleDateString("ar-SA-u-nu-latn", {
+        return new Intl.DateTimeFormat("ar-SA", {
           year: "numeric",
           month: "long",
           day: "numeric"
-        });
+        }).format(dateObj);
       } catch (e) {
-        return new Date().toISOString().slice(0, 10);
+        return dateObj.toLocaleDateString("ar-EG");
       }
     }
 
     /*************************************************************************
-     * 4. UI UTILITIES: TOASTS, MODALS, NAVIGATION & FULLSCREEN
+     * 4. ICONS & UTILITIES
      *************************************************************************/
-    function showToast(message) {
-      const container = document.getElementById("toast-container");
-      if (!container) return;
-      const toast = document.createElement("div");
-      toast.className = "pointer-events-auto bg-plum text-ivory border border-gold/70 px-4 py-3 rounded-2xl shadow-lg text-xs sm:text-sm font-bold flex items-center justify-between gap-3 fade-in-panel";
-      toast.innerHTML = `<span>${escapeHtml(message)}</span>`;
-      container.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = "0";
-        toast.style.transition = "opacity 0.3s ease";
-        setTimeout(() => toast.remove(), 300);
-      }, 3200);
+    const ICONS = {
+      graduation: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>`,
+      check: `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`,
+      x: `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>`,
+      arrowLeft: `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>`,
+      arrowRight: `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>`,
+      download: `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>`,
+      pdf: `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 13h6m-6 4h4"/></svg>`,
+      replay: `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>`,
+      reset: `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>`,
+      award: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path stroke-linecap="round" stroke-linejoin="round" d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>`,
+      alert: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`,
+      chevronDown: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>`
+    };
+
+    function escapeHTML(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
 
-    function openModal(htmlContent) {
+    let toastTimeout = null;
+    function showToast(message) {
+      const banner = document.getElementById("toast-banner");
+      const text = document.getElementById("toast-text");
+      if (!banner || !text) return;
+      text.textContent = message;
+      banner.classList.remove("hidden");
+      banner.classList.add("flex");
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        banner.classList.add("hidden");
+        banner.classList.remove("flex");
+      }, 2800);
+    }
+
+    function openModal({ icon = ICONS.alert, title, body, actions }) {
       const backdrop = document.getElementById("modal-backdrop");
-      const card = document.getElementById("modal-card");
-      if (!backdrop || !card) return;
-      card.innerHTML = htmlContent;
+      document.getElementById("modal-icon").innerHTML = icon;
+      document.getElementById("modal-title").textContent = title;
+      document.getElementById("modal-body").textContent = body;
+      const actionsContainer = document.getElementById("modal-actions");
+      actionsContainer.innerHTML = "";
+      actions.forEach(act => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = act.className;
+        btn.textContent = act.label;
+        btn.onclick = () => {
+          closeModal();
+          if (act.onClick) act.onClick();
+        };
+        actionsContainer.appendChild(btn);
+      });
       backdrop.classList.remove("hidden");
       backdrop.classList.add("flex");
     }
 
     function closeModal() {
       const backdrop = document.getElementById("modal-backdrop");
-      if (!backdrop) return;
       backdrop.classList.add("hidden");
       backdrop.classList.remove("flex");
     }
 
-    function navigateHome() {
-      if (!state.studentName || !state.studentName.trim()) {
-        renderApp();
-        return;
-      }
-      if (state.isSubmitted) {
-        renderApp();
-        return;
-      }
-      openModal(`
-        <div class="space-y-4 text-right">
-          <h3 class="text-lg font-extrabold text-plum">العودة إلى شاشة البداية</h3>
-          <p class="text-sm text-plum/80 leading-relaxed">
-            جميع إجاباتكِ محفوظة تلقائيًا على هذا الجهاز. هل ترغبين بالانتقال إلى شاشة البداية؟
-          </p>
-          <div class="flex items-center justify-end gap-2.5 pt-2">
-            <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-lavender-soft text-plum hover:bg-lavender-light transition-colors">
-              متابعة الاختبار
-            </button>
-            <button type="button" onclick="goToWelcomeKeepingProgress()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-plum text-ivory hover:bg-plum-light transition-colors">
-              شاشة البداية
-            </button>
-          </div>
-        </div>
-      `);
-    }
-
-    function goToWelcomeKeepingProgress() {
-      closeModal();
-      const tempName = state.studentName;
-      state.studentName = "";
-      saveState();
-      renderApp();
-      const input = document.getElementById("student-name-input");
-      if (input && tempName) input.value = tempName;
-    }
-
-    function confirmResetProgress() {
-      openModal(`
-        <div class="space-y-4 text-right">
-          <h3 class="text-lg font-extrabold text-rose-900">تأكيد إعادة ضبط التقدم</h3>
-          <p class="text-sm text-plum/85 leading-relaxed">
-            سيؤدي هذا الإجراء إلى مسح اسم الطالبة وجميع الإجابات المحفوظة والنتيجة النهائية من هذا المتصفح. هل أنتِ متأكدة؟
-          </p>
-          <div class="flex items-center justify-end gap-2.5 pt-2">
-            <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-lavender-soft text-plum hover:bg-lavender-light transition-colors">
-              إلغاء
-            </button>
-            <button type="button" onclick="performResetProgress()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-rose-700 text-white hover:bg-rose-800 transition-colors">
-              نعم، إعادة الضبط
-            </button>
-          </div>
-        </div>
-      `);
-    }
-
-    function performResetProgress() {
-      clearRevealTimers();
-      closeModal();
-      state = createDefaultState();
-      saveState();
-      renderApp();
-      showToast("تمت إعادة ضبط التقدم بنجاح.");
-    }
-
-    function toggleFullscreen() {
-      try {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen().catch(() => {
-            showToast("وضع ملء الشاشة غير مدعوم في هذا الإطار.");
-          });
-        } else {
-          document.exitFullscreen().catch(() => {});
-        }
-      } catch (e) {
-        showToast("تعذر تبديل وضع ملء الشاشة.");
-      }
-    }
-
-    function updateTopBar() {
-      const pill = document.getElementById("header-student-pill");
-      const resetBtn = document.getElementById("header-reset-btn");
-
-      if (pill) {
-        if (state.studentName && state.studentName.trim()) {
-          pill.textContent = `الطالبة: ${state.studentName.trim()}`;
-          pill.classList.remove("hidden");
-        } else {
-          pill.classList.add("hidden");
-        }
-      }
-
-      if (resetBtn) {
-        if (hasAnyProgress()) {
-          resetBtn.classList.remove("hidden");
-          resetBtn.classList.add("inline-flex");
-        } else {
-          resetBtn.classList.add("hidden");
-          resetBtn.classList.remove("inline-flex");
-        }
-      }
+    function resetScrollToTop() {
+      window.scrollTo(0, 0);
+      if (document.documentElement) document.documentElement.scrollTop = 0;
+      if (document.body) document.body.scrollTop = 0;
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+        if (document.documentElement) document.documentElement.scrollTop = 0;
+        if (document.body) document.body.scrollTop = 0;
+      });
     }
 
     /*************************************************************************
-     * 5. SCREEN 1: WELCOME SCREEN
+     * 5. RENDERING ENGINE
      *************************************************************************/
-    function renderWelcomeScreen(container) {
-      const savedDraftName = loadState().studentName || "";
-      const hasSavedExam = Object.keys(state.answers).length > 0 && !state.isSubmitted;
+    function render(options = {}) {
+      const root = document.getElementById("app-root");
+      if (!root) return;
 
-      container.innerHTML = `
-        <section class="rounded-3xl academic-card p-6 sm:p-10 text-center space-y-6 fade-in-panel">
-          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-pale border border-gold/55 text-plum text-xs sm:text-sm font-bold">
-            <span>${PROGRAM_META.school}</span>
-            <span class="text-gold-dark">•</span>
-            <span>الخطة العلاجية الأولى</span>
-          </div>
+      const screenChanged = lastRenderedScreen !== state.screen;
+      lastRenderedScreen = state.screen;
 
-          <div class="space-y-2.5 max-w-2xl mx-auto">
-            <h1 class="text-2xl sm:text-4xl font-extrabold text-plum font-serifAr leading-snug">
-              ${PROGRAM_META.title}
-            </h1>
-            <p class="text-sm sm:text-lg text-plum/80 font-medium leading-relaxed">
-              ابدئي رحلة الإتقان، واكتشفي تقدمك في مهارات اللغة الإنجليزية.
-            </p>
-          </div>
+      if (state.screen === "welcome") {
+        root.innerHTML = renderWelcomeScreen();
+      } else if (state.screen === "exam") {
+        root.innerHTML = renderExamScreen(options.animateQuestion !== false);
+      } else if (state.screen === "final") {
+        root.innerHTML = renderFinalScreen();
+      }
 
-          <!-- Summary Strip -->
-          <div class="inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 px-4 py-2.5 rounded-2xl bg-blush-light/90 border border-lavender-light text-xs sm:text-sm font-extrabold text-plum">
-            <span>12 مهارة</span>
-            <span class="text-gold-dark">|</span>
-            <span>60 سؤالًا</span>
-            <span class="text-gold-dark">|</span>
-            <span>رحلة نحو الإتقان</span>
-          </div>
+      if (screenChanged || options.resetScroll) {
+        resetScrollToTop();
+      }
+    }
 
-          <!-- Staff Metadata -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl mx-auto pt-1">
-            <div class="p-3.5 rounded-2xl bg-ivory-warm border border-lavender-light/70">
-              <p class="text-xs text-plum/65 font-bold">المعلمة</p>
-              <p class="text-sm sm:text-base font-extrabold text-plum mt-0.5">${PROGRAM_META.teacher}</p>
-            </div>
-            <div class="p-3.5 rounded-2xl bg-ivory-warm border border-lavender-light/70">
-              <p class="text-xs text-plum/65 font-bold">مديرة المدرسة</p>
-              <p class="text-sm sm:text-base font-extrabold text-plum mt-0.5">${PROGRAM_META.principal}</p>
-            </div>
-          </div>
+    /* -----------------------------------------------------------------------
+       SCREEN 1: WELCOME SCREEN
+       ----------------------------------------------------------------------- */
+    function renderWelcomeScreen() {
+      const hasExistingProgress = !state.examSubmitted && getAnsweredCount() > 0 && state.studentName;
 
-          <!-- Student Name Form & Start Button -->
-          <form onsubmit="handleStartExam(event)" class="max-w-md mx-auto space-y-4 pt-2 text-right">
-            <div>
-              <label for="student-name-input" class="block text-sm font-extrabold text-plum mb-2">
-                الاسم الثلاثي أو الكامل للطالبة <span class="text-rose-700">*</span>
-              </label>
-              <input
-                id="student-name-input"
-                type="text"
-                value="${escapeHtml(savedDraftName)}"
-                placeholder="اكتبي اسمكِ ليظهر في الشهادة..."
-                autocomplete="name"
-                class="w-full px-4 py-3.5 rounded-2xl bg-ivory border-2 border-lavender-light focus:border-gold focus:outline-none text-plum font-bold transition-colors"
-              />
-              <p id="name-error-msg" class="hidden mt-1.5 text-xs font-bold text-rose-700">
-                يرجى إدخال اسم الطالبة قبل بدء الاختبار.
+      return `
+        <section class="screen-enter max-w-2xl mx-auto">
+          <div class="academic-card rounded-3xl overflow-hidden">
+            <div class="h-1.5 w-full bg-gradient-to-l from-plum via-gold to-plum"></div>
+
+            <div class="p-6 sm:p-10 text-center">
+              <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blush/95 border border-gold/45 text-plum text-xs sm:text-sm font-bold mb-5 shadow-xs">
+                <span class="w-2 h-2 rounded-full bg-gold"></span>
+                <span>${PROGRAM_META.school}</span>
+              </div>
+
+              <h1 class="font-serifAr text-2xl sm:text-4xl font-bold text-plum leading-snug mb-3">
+                ${PROGRAM_META.title}
+              </h1>
+
+              <p class="text-sm sm:text-base text-plum/80 max-w-lg mx-auto leading-relaxed mb-6">
+                ابدئي رحلة الإتقان، واكتشفي تقدمك في مهارات اللغة الإنجليزية.
+              </p>
+
+              <div class="inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 px-5 py-2.5 rounded-2xl bg-plum text-ivory text-xs sm:text-sm font-bold shadow-md mb-7 border border-gold/30">
+                <span>12 مهارة</span>
+                <span class="text-gold">|</span>
+                <span>60 سؤالًا</span>
+                <span class="text-gold">|</span>
+                <span class="text-gold-light">اختبار تشخيصي متكامل</span>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 max-w-lg mx-auto mb-7 text-right">
+                <div class="rounded-2xl bg-blush-light/85 border border-gold/35 px-4 py-3 flex items-center justify-between">
+                  <div>
+                    <div class="text-[11px] font-bold text-gold-dark">إعداد وتنفيذ المعلمة</div>
+                    <div class="text-sm font-bold text-plum mt-0.5">${PROGRAM_META.teacher}</div>
+                  </div>
+                  <div class="w-9 h-9 rounded-xl bg-ivory border border-gold/40 flex items-center justify-center text-plum shrink-0">
+                    ${ICONS.graduation}
+                  </div>
+                </div>
+                <div class="rounded-2xl bg-blush-light/85 border border-gold/35 px-4 py-3 flex items-center justify-between">
+                  <div>
+                    <div class="text-[11px] font-bold text-gold-dark">مديرة المدرسة</div>
+                    <div class="text-sm font-bold text-plum mt-0.5">${PROGRAM_META.principal}</div>
+                  </div>
+                  <div class="w-9 h-9 rounded-xl bg-ivory border border-gold/40 flex items-center justify-center text-plum shrink-0">
+                    ${ICONS.award}
+                  </div>
+                </div>
+              </div>
+
+              <div class="gold-divider max-w-md mx-auto mb-7"></div>
+
+              <form id="welcome-form" onsubmit="handleStartProgram(event)" class="max-w-md mx-auto text-right" novalidate>
+                <label for="student-name-input" class="block text-sm font-bold text-plum mb-2">
+                  اسم الطالبة الثلاثي أو الرباعي <span class="text-rose-600">*</span>
+                </label>
+                <input
+                  id="student-name-input"
+                  type="text"
+                  value="${escapeHTML(state.studentName)}"
+                  placeholder="اكتبي اسمكِ الكامل هنا ليظهر في الشهادة..."
+                  autocomplete="name"
+                  class="w-full px-4 py-3.5 rounded-2xl bg-ivory border-2 border-lavender/70 focus:border-plum focus:outline-hidden text-plum placeholder:text-plum/40 font-semibold transition"
+                />
+                <p id="name-error-msg" class="hidden text-xs font-bold text-rose-600 mt-2">
+                  يرجى إدخال اسم الطالبة أولًا للبدء في الاختبار.
+                </p>
+
+                <button
+                  type="submit"
+                  class="mt-5 w-full py-3.5 px-6 rounded-2xl bg-plum hover:bg-plum-light active:scale-[0.99] text-ivory font-bold text-base shadow-academic hover:shadow-cardHover transition flex items-center justify-center gap-2.5 border border-gold/45 cursor-pointer"
+                >
+                  <span>${hasExistingProgress ? "متابعة الاختبار" : "ابدئي الاختبار"}</span>
+                  ${ICONS.arrowLeft}
+                </button>
+              </form>
+
+              <p class="mt-5 text-[11px] text-plum/60">
+                يُحفظ تقدمك تلقائيًا على هذا الجهاز خلال جميع الأسئلة الـ 60.
               </p>
             </div>
-
-            <button
-              type="submit"
-              class="w-full py-3.5 px-6 rounded-2xl bg-plum hover:bg-plum-light active:scale-[0.99] text-ivory font-extrabold text-base sm:text-lg shadow-academic border border-gold/60 transition-all cursor-pointer"
-            >
-              ${hasSavedExam ? "متابعة الاختبار" : "ابدئي الاختبار"}
-            </button>
-          </form>
-
-          <p class="text-[11px] sm:text-xs text-plum/60 max-w-lg mx-auto leading-relaxed">
-            يُحفظ تقدمكِ وإجاباتكِ محليًا على متصفح هذا الجهاز تلقائيًا. في حال مسح بيانات المتصفح أو فتح الرابط من جهاز آخر قد لا يتوفر التقدم السابق.
-          </p>
+          </div>
         </section>
       `;
     }
 
-    function handleStartExam(event) {
+    function handleStartProgram(event) {
       event.preventDefault();
       const input = document.getElementById("student-name-input");
-      const errEl = document.getElementById("name-error-msg");
-      const nameVal = input ? input.value.trim() : "";
+      const errorMsg = document.getElementById("name-error-msg");
+      const trimmedName = (input ? input.value : "").trim();
 
-      if (!nameVal) {
-        if (errEl) errEl.classList.remove("hidden");
-        if (input) input.focus();
+      if (!trimmedName) {
+        if (errorMsg) errorMsg.classList.remove("hidden");
+        if (input) {
+          input.classList.add("border-rose-500");
+          input.focus();
+        }
         return;
       }
 
-      if (errEl) errEl.classList.add("hidden");
-
-      if (input && typeof input.blur === "function") {
-        input.blur();
-      }
+      if (input) input.blur();
       if (document.activeElement && typeof document.activeElement.blur === "function") {
         document.activeElement.blur();
       }
 
-      state.studentName = nameVal;
-      if (
-        typeof state.currentQuestionIndex !== "number" ||
-        state.currentQuestionIndex < 0 ||
-        state.currentQuestionIndex >= ALL_QUESTIONS.length
-      ) {
+      state.studentName = trimmedName;
+      state.screen = "exam";
+      if (typeof state.currentQuestionIndex !== "number" || state.currentQuestionIndex < 0 || state.currentQuestionIndex >= QUESTIONS_BANK.length) {
         state.currentQuestionIndex = 0;
       }
       saveState();
 
-      // Allow iOS Safari keyboard to dismiss before rendering and resetting scroll position
-      window.setTimeout(() => {
-        renderApp();
-        window.setTimeout(resetScrollToTop, 60);
-      }, 140);
+      setTimeout(() => {
+        render({ resetScroll: true });
+      }, 60);
     }
 
-    /*************************************************************************
-     * 6. SCREEN 2: CONTINUOUS 60-QUESTION EXAM (NO SCROLL JUMP)
-     *************************************************************************/
-    function renderContinuousExamScreen(container) {
-      const idx = state.currentQuestionIndex;
-      const q = ALL_QUESTIONS[idx];
-      const selectedAns = state.answers[q.id] || null;
-      const answeredCount = Object.keys(state.answers).length;
-      const progressPct = Math.round(((idx + 1) / ALL_QUESTIONS.length) * 100);
-      const isLastQuestion = idx === ALL_QUESTIONS.length - 1;
+    /* -----------------------------------------------------------------------
+       SCREEN 2: CONTINUOUS 60-QUESTION ASSESSMENT
+       ----------------------------------------------------------------------- */
+    function renderExamScreen(animateQuestion = true) {
+      const qIndex = Math.max(0, Math.min(QUESTIONS_BANK.length - 1, state.currentQuestionIndex));
+      const question = QUESTIONS_BANK[qIndex];
+      const skill = getSkillById(question.skillId);
+      const selectedChoice = state.answers[question.id] || null;
+      const isFirst = qIndex === 0;
+      const isLast = qIndex === QUESTIONS_BANK.length - 1;
+      const overallProgressPct = Math.round(((qIndex + 1) / PROGRAM_META.totalQuestions) * 100);
 
-      const optionKeys = ["A", "B", "C", "D"];
-      const optionsHtml = optionKeys.map(key => {
-        const isSelected = selectedAns === key;
-        const optText = q.options[key];
-        return `
-          <button
-            type="button"
-            onclick="selectAnswer('${q.id}', '${key}')"
-            aria-pressed="${isSelected}"
-            class="w-full text-left p-4 sm:p-5 rounded-2xl border-2 transition-colors flex items-center gap-3.5 sm:gap-4 cursor-pointer select-none ${
-              isSelected
-                ? "bg-plum text-ivory border-gold shadow-md"
-                : "bg-ivory hover:bg-blush-light/85 text-plum border-lavender-light/80 hover:border-gold/70"
-            }"
-            dir="ltr"
-          >
-            <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center font-english font-bold text-sm sm:text-base shrink-0 ${
-              isSelected
-                ? "bg-gold text-plum-dark"
-                : "bg-lavender-soft text-plum"
-            }">
-              ${key}
-            </span>
-            <span class="font-english text-sm sm:text-base font-semibold leading-snug flex-1">
-              ${escapeHtml(optText)}
-            </span>
-          </button>
-        `;
-      }).join("");
-
-      container.innerHTML = `
-        <div class="space-y-4 sm:space-y-5">
+      return `
+        <section class="max-w-2xl mx-auto">
           <!-- Minimal Progress Header -->
-          <section class="rounded-2xl academic-card p-4 sm:p-5 space-y-3">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="px-2.5 py-1 rounded-lg bg-plum text-gold-light text-xs font-extrabold">
-                  المهارة ${q.skillNumber} من ${PROGRAM_META.totalSkills}
-                </span>
-                <span class="text-xs text-plum/55 font-bold">—</span>
-                <span dir="ltr" class="font-english text-sm sm:text-base font-bold text-plum">
-                  ${escapeHtml(q.skillEnTitle)}
-                </span>
+          <div class="academic-card rounded-2xl p-4 sm:p-5 mb-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+              <div class="flex flex-wrap items-center gap-1.5 text-xs sm:text-sm font-bold text-plum">
+                <span class="px-2.5 py-0.5 rounded-lg bg-plum text-ivory text-xs font-extrabold">المهارة ${skill.number} من 12</span>
+                <span class="text-gold font-bold">—</span>
+                <span class="font-en font-bold text-plum">${escapeHTML(skill.englishTitle)}</span>
               </div>
-
-              <span class="text-xs sm:text-sm font-extrabold text-gold-dark">
-                السؤال ${q.questionNumber} من ${PROGRAM_META.totalQuestions}
+              <span class="text-xs font-bold text-plum/80 bg-blush px-2.5 py-1 rounded-full border border-gold/30 shrink-0">
+                السؤال ${qIndex + 1} من 60
               </span>
             </div>
 
-            <!-- Thin Progress Bar Across All 60 Questions -->
-            <div class="w-full h-2 rounded-full bg-lavender-soft overflow-hidden">
-              <div class="h-full rounded-full bg-gradient-to-l from-gold to-plum transition-all duration-300" style="width: ${progressPct}%;"></div>
+            <!-- Thin Elegant Progress Bar across all 60 questions -->
+            <div class="w-full h-1.5 rounded-full bg-blush-dark/60 overflow-hidden" role="progressbar" aria-valuenow="${overallProgressPct}" aria-valuemin="0" aria-valuemax="100">
+              <div class="h-full rounded-full bg-gradient-to-l from-plum via-plum-light to-gold transition-all duration-300" style="width: ${overallProgressPct}%"></div>
+            </div>
+          </div>
+
+          <!-- Active Question Card -->
+          <div id="question-card-box" class="academic-card rounded-3xl p-5 sm:p-8 ${animateQuestion ? "screen-enter" : ""}">
+            <div class="flex items-center justify-between gap-2 pb-4 mb-5 border-b border-gold/25">
+              <span class="text-xs font-bold text-plum/70">${escapeHTML(skill.arabicTitle)}</span>
+              <span class="text-xs font-semibold text-plum/60">${escapeHTML(state.studentName)}</span>
             </div>
 
-            <div class="flex items-center justify-between text-[11px] text-plum/65 font-semibold">
-              <span>${escapeHtml(q.skillArTitle)}</span>
-              <span>المجاب عنها: ${answeredCount} / ${PROGRAM_META.totalQuestions}</span>
-            </div>
-          </section>
-
-          <!-- Single Active Question Card -->
-          <section id="question-card-box" class="rounded-3xl academic-card p-5 sm:p-8 space-y-5 sm:space-y-6">
-            <div class="space-y-2">
-              <span class="inline-block text-xs font-bold text-gold-dark bg-gold-pale/80 border border-gold/40 px-3 py-1 rounded-full">
-                Question ${q.questionNumber}
-              </span>
-              <h2 dir="ltr" class="font-english text-left text-lg sm:text-2xl font-bold text-plum leading-relaxed pt-1">
-                ${escapeHtml(q.text)}
-              </h2>
+            <!-- English Question Text (LTR isolated) -->
+            <div class="font-en text-left mb-6" dir="ltr">
+              <p class="text-lg sm:text-xl font-bold text-plum leading-relaxed">
+                <span class="inline-block text-gold-dark font-extrabold mr-1.5">${qIndex + 1}.</span>
+                ${escapeHTML(question.text)}
+              </p>
             </div>
 
-            <!-- Four Selectable Answer Cards -->
-            <div id="options-list" class="grid grid-cols-1 gap-3">
-              ${optionsHtml}
+            <!-- Four Selectable Answer Cards (No immediate correctness reveal) -->
+            <div class="space-y-3 font-en text-left" dir="ltr" role="radiogroup" aria-label="Answer choices">
+              ${["A", "B", "C", "D"].map(letter => {
+                const isSelected = selectedChoice === letter;
+                return `
+                  <button
+                    type="button"
+                    onclick="selectOption(${question.id}, '${letter}')"
+                    role="radio"
+                    aria-checked="${isSelected ? "true" : "false"}"
+                    class="option-card w-full text-left p-4 rounded-2xl border-2 ${isSelected ? "selected" : "bg-ivory border-lavender/60 text-plum"} flex items-center gap-3.5 cursor-pointer"
+                  >
+                    <span class="option-badge w-9 h-9 rounded-xl border ${isSelected ? "" : "bg-blush border-gold/40 text-plum"} font-extrabold text-sm flex items-center justify-center shrink-0">
+                      ${letter}
+                    </span>
+                    <span class="text-base sm:text-[17px] font-semibold leading-snug">
+                      ${escapeHTML(question.options[letter])}
+                    </span>
+                  </button>
+                `;
+              }).join("")}
             </div>
 
-            <!-- Navigation Controls -->
-            <div class="pt-3 border-t border-lavender-light/60 flex items-center justify-between gap-3">
+            <!-- Previous / Next / Final Submit Controls -->
+            <div class="mt-7 pt-5 border-t border-gold/25 flex items-center justify-between gap-3">
               <button
                 type="button"
-                onclick="goToQuestion(${idx - 1})"
-                ${idx === 0 ? "disabled" : ""}
-                class="px-4 sm:px-5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold border transition-colors ${
-                  idx === 0
-                    ? "bg-lavender-soft/40 text-plum/35 border-lavender-light/40 cursor-not-allowed"
-                    : "bg-ivory hover:bg-lavender-soft text-plum border-lavender-light cursor-pointer"
-                }"
+                onclick="goToPrevQuestion()"
+                ${isFirst ? "disabled" : ""}
+                class="px-4 sm:px-5 py-3 rounded-xl border border-lavender/80 bg-ivory hover:bg-blush disabled:opacity-40 disabled:pointer-events-none text-plum font-bold text-sm flex items-center gap-2 transition cursor-pointer"
               >
-                السابق
+                ${ICONS.arrowRight}
+                <span>السابق</span>
               </button>
 
-              ${
-                !isLastQuestion
-                  ? `
-                    <button
-                      type="button"
-                      onclick="goToQuestion(${idx + 1})"
-                      class="px-5 sm:px-7 py-3 rounded-2xl text-xs sm:text-sm font-extrabold bg-plum hover:bg-plum-light text-ivory border border-gold/60 shadow-sm transition-colors cursor-pointer"
-                    >
-                      التالي
-                    </button>
-                  `
-                  : `
-                    <button
-                      type="button"
-                      onclick="handleFinalSubmissionFlow()"
-                      class="px-5 sm:px-7 py-3 rounded-2xl text-xs sm:text-sm font-extrabold bg-gold hover:bg-gold-dark text-plum-dark border border-plum/20 shadow-goldGlow transition-colors cursor-pointer"
-                    >
-                      إنهاء الاختبار وعرض النتيجة
-                    </button>
-                  `
-              }
+              ${isLast ? `
+                <button
+                  type="button"
+                  onclick="attemptFinishExam()"
+                  class="px-5 sm:px-6 py-3 rounded-xl bg-gradient-to-l from-plum to-plum-light hover:opacity-95 text-ivory font-bold text-sm shadow-academic border border-gold/50 flex items-center gap-2 transition cursor-pointer"
+                >
+                  <span>إنهاء الاختبار وعرض النتيجة</span>
+                  ${ICONS.check}
+                </button>
+              ` : `
+                <button
+                  type="button"
+                  onclick="goToNextQuestion()"
+                  class="px-5 sm:px-6 py-3 rounded-xl bg-plum hover:bg-plum-light text-ivory font-bold text-sm shadow-sm flex items-center gap-2 transition cursor-pointer"
+                >
+                  <span>التالي</span>
+                  ${ICONS.arrowLeft}
+                </button>
+              `}
             </div>
-          </section>
-        </div>
+          </div>
+
+          <!-- Subtle Footer Reset Option -->
+          <div class="mt-4 flex items-center justify-between px-1 text-xs text-plum/60">
+            <span>الاختبار التشخيصي المستمر (60 سؤالًا)</span>
+            <button type="button" onclick="confirmResetAll()" class="hover:text-rose-700 font-semibold underline underline-offset-4 cursor-pointer">
+              إعادة ضبط التقدم
+            </button>
+          </div>
+        </section>
       `;
     }
 
-    function selectAnswer(questionId, optionKey) {
-      state.answers[questionId] = optionKey;
+    function selectOption(questionId, choiceLetter) {
+      state.answers[questionId] = choiceLetter;
       saveState();
 
-      const q = ALL_QUESTIONS[state.currentQuestionIndex];
-      if (!q || q.id !== questionId) return;
-
-      const optionsContainer = document.getElementById("options-list");
-      if (!optionsContainer) return;
-
-      const buttons = optionsContainer.querySelectorAll("button");
-      const keys = ["A", "B", "C", "D"];
-      buttons.forEach((btn, i) => {
-        const k = keys[i];
-        const isSelected = k === optionKey;
-        btn.setAttribute("aria-pressed", String(isSelected));
-        btn.className = `w-full text-left p-4 sm:p-5 rounded-2xl border-2 transition-colors flex items-center gap-3.5 sm:gap-4 cursor-pointer select-none ${
-          isSelected
-            ? "bg-plum text-ivory border-gold shadow-md"
-            : "bg-ivory hover:bg-blush-light/85 text-plum border-lavender-light/80 hover:border-gold/70"
-        }`;
-        const badge = btn.querySelector("span:first-child");
-        if (badge) {
-          badge.className = `w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center font-english font-bold text-sm sm:text-base shrink-0 ${
-            isSelected
-              ? "bg-gold text-plum-dark"
-              : "bg-lavender-soft text-plum"
-          }`;
+      const buttons = document.querySelectorAll("#question-card-box [role='radio']");
+      buttons.forEach((btn, idx) => {
+        const letter = ["A", "B", "C", "D"][idx];
+        const badge = btn.querySelector(".option-badge");
+        if (letter === choiceLetter) {
+          btn.classList.add("selected");
+          btn.classList.remove("bg-ivory", "border-lavender/60", "text-plum");
+          btn.setAttribute("aria-checked", "true");
+          if (badge) {
+            badge.classList.remove("bg-blush", "border-gold/40", "text-plum");
+          }
+        } else {
+          btn.classList.remove("selected");
+          btn.classList.add("bg-ivory", "border-lavender/60", "text-plum");
+          btn.setAttribute("aria-checked", "false");
+          if (badge) {
+            badge.classList.add("bg-blush", "border-gold/40", "text-plum");
+          }
         }
       });
-
-      updateTopBar();
     }
 
-    function goToQuestion(targetIndex) {
-      if (targetIndex < 0 || targetIndex >= ALL_QUESTIONS.length) return;
-      state.currentQuestionIndex = targetIndex;
-      saveState();
-      renderApp();
+    function goToPrevQuestion() {
+      if (state.currentQuestionIndex > 0) {
+        state.currentQuestionIndex--;
+        saveState();
+        render({ animateQuestion: true, resetScroll: false });
+      }
     }
 
-    function handleFinalSubmissionFlow() {
-      const unanswered = ALL_QUESTIONS.filter(q => !state.answers[q.id]);
+    function goToNextQuestion() {
+      if (state.currentQuestionIndex < QUESTIONS_BANK.length - 1) {
+        state.currentQuestionIndex++;
+        saveState();
+        render({ animateQuestion: true, resetScroll: false });
+      }
+    }
+
+    function attemptFinishExam() {
+      const unanswered = getUnansweredIndices();
       if (unanswered.length > 0) {
-        const firstUnansweredIndex = ALL_QUESTIONS.findIndex(q => !state.answers[q.id]);
-        openModal(`
-          <div class="space-y-4 text-right">
-            <h3 class="text-lg font-extrabold text-plum">تنبيه: توجد أسئلة لم تتم إجابتها</h3>
-            <p class="text-sm text-plum/85 leading-relaxed">
-              تبقى لديكِ <span class="font-extrabold text-rose-700">${unanswered.length}</span> سؤالًا لم تتم إجابته من أصل 60 سؤالًا. يرجى إجابة جميع الأسئلة قبل اعتماد النتيجة النهائية.
-            </p>
-            <div class="flex items-center justify-end gap-2.5 pt-2">
-              <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-lavender-soft text-plum hover:bg-lavender-light transition-colors">
-                إغلاق
-              </button>
-              <button type="button" onclick="closeModal(); goToQuestion(${firstUnansweredIndex});" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-plum text-ivory hover:bg-plum-light transition-colors">
-                الانتقال إلى السؤال غير المجاب
-              </button>
-            </div>
-          </div>
-        `);
+        const firstMissingNum = unanswered[0] + 1;
+        openModal({
+          icon: ICONS.alert,
+          title: "توجد أسئلة لم تتم الإجابة عنها",
+          body: `تبقّى لديكِ (${unanswered.length}) سؤالًا بدون إجابة من أصل 60 سؤالًا. يرجى الإجابة عن جميع الأسئلة قبل إنهاء الاختبار وعرض النتيجة (أول سؤال غير مجاب: السؤال رقم ${firstMissingNum}).`,
+          actions: [
+            {
+              label: `الانتقال إلى السؤال ${firstMissingNum}`,
+              className: "px-5 py-2.5 rounded-xl bg-plum text-ivory text-sm font-bold hover:bg-plum-light transition cursor-pointer",
+              onClick: () => {
+                state.currentQuestionIndex = unanswered[0];
+                saveState();
+                render({ animateQuestion: true, resetScroll: false });
+              }
+            },
+            {
+              label: "إغلاق",
+              className: "px-4 py-2.5 rounded-xl bg-blush text-plum text-sm font-bold hover:bg-blush-dark transition cursor-pointer"
+            }
+          ]
+        });
         return;
       }
 
-      openModal(`
-        <div class="space-y-4 text-right">
-          <h3 class="text-lg font-extrabold text-plum">تأكيد إنهاء الاختبار</h3>
-          <p class="text-sm text-plum/85 leading-relaxed">
-            لقد أجبتِ عن جميع الأسئلة الـ 60. بعد التأكيد سيتم احتساب نتيجتكِ النهائية وإظهار شهادة الإتمام وتقرير الأداء.
-          </p>
-          <div class="flex items-center justify-end gap-2.5 pt-2">
-            <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-lavender-soft text-plum hover:bg-lavender-light transition-colors">
-              مراجعة إجاباتي
-            </button>
-            <button type="button" onclick="confirmSubmitExam()" class="px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-plum text-ivory hover:bg-plum-light border border-gold/60 transition-colors">
-              تأكيد وعرض النتيجة
-            </button>
-          </div>
-        </div>
-      `);
+      openModal({
+        icon: ICONS.award,
+        title: "تأكيد إنهاء الاختبار وعرض النتيجة",
+        body: "لقد أجبتِ عن جميع الأسئلة الـ 60 بنجاح. هل ترغبين في تسليم الاختبار الآن واعتماد النتيجة النهائية وإصدار الشهادة؟",
+        actions: [
+          {
+            label: "مراجعة الإجابات أولًا",
+            className: "px-4 py-2.5 rounded-xl bg-blush text-plum text-sm font-bold hover:bg-blush-dark transition cursor-pointer"
+          },
+          {
+            label: "نعم، اعتمدي النتيجة",
+            className: "px-5 py-2.5 rounded-xl bg-plum text-ivory text-sm font-bold hover:bg-plum-light transition cursor-pointer",
+            onClick: () => {
+              state.examSubmitted = true;
+              state.completionDate = new Date().toISOString();
+              state.screen = "final";
+              saveState();
+              render({ resetScroll: true });
+              startUnifiedCertificateReveal();
+            }
+          }
+        ]
+      });
     }
 
-    function confirmSubmitExam() {
-      closeModal();
-      state.isSubmitted = true;
-      if (!state.completionDate) {
-        state.completionDate = new Date().toISOString();
-      }
-      saveState();
-      renderApp();
-    }
-
-    /*************************************************************************
-     * 7. REUSABLE SINGLE CERTIFICATE & ENVELOPE REVEAL
-     *************************************************************************/
-    function buildCertificateMarkup(stats, formattedDate) {
+    /* -----------------------------------------------------------------------
+       SCREEN 3: FINAL RESULTS + UNIFIED ENVELOPE CERTIFICATE + ANALYTICS
+       ----------------------------------------------------------------------- */
+    function renderCertificateMarkup(stats, formattedDate) {
       return `
-        <div id="certificate-printable-area" dir="rtl" class="certificate-frame rounded-xl sm:rounded-2xl select-none">
-          <div class="certificate-inner-border rounded-lg sm:rounded-xl text-center">
-            <!-- Header -->
-            <div>
-              <div class="cert-school-badge inline-flex items-center justify-center rounded-full bg-plum text-gold-light border border-gold font-bold shadow-xs">
-                <span>${PROGRAM_META.school}</span>
+        <div id="certificate-printable-area" class="certificate-frame">
+          <div class="certificate-inner-border">
+            <!-- Top Section: School Badge & Certificate Title -->
+            <div class="flex flex-col items-center">
+              <div class="cert-school-badge">
+                ${PROGRAM_META.school}
               </div>
-
-              <h2 class="cert-main-title font-serifAr font-bold text-plum tracking-wide">
+              <h2 class="cert-main-title">
                 ${PROGRAM_META.certificateTitle}
               </h2>
               <div class="cert-divider-line"></div>
             </div>
 
-            <!-- Middle Body -->
+            <!-- Middle Section: Student Name & Program -->
             <div class="my-auto flex flex-col items-center justify-center">
-              <p class="cert-intro-text text-plum/85 font-medium">
-                تشهد إدارة ومعلمة اللغة الإنجليزية في <span class="font-bold text-plum">${PROGRAM_META.school}</span> بأن الطالبة:
+              <p class="cert-intro-text">
+                تشهد إدارة ومعلمة اللغة الإنجليزية في ${PROGRAM_META.school} بأن الطالبة:
               </p>
 
-              <!-- Student Name Prominently Displayed -->
-              <div class="cert-student-name inline-block border-b-2 border-gold max-w-full bg-gradient-to-r from-transparent via-gold-pale/60 to-transparent rounded">
-                <p class="font-serifAr font-bold text-plum truncate">
-                  ${escapeHtml(state.studentName)}
-                </p>
+              <div class="cert-student-name">
+                ${escapeHTML(state.studentName)}
               </div>
 
-              <!-- Program Title -->
-              <p class="cert-program-text text-plum/85 max-w-2xl mx-auto">
+              <p class="cert-program-text">
                 قد أتمّت بنجاح جميع متطلبات ومهارات البرنامج العلاجي:
-                <span class="font-extrabold text-plum">«${PROGRAM_META.title}»</span>
+                <span class="cert-program-name">«${PROGRAM_META.title}»</span>
               </p>
 
-              <!-- Separate Balanced Sections: Score & Mastery Percentage vs Completion Date -->
+              <!-- Two Separate Balanced Sections: Mastery Percentage & Completion Date -->
               <div class="cert-metrics-row">
-                <div class="cert-metric-box bg-blush-light/95 border border-gold/65 flex flex-col items-center justify-center">
-                  <span class="cert-metric-label font-bold text-plum/75">الدرجة ونسبة الإتقان</span>
-                  <div class="cert-metric-value font-extrabold text-plum">
-                    <span>${stats.formattedPercentage}</span>
-                    <span class="text-gold-dark font-bold mr-1">(${stats.totalCorrect} / 60)</span>
+                <div class="cert-metric-box">
+                  <div class="cert-metric-label">الدرجة ونسبة الإتقان</div>
+                  <div class="cert-metric-value">
+                    ${stats.formattedPercentage} <span class="font-normal opacity-80">(${stats.totalCorrect} / 60)</span>
                   </div>
                 </div>
 
-                <div class="cert-metric-box bg-blush-light/95 border border-gold/65 flex flex-col items-center justify-center">
-                  <span class="cert-metric-label font-bold text-plum/75">تاريخ الإتمام</span>
-                  <span class="cert-metric-value font-extrabold text-plum">
-                    ${escapeHtml(formattedDate)}
-                  </span>
+                <div class="cert-metric-box">
+                  <div class="cert-metric-label">تاريخ الإتمام</div>
+                  <div class="cert-metric-value">
+                    ${formattedDate}
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- Signatures Row: Teacher on FAR RIGHT, Principal on FAR LEFT -->
-            <div dir="rtl" class="cert-signatures-row">
-              <div class="text-right">
-                <p class="cert-sig-role font-bold text-gold-dark">المعلمة</p>
-                <p class="cert-sig-name font-extrabold text-plum">${PROGRAM_META.teacher}</p>
+            <!-- Bottom Signatures Row: Teacher on FAR RIGHT, Principal on FAR LEFT -->
+            <div class="cert-signatures-row">
+              <div class="cert-sig-right">
+                <div class="cert-sig-role">المعلمة</div>
+                <div class="cert-sig-name">${PROGRAM_META.teacher}</div>
               </div>
 
-              <div class="w-5 h-5 sm:w-8 sm:h-8 rounded-full border border-gold/70 bg-gold-pale/65 flex items-center justify-center text-gold-dark shrink-0" aria-hidden="true">
-                <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-                </svg>
-              </div>
-
-              <div class="text-left">
-                <p class="cert-sig-role font-bold text-gold-dark">مديرة المدرسة</p>
-                <p class="cert-sig-name font-extrabold text-plum">${PROGRAM_META.principal}</p>
+              <div class="cert-sig-left">
+                <div class="cert-sig-role">مديرة المدرسة</div>
+                <div class="cert-sig-name">${PROGRAM_META.principal}</div>
               </div>
             </div>
           </div>
@@ -1861,542 +1372,767 @@
       `;
     }
 
-    function clearRevealTimers() {
-      revealTimers.forEach(id => clearTimeout(id));
-      revealTimers = [];
-    }
-
-    function runEnvelopeRevealSequence(skipIntroDelay = false) {
-      clearRevealTimers();
-
-      const envRig = document.getElementById("envelope-rig");
-      const certStage = document.getElementById("single-certificate-stage");
-      const actionsBar = document.getElementById("certificate-actions-bar");
-      const promptHint = document.getElementById("envelope-open-hint");
-
-      if (!envRig || !certStage) return;
-
-      const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      envRig.classList.remove("is-open", "stage-expanded");
-      certStage.classList.remove("cert-emerging", "cert-full-focus");
-      certStage.classList.add("cert-in-pocket");
-      if (actionsBar) actionsBar.classList.add("opacity-0", "pointer-events-none");
-      if (promptHint) promptHint.classList.remove("hidden");
-
-      if (reducedMotion) {
-        envRig.classList.add("is-open", "stage-expanded");
-        certStage.classList.remove("cert-in-pocket", "cert-emerging");
-        certStage.classList.add("cert-full-focus");
-        if (actionsBar) actionsBar.classList.remove("opacity-0", "pointer-events-none");
-        if (promptHint) promptHint.classList.add("hidden");
-        return;
-      }
-
-      const t1 = skipIntroDelay ? 100 : 550;
-      const t2 = t1 + 600;
-      const t3 = t2 + 750;
-
-      revealTimers.push(setTimeout(() => {
-        envRig.classList.add("is-open");
-        if (promptHint) promptHint.classList.add("hidden");
-        spawnGoldSparkles();
-      }, t1));
-
-      revealTimers.push(setTimeout(() => {
-        certStage.classList.remove("cert-in-pocket");
-        certStage.classList.add("cert-emerging");
-      }, t2));
-
-      revealTimers.push(setTimeout(() => {
-        envRig.classList.add("stage-expanded");
-        certStage.classList.remove("cert-emerging");
-        certStage.classList.add("cert-full-focus");
-        if (actionsBar) {
-          actionsBar.classList.remove("opacity-0", "pointer-events-none");
-        }
-      }, t3));
-    }
-
-    function replayCertificateAnimation() {
-      runEnvelopeRevealSequence(true);
-    }
-
-    function spawnGoldSparkles() {
-      const theater = document.getElementById("reveal-theater");
-      if (!theater) return;
-      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-      theater.querySelectorAll(".gold-sparkle").forEach(el => el.remove());
-
-      const count = 16;
-      for (let i = 0; i < count; i++) {
-        const spark = document.createElement("span");
-        spark.className = "gold-sparkle";
-        spark.textContent = i % 2 === 0 ? "✦" : "✧";
-        spark.style.left = `${15 + Math.random() * 70}%`;
-        spark.style.top = `${18 + Math.random() * 50}%`;
-        spark.style.fontSize = `${12 + Math.random() * 12}px`;
-        spark.style.animationDelay = `${Math.random() * 0.45}s`;
-        theater.appendChild(spark);
-      }
-    }
-
-    /*************************************************************************
-     * 8. SCREEN 3: FINAL RESULTS PAGE
-     *************************************************************************/
-    function renderFinalResultsScreen(container) {
+    function renderFinalScreen() {
       const stats = getOverallStats();
-      if (!state.completionDate) {
-        state.completionDate = new Date().toISOString();
-        saveState();
-      }
       const formattedDate = formatArabicDate(state.completionDate);
 
-      const skillCardsHtml = SKILLS_DATA.map((skill, idx) => {
-        const res = calculateSkillScore(skill);
-        const mastery = getMasteryClassification(res.percentage);
-        return `
-          <div class="p-4 rounded-2xl bg-ivory-warm border border-lavender-light/70 space-y-2.5">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <div class="flex items-center gap-2">
-                  <span class="w-6 h-6 rounded-lg bg-plum text-ivory text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
-                  <span dir="ltr" class="font-english text-sm sm:text-base font-bold text-plum">${escapeHtml(skill.enTitle)}</span>
-                </div>
-                <p class="text-xs text-plum/70 font-semibold mt-0.5 mr-8">${escapeHtml(skill.arTitle)}</p>
+      const envRecededClass = envelopeStage === "expanded" ? "envelope-receded" : "";
+      const envOpenClass = (envelopeStage === "opening" || envelopeStage === "emerging" || envelopeStage === "expanded") ? "is-open" : "";
+      const certStageClass =
+        envelopeStage === "closed" || envelopeStage === "opening"
+          ? "stage-inside"
+          : envelopeStage === "emerging"
+            ? "stage-emerging"
+            : "stage-expanded";
+
+      return `
+        <section class="screen-enter space-y-5">
+          <!-- 1. Short Congratulatory Header -->
+          <div class="text-center max-w-2xl mx-auto">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gold/20 border border-gold/50 text-plum text-xs font-extrabold mb-1.5">
+              <span>تهانينا بالإنجاز</span>
+            </span>
+            <h1 class="font-serifAr text-xl sm:text-3xl font-bold text-plum leading-snug">
+              مبارك لكِ إتمام الخطة العلاجية، <span class="text-gold-dark underline decoration-gold/60 underline-offset-4">${escapeHTML(state.studentName)}</span>
+            </h1>
+            <p class="text-xs sm:text-sm text-plum/80 mt-1">
+              أكملتِ جميع المهارات الـ 12 والأسئلة الـ 60 بنجاح في ${PROGRAM_META.school}.
+            </p>
+          </div>
+
+          <!-- 2, 3, 4. Unified Envelope -> Real Certificate Reveal Stage -->
+          <div id="certificate-reveal-stage" class="reveal-stage">
+            <div class="reveal-viewport">
+              <!-- Envelope Shell -->
+              <div id="animated-envelope" class="envelope-shell ${envOpenClass} ${envRecededClass}" aria-hidden="true">
+                <div class="envelope-lining"></div>
+                <div class="envelope-pocket-front"></div>
+                <div class="envelope-pocket-bottom"></div>
+                <div class="envelope-top-flap"></div>
+                <div class="envelope-wax-seal">${ICONS.award}</div>
               </div>
 
-              <div class="flex items-center gap-2 mr-8 sm:mr-0 shrink-0">
-                <span class="px-2.5 py-1 rounded-lg text-xs font-bold border ${mastery.badgeClass}">
-                  ${mastery.label}
-                </span>
-                <span class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-plum text-gold-light">
-                  ${res.score}/5 (${res.percentage}%)
-                </span>
+              <!-- Single Reusable Real Certificate Component -->
+              <div id="unified-certificate-holder" class="unified-certificate-holder ${certStageClass}">
+                ${renderCertificateMarkup(stats, formattedDate)}
               </div>
-            </div>
-
-            <div class="w-full h-2.5 rounded-full bg-lavender-soft overflow-hidden">
-              <div class="h-full rounded-full transition-all duration-700"
-                   style="width: ${res.percentage}%; background-color: ${mastery.barColor};"></div>
             </div>
           </div>
-        `;
-      }).join("");
 
-      container.innerHTML = `
-        <div class="space-y-5 sm:space-y-6 fade-in-panel pb-10">
-          <!-- 1. Short Congratulatory Message + Replay Button -->
-          <section class="text-center space-y-2">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold-pale border border-gold/50 text-gold-dark text-xs font-bold">
-              <span>إتمام الاختبار التشخيصي بنجاح</span>
-            </div>
-            <h1 class="text-xl sm:text-3xl font-extrabold text-plum leading-snug">
-              مبارك لكِ الإنجاز يا <span class="text-gold-dark underline decoration-gold/60 underline-offset-4">${escapeHtml(state.studentName)}</span>
-            </h1>
-            <p class="text-xs sm:text-base text-plum/80 max-w-xl mx-auto">
-              أتممتِ الإجابة عن جميع أسئلة الخطة العلاجية (60 سؤالًا). إليكِ شهادتكِ المعتمدة وتقرير أدائكِ الشامل.
-            </p>
-            <div class="pt-1">
-              <button type="button" onclick="replayCertificateAnimation()"
-                class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-ivory-warm hover:bg-lavender-soft text-plum text-xs font-bold border border-lavender-light transition-colors cursor-pointer">
-                <svg class="w-3.5 h-3.5 text-gold-dark" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                </svg>
-                <span>إعادة عرض الشهادة</span>
-              </button>
-            </div>
-          </section>
+          <!-- 5. Compact Side-by-Side Download & Replay Controls -->
+          <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 pt-1">
+            <button
+              type="button"
+              onclick="downloadCertificatePNG()"
+              class="px-4 py-2 rounded-xl bg-plum hover:bg-plum-light text-ivory font-bold text-xs sm:text-sm shadow-sm border border-gold/45 flex items-center gap-1.5 transition cursor-pointer"
+            >
+              ${ICONS.download}
+              <span>تحميل PNG</span>
+            </button>
 
-          <!-- 2, 3, 4. Envelope Reveal, A4 Landscape Certificate & Compact Download Buttons -->
-          <section id="printable-certificate-section" class="space-y-3">
-            <div id="reveal-theater" class="reveal-theater">
-              <div id="envelope-rig" class="envelope-rig" onclick="runEnvelopeRevealSequence(true)">
-                <div class="env-back-wall"></div>
-                <div class="env-front-pocket"></div>
-                <svg class="env-pocket-trim" viewBox="0 0 100 100" preserveAspectRatio="none">
-                  <polyline points="0,26 50,63 100,26" fill="none" stroke="#C8A46A" stroke-width="0.6" />
-                </svg>
-                <div class="env-top-flap"></div>
-                <button type="button" class="env-wax-seal" aria-label="فتح الظرف لعرض الشهادة">
-                  <svg class="w-6 h-6 text-plum" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342" />
-                  </svg>
-                </button>
-              </div>
+            <button
+              type="button"
+              onclick="printCertificatePDF()"
+              class="px-4 py-2 rounded-xl bg-gold hover:bg-gold-dark text-plum hover:text-ivory font-bold text-xs sm:text-sm shadow-sm flex items-center gap-1.5 transition cursor-pointer"
+            >
+              ${ICONS.pdf}
+              <span>تحميل PDF</span>
+            </button>
 
-              <p id="envelope-open-hint" class="mt-1.5 text-xs font-bold text-gold-dark">
-                جاري فتح الظرف لاستخراج شهادتكِ...
-              </p>
+            <button
+              type="button"
+              onclick="replayCertificateReveal()"
+              class="px-3.5 py-2 rounded-xl bg-ivory hover:bg-blush text-plum border border-lavender/80 font-bold text-xs sm:text-sm flex items-center gap-1.5 transition cursor-pointer"
+            >
+              ${ICONS.replay}
+              <span>إعادة العرض</span>
+            </button>
+          </div>
 
-              <!-- Single Real Certificate Element -->
-              <div id="single-certificate-stage" class="single-certificate-stage cert-in-pocket">
-                ${buildCertificateMarkup(stats, formattedDate)}
-              </div>
-            </div>
-
-            <!-- Compact Side-by-Side Download Buttons -->
-            <div id="certificate-actions-bar" class="opacity-0 pointer-events-none transition-opacity duration-500 flex items-center justify-center gap-2.5 pt-0.5">
-              <button type="button" onclick="downloadCertificatePNG()"
-                class="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-plum hover:bg-plum-light text-ivory text-xs sm:text-sm font-bold shadow-xs border border-gold/60 transition-colors cursor-pointer">
-                <svg class="w-4 h-4 text-gold-light shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                </svg>
-                <span>تحميل PNG</span>
-              </button>
-
-              <button type="button" onclick="printCertificatePDF()"
-                class="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-gold-pale hover:bg-gold-light/50 text-plum text-xs sm:text-sm font-bold border border-gold/70 transition-colors cursor-pointer">
-                <svg class="w-4 h-4 text-plum shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" />
-                </svg>
-                <span>تحميل PDF</span>
-              </button>
-            </div>
-          </section>
-
-          <!-- 5. Overall Performance Summary -->
-          <section class="rounded-3xl academic-card p-6 sm:p-8 space-y-5">
-            <div class="border-b border-lavender-light/60 pb-3.5">
-              <h2 class="text-lg sm:text-xl font-extrabold text-plum">ملخص الأداء العام</h2>
-              <p class="text-xs sm:text-sm text-plum/70 mt-0.5">النتيجة الإجمالية المحسوبة من جميع الأسئلة المعتمدة (60 سؤالًا)</p>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-              <div class="p-4 rounded-2xl bg-plum text-ivory text-center">
-                <p class="text-xs text-blush/85 font-medium">الدرجة الكلية</p>
-                <p class="text-2xl sm:text-3xl font-extrabold text-gold-light mt-1">${stats.totalCorrect} <span class="text-sm font-normal text-ivory/75">/ 60</span></p>
-              </div>
-              <div class="p-4 rounded-2xl bg-gold-pale/80 border border-gold/50 text-center">
-                <p class="text-xs text-plum/75 font-medium">النسبة المئوية الكلية</p>
-                <p class="text-2xl sm:text-3xl font-extrabold text-plum mt-1">${stats.formattedPercentage}</p>
-              </div>
-              <div class="p-4 rounded-2xl bg-emerald-50/85 border border-emerald-200 text-center">
-                <p class="text-xs text-emerald-800 font-medium">إجمالي الإجابات الصحيحة</p>
-                <p class="text-2xl sm:text-3xl font-extrabold text-emerald-900 mt-1">${stats.totalCorrect}</p>
-              </div>
-              <div class="p-4 rounded-2xl bg-rose-50/85 border border-rose-200 text-center">
-                <p class="text-xs text-rose-800 font-medium">إجمالي الإجابات الخاطئة</p>
-                <p class="text-2xl sm:text-3xl font-extrabold text-rose-900 mt-1">${stats.totalIncorrect}</p>
-              </div>
-            </div>
-          </section>
-
-          <!-- 6. Detailed Performance Across All 12 Skills -->
-          <section class="rounded-3xl academic-card p-6 sm:p-8 space-y-4">
-            <div class="border-b border-lavender-light/60 pb-3.5">
-              <h2 class="text-lg sm:text-xl font-extrabold text-plum">تحليل الأداء التفصيلي للمهارات (12 مهارة)</h2>
-              <p class="text-xs sm:text-sm text-plum/70 mt-0.5">مستوى الإتقان في كل مهارة من مهارات الخطة العلاجية</p>
-            </div>
-            <div class="grid grid-cols-1 gap-3">
-              ${skillCardsHtml}
-            </div>
-          </section>
-
-          <!-- 7. Collapsible Question Review Section -->
-          <section class="rounded-3xl academic-card p-6 sm:p-8 space-y-4">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <!-- 6. Overall Performance Summary (Placed BELOW the certificate) -->
+          <div class="academic-card rounded-3xl p-5 sm:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-4 mb-5 border-b border-gold/25">
               <div>
-                <h2 class="text-lg sm:text-xl font-extrabold text-plum">مراجعة الأسئلة والإجابات النموذجية</h2>
-                <p class="text-xs sm:text-sm text-plum/70 mt-0.5">استعراض تفصيلي لإجاباتكِ مع التوضيح التعليمي لكل سؤال</p>
+                <h2 class="text-lg sm:text-xl font-extrabold text-plum">ملخص الأداء العام</h2>
+                <p class="text-xs text-plum/70 mt-0.5">نتائج جميع مهارات الخطة العلاجية (60 سؤالًا)</p>
               </div>
-
-              <button type="button" onclick="toggleReviewSection()" id="toggle-review-btn"
-                class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold bg-plum hover:bg-plum-light text-ivory border border-gold/60 transition-colors cursor-pointer self-start sm:self-auto">
-                ${state.reviewExpanded ? "إخفاء مراجعة الأسئلة" : "عرض مراجعة الأسئلة (60)"}
-              </button>
+              <span class="px-3.5 py-1.5 rounded-full text-xs font-extrabold border ${stats.mastery.badgeClass}">
+                ${stats.mastery.label}
+              </span>
             </div>
 
-            <div id="review-panel-wrapper" class="${state.reviewExpanded ? '' : 'hidden'} space-y-4 pt-2 border-t border-lavender-light/60">
-              <div class="flex flex-wrap items-center gap-2">
-                <button type="button" onclick="setReviewFilter('all')"
-                  id="filter-btn-all"
-                  class="px-3.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${state.reviewFilter === 'all' ? 'bg-plum text-ivory' : 'bg-lavender-soft text-plum'}">
-                  جميع الأسئلة (60)
-                </button>
-                <button type="button" onclick="setReviewFilter('incorrect')"
-                  id="filter-btn-incorrect"
-                  class="px-3.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${state.reviewFilter === 'incorrect' ? 'bg-rose-700 text-white' : 'bg-rose-50 text-rose-800 border border-rose-200'}">
-                  غير الصحيحة فقط (${stats.totalIncorrect})
-                </button>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4">
+              <div class="rounded-2xl bg-plum text-ivory p-4 text-center shadow-xs">
+                <div class="text-[11px] text-gold-light font-semibold">الدرجة الكلية</div>
+                <div class="text-2xl font-extrabold mt-1">${stats.totalCorrect} <span class="text-xs font-normal opacity-80">/ 60</span></div>
               </div>
-
-              <div id="final-review-list" class="space-y-3.5">
-                ${renderFinalReviewItems(state.reviewFilter)}
+              <div class="rounded-2xl bg-blush-light border border-gold/35 p-4 text-center">
+                <div class="text-[11px] text-plum/75 font-bold">نسبة الإتقان</div>
+                <div class="text-2xl font-extrabold text-plum mt-1">${stats.formattedPercentage}</div>
+              </div>
+              <div class="rounded-2xl bg-emerald-50/90 border border-emerald-200 p-4 text-center">
+                <div class="text-[11px] text-emerald-800 font-bold">الإجابات الصحيحة</div>
+                <div class="text-2xl font-extrabold text-emerald-700 mt-1">${stats.totalCorrect}</div>
+              </div>
+              <div class="rounded-2xl bg-rose-50/90 border border-rose-200 p-4 text-center">
+                <div class="text-[11px] text-rose-800 font-bold">الإجابات الخاطئة</div>
+                <div class="text-2xl font-extrabold text-rose-700 mt-1">${stats.totalIncorrect}</div>
+              </div>
+              <div class="col-span-2 sm:col-span-1 rounded-2xl bg-ivory border border-lavender/70 p-4 text-center">
+                <div class="text-[11px] text-plum/75 font-bold">المهارات المكتملة</div>
+                <div class="text-2xl font-extrabold text-plum mt-1">12 / 12</div>
               </div>
             </div>
-          </section>
-        </div>
+          </div>
+
+          <!-- 7. Detailed Performance Across All 12 Skills -->
+          <div class="academic-card rounded-3xl p-5 sm:p-8">
+            <h2 class="text-lg sm:text-xl font-extrabold text-plum mb-1">تحليل الإتقان التفصيلي للمهارات الـ 12</h2>
+            <p class="text-xs sm:text-sm text-plum/75 mb-6">نسبة الإتقان والدرجة المحققة في كل مهارة من مهارات الاختبار التشخيصي</p>
+
+            <div class="space-y-4">
+              ${SKILLS_DATA.map(skill => {
+                const sStats = computeSkillStats(skill.id);
+                return `
+                  <div class="p-4 rounded-2xl bg-ivory/95 border border-lavender/55">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                      <div>
+                        <span class="text-xs font-extrabold text-gold-dark ml-1.5">المهارة ${skill.number}:</span>
+                        <span class="font-en text-sm font-bold text-plum">${escapeHTML(skill.englishTitle)}</span>
+                        <span class="text-xs text-plum/70 mr-1.5">(${escapeHTML(skill.arabicTitle)})</span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${sStats.mastery.badgeClass}">
+                          ${sStats.mastery.label}
+                        </span>
+                        <span class="text-xs font-extrabold text-plum bg-blush px-2.5 py-1 rounded-lg">
+                          ${sStats.correct} / 5 (${sStats.percentage}%)
+                        </span>
+                      </div>
+                    </div>
+                    <div class="w-full h-2 rounded-full bg-blush-dark/60 overflow-hidden">
+                      <div class="h-full rounded-full transition-all duration-500" style="width: ${sStats.percentage}%; background-color: ${sStats.mastery.barColor};"></div>
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+
+          <!-- 8. Optional Collapsible Question Review Section -->
+          <div class="academic-card rounded-3xl p-5 sm:p-8">
+            <button
+              type="button"
+              onclick="toggleReviewSection()"
+              aria-expanded="${state.reviewOpen ? "true" : "false"}"
+              class="w-full flex items-center justify-between gap-3 text-right cursor-pointer"
+            >
+              <div>
+                <h2 class="text-lg sm:text-xl font-extrabold text-plum">مراجعة الأسئلة والإجابات النموذجية (60 سؤالًا)</h2>
+                <p class="text-xs sm:text-sm text-plum/75 mt-0.5">اضغطي هنا لعرض إجاباتك ومقارنتها بالإجابة الصحيحة والتوضيح التعليمي</p>
+              </div>
+              <span class="w-9 h-9 rounded-full bg-blush text-plum flex items-center justify-center shrink-0 transition-transform ${state.reviewOpen ? "rotate-180" : ""}">
+                ${ICONS.chevronDown}
+              </span>
+            </button>
+
+            ${state.reviewOpen ? `
+              <div class="mt-6 pt-5 border-t border-gold/25 space-y-6">
+                ${SKILLS_DATA.map(skill => {
+                  const qs = getSkillQuestions(skill.id);
+                  return `
+                    <div>
+                      <h3 class="text-sm font-extrabold text-plum bg-blush/90 px-4 py-2 rounded-xl border border-gold/30 mb-3">
+                        المهارة ${skill.number}: <span class="font-en">${escapeHTML(skill.englishTitle)}</span> — ${escapeHTML(skill.arabicTitle)}
+                      </h3>
+                      <div class="space-y-3">
+                        ${qs.map(q => {
+                          const userChoice = state.answers[q.id];
+                          const isCorrect = userChoice === q.correct;
+                          return `
+                            <div class="p-4 rounded-2xl border ${isCorrect ? "bg-emerald-50/45 border-emerald-200" : "bg-rose-50/45 border-rose-200"}">
+                              <div class="flex items-start justify-between gap-2 mb-2">
+                                <p class="font-en text-sm font-bold text-plum" dir="ltr">
+                                  ${q.id}. ${escapeHTML(q.text)}
+                                </p>
+                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold shrink-0 ${isCorrect ? "bg-emerald-100 text-emerald-800" : "bg-rose-100 text-rose-800"}">
+                                  ${isCorrect ? "صحيحة" : "خاطئة"}
+                                </span>
+                              </div>
+                              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-en" dir="ltr">
+                                <div class="p-2 rounded-lg bg-ivory border border-lavender/40">
+                                  <span class="font-bold text-plum/70">Your answer:</span>
+                                  <span class="font-bold ${isCorrect ? "text-emerald-700" : "text-rose-700"}">
+                                    ${userChoice ? `${userChoice}. ${escapeHTML(q.options[userChoice])}` : "None"}
+                                  </span>
+                                </div>
+                                <div class="p-2 rounded-lg bg-ivory border border-emerald-300/70">
+                                  <span class="font-bold text-plum/70">Correct answer:</span>
+                                  <span class="font-bold text-emerald-800">
+                                    ${q.correct}. ${escapeHTML(q.options[q.correct])}
+                                  </span>
+                                </div>
+                              </div>
+                              <p class="mt-2 text-xs text-plum/85 leading-relaxed">
+                                <span class="font-bold text-gold-dark">التوضيح:</span> ${escapeHTML(q.explanation)}
+                              </p>
+                            </div>
+                          `;
+                        }).join("")}
+                      </div>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            ` : ""}
+          </div>
+
+          <!-- Reset Progress Footer -->
+          <div class="text-center pt-1">
+            <button
+              type="button"
+              onclick="confirmResetAll()"
+              class="inline-flex items-center gap-1.5 text-xs font-bold text-plum/65 hover:text-rose-700 transition cursor-pointer"
+            >
+              ${ICONS.reset}
+              <span>بدء محاولة جديدة ومسح البيانات المحفوظة</span>
+            </button>
+          </div>
+        </section>
       `;
-
-      runEnvelopeRevealSequence(false);
     }
 
     function toggleReviewSection() {
-      state.reviewExpanded = !state.reviewExpanded;
+      state.reviewOpen = !state.reviewOpen;
       saveState();
-      const panel = document.getElementById("review-panel-wrapper");
-      const btn = document.getElementById("toggle-review-btn");
-      if (panel) {
-        panel.classList.toggle("hidden", !state.reviewExpanded);
-      }
-      if (btn) {
-        btn.textContent = state.reviewExpanded ? "إخفاء مراجعة الأسئلة" : "عرض مراجعة الأسئلة (60)";
-      }
-    }
-
-    function setReviewFilter(filter) {
-      state.reviewFilter = filter;
-      saveState();
-      const listEl = document.getElementById("final-review-list");
-      const allBtn = document.getElementById("filter-btn-all");
-      const incBtn = document.getElementById("filter-btn-incorrect");
-
-      if (listEl) listEl.innerHTML = renderFinalReviewItems(filter);
-      if (allBtn) {
-        allBtn.className = `px-3.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${filter === 'all' ? 'bg-plum text-ivory' : 'bg-lavender-soft text-plum'}`;
-      }
-      if (incBtn) {
-        const stats = getOverallStats();
-        incBtn.className = `px-3.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${filter === 'incorrect' ? 'bg-rose-700 text-white' : 'bg-rose-50 text-rose-800 border border-rose-200'}`;
-        incBtn.textContent = `غير الصحيحة فقط (${stats.totalIncorrect})`;
-      }
-    }
-
-    function renderFinalReviewItems(filter) {
-      const items = filter === "incorrect"
-        ? ALL_QUESTIONS.filter(q => state.answers[q.id] !== q.correct)
-        : ALL_QUESTIONS;
-
-      if (items.length === 0) {
-        return `
-          <div class="p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-center text-emerald-900 font-bold text-sm">
-            رائع! جميع إجاباتكِ في الاختبار صحيحة بنسبة 100%.
-          </div>
-        `;
-      }
-
-      return items.map(q => {
-        const studentAns = state.answers[q.id];
-        const isCorrect = studentAns === q.correct;
-        const studentOptionText = studentAns ? `${studentAns}. ${q.options[studentAns]}` : "لم تتم الإجابة";
-        const correctOptionText = `${q.correct}. ${q.options[q.correct]}`;
-
-        return `
-          <article class="rounded-2xl bg-ivory-warm border ${isCorrect ? 'border-emerald-200/90' : 'border-rose-200/90'} p-4 sm:p-5">
-            <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
-              <div class="flex items-center gap-2">
-                <span class="px-2.5 py-0.5 rounded-lg bg-plum text-ivory text-xs font-bold">سؤال ${q.questionNumber}</span>
-                <span dir="ltr" class="font-english text-xs font-bold text-plum/75">${escapeHtml(q.skillEnTitle)}</span>
-              </div>
-              ${isCorrect ? `
-                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                  صحيحة
-                </span>
-              ` : `
-                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-rose-800 border border-rose-200">
-                  غير صحيحة
-                </span>
-              `}
-            </div>
-
-            <p dir="ltr" class="font-english text-left text-base font-bold text-plum mb-3">
-              ${escapeHtml(q.text)}
-            </p>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-3">
-              <div dir="ltr" class="font-english text-left p-2.5 rounded-xl border ${isCorrect ? 'bg-emerald-50/70 border-emerald-200 text-emerald-950' : 'bg-rose-50/70 border-rose-200 text-rose-950'}">
-                <p class="font-arabic text-right text-[11px] font-bold opacity-75 mb-0.5">إجابتكِ المختارة:</p>
-                <p class="text-sm font-bold">${escapeHtml(studentOptionText)}</p>
-              </div>
-
-              <div dir="ltr" class="font-english text-left p-2.5 rounded-xl border bg-ivory border-gold/60 text-plum">
-                <p class="font-arabic text-right text-[11px] font-bold text-gold-dark mb-0.5">الإجابة الصحيحة:</p>
-                <p class="text-sm font-bold">${escapeHtml(correctOptionText)}</p>
-              </div>
-            </div>
-
-            <div class="p-3 rounded-xl bg-blush-light/80 border border-lavender-light/60 text-xs sm:text-sm text-plum/85 leading-relaxed">
-              <span class="font-bold text-plum">التوضيح:</span> ${escapeHtml(q.explanation)}
-            </div>
-          </article>
-        `;
-      }).join("");
+      render({ resetScroll: false });
     }
 
     /*************************************************************************
-     * 9. HIGH-RESOLUTION CERTIFICATE EXPORT (PNG & PRINTABLE PDF)
+     * 6. UNIFIED ENVELOPE -> REAL CERTIFICATE REVEAL CONTROLLER
      *************************************************************************/
-    async function downloadCertificatePNG() {
-      try {
-        const stats = getOverallStats();
-        const formattedDate = formatArabicDate(state.completionDate);
+    function clearEnvelopeTimers() {
+      envelopeTimers.forEach(id => clearTimeout(id));
+      envelopeTimers = [];
+    }
 
-        if (document.fonts && document.fonts.ready) {
-          await document.fonts.ready;
-        }
+    function applyEnvelopeStageDOM(stage) {
+      envelopeStage = stage;
+      const env = document.getElementById("animated-envelope");
+      const holder = document.getElementById("unified-certificate-holder");
+      if (!env || !holder) return;
 
-        const canvas = document.createElement("canvas");
-        canvas.width = 1684;
-        canvas.height = 1190;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
+      env.classList.remove("is-open", "envelope-receded");
+      holder.classList.remove("stage-inside", "stage-emerging", "stage-expanded");
 
-        const bgGrad = ctx.createLinearGradient(0, 0, 1684, 1190);
-        bgGrad.addColorStop(0, "#FFFDF8");
-        bgGrad.addColorStop(1, "#FAF3E6");
-        ctx.fillStyle = bgGrad;
-        ctx.fillRect(0, 0, 1684, 1190);
-
-        const radGrad = ctx.createRadialGradient(842, 595, 110, 842, 595, 900);
-        radGrad.addColorStop(0, "rgba(255, 253, 248, 0)");
-        radGrad.addColorStop(1, "rgba(245, 231, 235, 0.45)");
-        ctx.fillStyle = radGrad;
-        ctx.fillRect(0, 0, 1684, 1190);
-
-        // Clean Double Gold Border
-        ctx.strokeStyle = "#C8A46A";
-        ctx.lineWidth = 5;
-        roundRectPath(ctx, 36, 36, 1612, 1118, 24);
-        ctx.stroke();
-
-        ctx.strokeStyle = "rgba(200, 164, 106, 0.75)";
-        ctx.lineWidth = 2.5;
-        roundRectPath(ctx, 56, 56, 1572, 1078, 16);
-        ctx.stroke();
-
-        ctx.direction = "rtl";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-
-        ctx.fillStyle = "#49304F";
-        roundRectPath(ctx, 662, 112, 360, 56, 28);
-        ctx.fill();
-        ctx.strokeStyle = "#C8A46A";
-        ctx.lineWidth = 2.5;
-        ctx.stroke();
-
-        ctx.fillStyle = "#E3CCA3";
-        ctx.font = "700 24px Tajawal, Cairo, sans-serif";
-        ctx.fillText(PROGRAM_META.school, 842, 141);
-
-        ctx.fillStyle = "#49304F";
-        ctx.font = "700 60px Amiri, Tajawal, serif";
-        ctx.fillText(PROGRAM_META.certificateTitle, 842, 240);
-
-        const lineGrad = ctx.createLinearGradient(580, 0, 1104, 0);
-        lineGrad.addColorStop(0, "rgba(200, 164, 106, 0)");
-        lineGrad.addColorStop(0.5, "#C8A46A");
-        lineGrad.addColorStop(1, "rgba(200, 164, 106, 0)");
-        ctx.strokeStyle = lineGrad;
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(580, 294);
-        ctx.lineTo(1104, 294);
-        ctx.stroke();
-
-        ctx.fillStyle = "rgba(73, 48, 79, 0.85)";
-        ctx.font = "500 27px Tajawal, Cairo, sans-serif";
-        ctx.fillText(`تشهد إدارة ومعلمة اللغة الإنجليزية في ${PROGRAM_META.school} بأن الطالبة:`, 842, 365);
-
-        ctx.fillStyle = "#49304F";
-        ctx.font = "700 54px Amiri, Tajawal, serif";
-        ctx.fillText(state.studentName, 842, 455);
-
-        const nameMetrics = ctx.measureText(state.studentName);
-        const lineHalf = Math.min(500, Math.max(230, nameMetrics.width / 2 + 44));
-        ctx.strokeStyle = "#C8A46A";
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(842 - lineHalf, 502);
-        ctx.lineTo(842 + lineHalf, 502);
-        ctx.stroke();
-
-        ctx.fillStyle = "rgba(73, 48, 79, 0.88)";
-        ctx.font = "500 27px Tajawal, Cairo, sans-serif";
-        ctx.fillText("قد أتمّت بنجاح جميع متطلبات ومهارات البرنامج العلاجي:", 842, 568);
-
-        ctx.fillStyle = "#49304F";
-        ctx.font = "800 31px Tajawal, Cairo, sans-serif";
-        ctx.fillText(`«${PROGRAM_META.title}»`, 842, 618);
-
-        // Two Separate Balanced Boxes
-        ctx.fillStyle = "#FAF2F5";
-        roundRectPath(ctx, 872, 685, 440, 150, 22);
-        ctx.fill();
-        ctx.strokeStyle = "#C8A46A";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        ctx.fillStyle = "rgba(73, 48, 79, 0.78)";
-        ctx.font = "700 22px Tajawal, Cairo, sans-serif";
-        ctx.fillText("الدرجة ونسبة الإتقان", 1092, 724);
-
-        ctx.fillStyle = "#49304F";
-        ctx.font = "800 37px Tajawal, Cairo, sans-serif";
-        ctx.fillText(`${stats.formattedPercentage}  (${stats.totalCorrect} / 60)`, 1092, 780);
-
-        ctx.fillStyle = "#FAF2F5";
-        roundRectPath(ctx, 372, 685, 440, 150, 22);
-        ctx.fill();
-        ctx.strokeStyle = "#C8A46A";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        ctx.fillStyle = "rgba(73, 48, 79, 0.78)";
-        ctx.font = "700 22px Tajawal, Cairo, sans-serif";
-        ctx.fillText("تاريخ الإتمام", 592, 724);
-
-        ctx.fillStyle = "#49304F";
-        ctx.font = "800 29px Tajawal, Cairo, sans-serif";
-        ctx.fillText(formattedDate, 592, 780);
-
-        ctx.strokeStyle = "rgba(200, 164, 106, 0.5)";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(140, 905);
-        ctx.lineTo(1544, 905);
-        ctx.stroke();
-
-        // Teacher on FAR RIGHT, Principal on FAR LEFT
-        ctx.textAlign = "right";
-        ctx.fillStyle = "#A48247";
-        ctx.font = "700 22px Tajawal, Cairo, sans-serif";
-        ctx.fillText("المعلمة", 1520, 956);
-        ctx.fillStyle = "#49304F";
-        ctx.font = "800 31px Tajawal, Cairo, sans-serif";
-        ctx.fillText(PROGRAM_META.teacher, 1520, 1006);
-
-        ctx.textAlign = "left";
-        ctx.fillStyle = "#A48247";
-        ctx.font = "700 22px Tajawal, Cairo, sans-serif";
-        ctx.fillText("مديرة المدرسة", 164, 956);
-        ctx.fillStyle = "#49304F";
-        ctx.font = "800 31px Tajawal, Cairo, sans-serif";
-        ctx.fillText(PROGRAM_META.principal, 164, 1006);
-
-        const dataUrl = canvas.toDataURL("image/png");
-        const link = document.createElement("a");
-        const safeFileName = state.studentName.replace(/[^\u0600-\u06FFa-zA-Z0-9\s]/g, "").trim().replace(/\s+/g, "_") || "شهادة_إتمام";
-        link.download = `شهادة_إتمام_الخطة_العلاجية_${safeFileName}.png`;
-        link.href = dataUrl;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        showToast("تم تحميل الشهادة بصيغة PNG عالية الجودة.");
-      } catch (err) {
-        showToast("تعذر تصدير PNG، يمكنكِ استخدام خيار تحميل PDF للطباعة.");
+      if (stage === "closed") {
+        holder.classList.add("stage-inside");
+      } else if (stage === "opening") {
+        env.classList.add("is-open");
+        holder.classList.add("stage-inside");
+      } else if (stage === "emerging") {
+        env.classList.add("is-open");
+        holder.classList.add("stage-emerging");
+      } else {
+        env.classList.add("is-open", "envelope-receded");
+        holder.classList.add("stage-expanded");
       }
     }
 
-    function printCertificatePDF() {
-      try {
-        window.print();
-      } catch (err) {
-        showToast("يرجى استخدام خيار الطباعة من المتصفح لحفظ الشهادة كـ PDF.");
+    function startUnifiedCertificateReveal() {
+      clearEnvelopeTimers();
+
+      const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (prefersReducedMotion) {
+        applyEnvelopeStageDOM("expanded");
+        return;
       }
+
+      applyEnvelopeStageDOM("closed");
+
+      envelopeTimers.push(setTimeout(() => {
+        applyEnvelopeStageDOM("opening");
+      }, 280));
+
+      envelopeTimers.push(setTimeout(() => {
+        applyEnvelopeStageDOM("emerging");
+        spawnGoldSparkles();
+      }, 920));
+
+      envelopeTimers.push(setTimeout(() => {
+        applyEnvelopeStageDOM("expanded");
+      }, 1780));
+    }
+
+    function replayCertificateReveal() {
+      const stageEl = document.getElementById("certificate-reveal-stage");
+      if (stageEl && stageEl.scrollIntoView) {
+        stageEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      startUnifiedCertificateReveal();
+    }
+
+    function spawnGoldSparkles() {
+      const stage = document.getElementById("certificate-reveal-stage");
+      if (!stage) return;
+      const positions = [
+        { left: "14%", top: "36%", delay: "0s" },
+        { left: "26%", top: "24%", delay: "0.15s" },
+        { left: "50%", top: "18%", delay: "0.08s" },
+        { left: "74%", top: "24%", delay: "0.2s" },
+        { left: "86%", top: "36%", delay: "0.12s" }
+      ];
+      positions.forEach(pos => {
+        const star = document.createElement("div");
+        star.className = "gold-sparkle";
+        star.style.left = pos.left;
+        star.style.top = pos.top;
+        star.style.animationDelay = pos.delay;
+        star.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="#C8A46A"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg>`;
+        stage.appendChild(star);
+        setTimeout(() => {
+          if (star.parentNode) star.parentNode.removeChild(star);
+        }, 2400);
+      });
+    }
+
+    /*************************************************************************
+     * 7. HIGH-RESOLUTION CERTIFICATE EXPORT (PNG & DIRECT A4 LANDSCAPE PDF)
+     *************************************************************************/
+    function getSanitizedStudentFileName() {
+      return (state.studentName || "")
+        .replace(/[^\u0600-\u06FFa-zA-Z0-9\s]/g, "")
+        .trim()
+        .replace(/\s+/g, "_") || "شهادة_إتمام";
+    }
+
+    async function waitForCertificateAssets(containerEl) {
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+      if (containerEl) {
+        const imgs = Array.from(containerEl.querySelectorAll("img"));
+        await Promise.all(
+          imgs.map(img =>
+            img.complete
+              ? Promise.resolve()
+              : new Promise(resolve => {
+                  img.onload = resolve;
+                  img.onerror = resolve;
+                })
+          )
+        );
+      }
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    }
+
+    async function captureCertificateCanvas() {
+      const sourceEl = document.getElementById("certificate-printable-area");
+      if (!sourceEl) {
+        throw new Error("Certificate element not found");
+      }
+
+      if (typeof window.html2canvas !== "function") {
+        return renderFallbackCertificateCanvas();
+      }
+
+      await waitForCertificateAssets(sourceEl);
+
+      // Build an offscreen, full-scale, non-transformed clone at A4 landscape ratio (1122 x 794 px)
+      const exportHost = document.createElement("div");
+      exportHost.setAttribute("dir", "rtl");
+      exportHost.style.position = "fixed";
+      exportHost.style.left = "-10000px";
+      exportHost.style.top = "0";
+      exportHost.style.width = "1122px";
+      exportHost.style.height = "794px";
+      exportHost.style.backgroundColor = "#FFFDF8";
+      exportHost.style.zIndex = "-1";
+      exportHost.style.overflow = "hidden";
+      exportHost.style.pointerEvents = "none";
+
+      const clone = sourceEl.cloneNode(true);
+      clone.removeAttribute("id");
+      clone.style.width = "1122px";
+      clone.style.height = "794px";
+      clone.style.maxWidth = "none";
+      clone.style.margin = "0";
+      clone.style.transform = "none";
+      clone.style.boxShadow = "none";
+      clone.style.borderRadius = "0px";
+      clone.style.backgroundColor = "#FFFDF8";
+      clone.style.padding = "18px";
+
+      const innerBorder = clone.querySelector(".certificate-inner-border");
+      if (innerBorder) {
+        innerBorder.style.borderRadius = "0px";
+        innerBorder.style.padding = "34px 48px";
+      }
+
+      const schoolBadge = clone.querySelector(".cert-school-badge");
+      if (schoolBadge) {
+        schoolBadge.style.fontSize = "17px";
+        schoolBadge.style.padding = "7px 26px";
+      }
+
+      const mainTitle = clone.querySelector(".cert-main-title");
+      if (mainTitle) {
+        mainTitle.style.fontSize = "40px";
+        mainTitle.style.marginTop = "14px";
+      }
+
+      const divider = clone.querySelector(".cert-divider-line");
+      if (divider) {
+        divider.style.width = "210px";
+        divider.style.marginTop = "10px";
+      }
+
+      const introText = clone.querySelector(".cert-intro-text");
+      if (introText) {
+        introText.style.fontSize = "19px";
+      }
+
+      const studentNameBox = clone.querySelector(".cert-student-name");
+      if (studentNameBox) {
+        studentNameBox.style.fontSize = "42px";
+        studentNameBox.style.padding = "6px 34px";
+        studentNameBox.style.margin = "12px auto";
+      }
+
+      const programText = clone.querySelector(".cert-program-text");
+      if (programText) {
+        programText.style.fontSize = "19px";
+      }
+
+      const metricsRow = clone.querySelector(".cert-metrics-row");
+      if (metricsRow) {
+        metricsRow.style.maxWidth = "720px";
+        metricsRow.style.gap = "20px";
+        metricsRow.style.marginTop = "18px";
+      }
+
+      clone.querySelectorAll(".cert-metric-box").forEach(box => {
+        box.style.padding = "12px 18px";
+        box.style.borderRadius = "14px";
+      });
+
+      clone.querySelectorAll(".cert-metric-label").forEach(lbl => {
+        lbl.style.fontSize = "14px";
+      });
+
+      clone.querySelectorAll(".cert-metric-value").forEach(val => {
+        val.style.fontSize = "22px";
+        val.style.marginTop = "4px";
+      });
+
+      const sigRow = clone.querySelector(".cert-signatures-row");
+      if (sigRow) {
+        sigRow.style.paddingTop = "14px";
+      }
+
+      clone.querySelectorAll(".cert-sig-role").forEach(role => {
+        role.style.fontSize = "15px";
+      });
+
+      clone.querySelectorAll(".cert-sig-name").forEach(name => {
+        name.style.fontSize = "21px";
+        name.style.marginTop = "4px";
+      });
+
+      exportHost.appendChild(clone);
+      document.body.appendChild(exportHost);
+
+      try {
+        await waitForCertificateAssets(exportHost);
+
+        const dprScale = Math.min(3, Math.max(2, window.devicePixelRatio || 2));
+        const captured = await window.html2canvas(clone, {
+          scale: dprScale,
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: "#FFFDF8",
+          width: 1122,
+          height: 794,
+          windowWidth: 1122,
+          windowHeight: 794,
+          scrollX: 0,
+          scrollY: 0,
+          logging: false
+        });
+
+        // Composite onto a guaranteed opaque ivory canvas to prevent any transparent/black pixels on iOS Safari
+        const opaqueCanvas = document.createElement("canvas");
+        opaqueCanvas.width = captured.width;
+        opaqueCanvas.height = captured.height;
+        const oCtx = opaqueCanvas.getContext("2d");
+        if (oCtx) {
+          oCtx.fillStyle = "#FFFDF8";
+          oCtx.fillRect(0, 0, opaqueCanvas.width, opaqueCanvas.height);
+          oCtx.drawImage(captured, 0, 0);
+          return opaqueCanvas;
+        }
+        return captured;
+      } finally {
+        if (exportHost.parentNode) {
+          exportHost.parentNode.removeChild(exportHost);
+        }
+      }
+    }
+
+    function triggerCrossBrowserDownload(blobOrDataUrl, filename, mimeType) {
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+      if (typeof blobOrDataUrl === "string") {
+        const link = document.createElement("a");
+        link.href = blobOrDataUrl;
+        link.download = filename;
+        link.rel = "noopener";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        return;
+      }
+
+      const url = URL.createObjectURL(blobOrDataUrl);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      link.rel = "noopener";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      if (isIOS && mimeType === "application/pdf") {
+        setTimeout(() => {
+          try {
+            window.open(url, "_blank", "noopener");
+          } catch (e) {
+            // Ignore popup restriction
+          }
+        }, 250);
+      }
+
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+      }, 15000);
+    }
+
+    async function downloadCertificatePNG() {
+      try {
+        showToast("جاري تجهيز الشهادة بصيغة PNG...");
+        const canvas = await captureCertificateCanvas();
+        const filename = `شهادة_إتمام_الخطة_العلاجية_${getSanitizedStudentFileName()}.png`;
+
+        if (canvas.toBlob) {
+          await new Promise(resolve => {
+            canvas.toBlob(blob => {
+              if (blob) {
+                triggerCrossBrowserDownload(blob, filename, "image/png");
+              } else {
+                triggerCrossBrowserDownload(canvas.toDataURL("image/png"), filename, "image/png");
+              }
+              resolve();
+            }, "image/png", 1.0);
+          });
+        } else {
+          triggerCrossBrowserDownload(canvas.toDataURL("image/png"), filename, "image/png");
+        }
+
+        showToast("تم تحميل الشهادة بصيغة PNG عالية الجودة.");
+      } catch (err) {
+        try {
+          const fallbackCanvas = await renderFallbackCertificateCanvas();
+          const filename = `شهادة_إتمام_الخطة_العلاجية_${getSanitizedStudentFileName()}.png`;
+          triggerCrossBrowserDownload(fallbackCanvas.toDataURL("image/png"), filename, "image/png");
+          showToast("تم تحميل الشهادة بصيغة PNG.");
+        } catch (fallbackErr) {
+          showToast("تعذر تحميل الشهادة بصيغة PNG.");
+        }
+      }
+    }
+
+    async function printCertificatePDF() {
+      try {
+        showToast("جاري إنشاء ملف PDF بحجم A4 أفقي...");
+        const canvas = await captureCertificateCanvas();
+        const imgData = canvas.toDataURL("image/jpeg", 0.98);
+        const filename = `شهادة_إتمام_الخطة_العلاجية_${getSanitizedStudentFileName()}.pdf`;
+
+        const jsPDFConstructor = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+        if (!jsPDFConstructor) {
+          throw new Error("jsPDF library not available");
+        }
+
+        // Single A4 Landscape PDF (297 x 210 mm)
+        const pdf = new jsPDFConstructor({
+          orientation: "landscape",
+          unit: "mm",
+          format: "a4",
+          compress: true
+        });
+
+        pdf.setFillColor(255, 253, 248);
+        pdf.rect(0, 0, 297, 210, "F");
+        pdf.addImage(imgData, "JPEG", 0, 0, 297, 210, undefined, "FAST");
+
+        const pdfBlob = pdf.output("blob");
+        triggerCrossBrowserDownload(pdfBlob, filename, "application/pdf");
+
+        showToast("تم تصدير الشهادة بصيغة PDF (A4 أفقي).");
+      } catch (err) {
+        showToast("تعذر إنشاء ملف PDF، يرجى المحاولة مرة أخرى.");
+      }
+    }
+
+    async function renderFallbackCertificateCanvas() {
+      const stats = getOverallStats();
+      const formattedDate = formatArabicDate(state.completionDate);
+
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 1684;
+      canvas.height = 1190;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return canvas;
+
+      const bgGrad = ctx.createLinearGradient(0, 0, 1684, 1190);
+      bgGrad.addColorStop(0, "#FFFDF8");
+      bgGrad.addColorStop(1, "#FAF3E6");
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 1684, 1190);
+
+      const radGrad = ctx.createRadialGradient(842, 595, 110, 842, 595, 900);
+      radGrad.addColorStop(0, "rgba(255, 253, 248, 0)");
+      radGrad.addColorStop(1, "rgba(245, 231, 235, 0.45)");
+      ctx.fillStyle = radGrad;
+      ctx.fillRect(0, 0, 1684, 1190);
+
+      // Clean Double Gold Border
+      ctx.strokeStyle = "#C8A46A";
+      ctx.lineWidth = 5;
+      roundRectPath(ctx, 36, 36, 1612, 1118, 24);
+      ctx.stroke();
+
+      ctx.strokeStyle = "rgba(200, 164, 106, 0.75)";
+      ctx.lineWidth = 2.5;
+      roundRectPath(ctx, 56, 56, 1572, 1078, 16);
+      ctx.stroke();
+
+      ctx.direction = "rtl";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      ctx.fillStyle = "#49304F";
+      roundRectPath(ctx, 662, 112, 360, 56, 28);
+      ctx.fill();
+      ctx.strokeStyle = "#C8A46A";
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      ctx.fillStyle = "#E3CCA3";
+      ctx.font = "700 24px Tajawal, Cairo, sans-serif";
+      ctx.fillText(PROGRAM_META.school, 842, 141);
+
+      ctx.fillStyle = "#49304F";
+      ctx.font = "700 60px Amiri, Tajawal, serif";
+      ctx.fillText(PROGRAM_META.certificateTitle, 842, 240);
+
+      const lineGrad = ctx.createLinearGradient(580, 0, 1104, 0);
+      lineGrad.addColorStop(0, "rgba(200, 164, 106, 0)");
+      lineGrad.addColorStop(0.5, "#C8A46A");
+      lineGrad.addColorStop(1, "rgba(200, 164, 106, 0)");
+      ctx.strokeStyle = lineGrad;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(580, 294);
+      ctx.lineTo(1104, 294);
+      ctx.stroke();
+
+      ctx.fillStyle = "rgba(73, 48, 79, 0.85)";
+      ctx.font = "500 27px Tajawal, Cairo, sans-serif";
+      ctx.fillText(`تشهد إدارة ومعلمة اللغة الإنجليزية في ${PROGRAM_META.school} بأن الطالبة:`, 842, 365);
+
+      ctx.fillStyle = "#49304F";
+      ctx.font = "700 54px Amiri, Tajawal, serif";
+      ctx.fillText(state.studentName, 842, 455);
+
+      const nameMetrics = ctx.measureText(state.studentName);
+      const lineHalf = Math.min(500, Math.max(230, nameMetrics.width / 2 + 44));
+      ctx.strokeStyle = "#C8A46A";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(842 - lineHalf, 502);
+      ctx.lineTo(842 + lineHalf, 502);
+      ctx.stroke();
+
+      ctx.fillStyle = "rgba(73, 48, 79, 0.88)";
+      ctx.font = "500 27px Tajawal, Cairo, sans-serif";
+      ctx.fillText("قد أتمّت بنجاح جميع متطلبات ومهارات البرنامج العلاجي:", 842, 568);
+
+      ctx.fillStyle = "#49304F";
+      ctx.font = "800 31px Tajawal, Cairo, sans-serif";
+      ctx.fillText(`«${PROGRAM_META.title}»`, 842, 618);
+
+      // Two Separate Balanced Boxes
+      ctx.fillStyle = "#FAF2F5";
+      roundRectPath(ctx, 872, 685, 440, 150, 22);
+      ctx.fill();
+      ctx.strokeStyle = "#C8A46A";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = "rgba(73, 48, 79, 0.78)";
+      ctx.font = "700 22px Tajawal, Cairo, sans-serif";
+      ctx.fillText("الدرجة ونسبة الإتقان", 1092, 724);
+
+      ctx.fillStyle = "#49304F";
+      ctx.font = "800 37px Tajawal, Cairo, sans-serif";
+      ctx.fillText(`${stats.formattedPercentage}  (${stats.totalCorrect} / 60)`, 1092, 780);
+
+      ctx.fillStyle = "#FAF2F5";
+      roundRectPath(ctx, 372, 685, 440, 150, 22);
+      ctx.fill();
+      ctx.strokeStyle = "#C8A46A";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = "rgba(73, 48, 79, 0.78)";
+      ctx.font = "700 22px Tajawal, Cairo, sans-serif";
+      ctx.fillText("تاريخ الإتمام", 592, 724);
+
+      ctx.fillStyle = "#49304F";
+      ctx.font = "800 29px Tajawal, Cairo, sans-serif";
+      ctx.fillText(formattedDate, 592, 780);
+
+      ctx.strokeStyle = "rgba(200, 164, 106, 0.5)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(140, 905);
+      ctx.lineTo(1544, 905);
+      ctx.stroke();
+
+      // Teacher on FAR RIGHT, Principal on FAR LEFT
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#A48247";
+      ctx.font = "700 22px Tajawal, Cairo, sans-serif";
+      ctx.fillText("المعلمة", 1520, 956);
+      ctx.fillStyle = "#49304F";
+      ctx.font = "800 31px Tajawal, Cairo, sans-serif";
+      ctx.fillText(PROGRAM_META.teacher, 1520, 1006);
+
+      ctx.textAlign = "left";
+      ctx.fillStyle = "#A48247";
+      ctx.font = "700 22px Tajawal, Cairo, sans-serif";
+      ctx.fillText("مديرة المدرسة", 164, 956);
+      ctx.fillStyle = "#49304F";
+      ctx.font = "800 31px Tajawal, Cairo, sans-serif";
+      ctx.fillText(PROGRAM_META.principal, 164, 1006);
+
+      return canvas;
     }
 
     function roundRectPath(ctx, x, y, w, h, r) {
@@ -2414,74 +2150,52 @@
     }
 
     /*************************************************************************
-     * 10. ERROR BOUNDARY, SECURITY & MAIN RENDER ORCHESTRATOR
+     * 8. RESET PROGRESS WITH CONFIRMATION
      *************************************************************************/
-    function escapeHtml(str) {
-      if (str === null || str === undefined) return "";
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    function confirmResetAll() {
+      openModal({
+        icon: ICONS.reset,
+        title: "تأكيد إعادة ضبط التقدم",
+        body: "سيؤدي هذا الإجراء إلى مسح اسم الطالبة وجميع الإجابات والنتائج المحفوظة على هذا الجهاز والعودة إلى شاشة البداية. هل أنتِ متأكدة؟",
+        actions: [
+          {
+            label: "إلغاء",
+            className: "px-4 py-2.5 rounded-xl bg-blush text-plum text-sm font-bold hover:bg-blush-dark transition cursor-pointer"
+          },
+          {
+            label: "نعم، مسح والبدء من جديد",
+            className: "px-5 py-2.5 rounded-xl bg-rose-600 text-white text-sm font-bold hover:bg-rose-700 transition cursor-pointer",
+            onClick: () => {
+              clearEnvelopeTimers();
+              try {
+                localStorage.removeItem(STORAGE_KEY);
+              } catch (e) {
+                // Ignore
+              }
+              state = { ...DEFAULT_STATE, answers: {} };
+              envelopeStage = "expanded";
+              render({ resetScroll: true });
+              showToast("تمت إعادة ضبط التطبيق بنجاح.");
+            }
+          }
+        ]
+      });
     }
 
-    function renderErrorFallback(root, message) {
-      if (!root) return;
-      root.innerHTML = `
-        <div class="rounded-3xl academic-card p-6 sm:p-8 text-center space-y-4">
-          <h2 class="text-lg font-extrabold text-plum">تعذر عرض هذا الجزء مؤقتًا</h2>
-          <p class="text-sm text-plum/80">${escapeHtml(message || "حدث خطأ غير متوقع أثناء العرض.")}</p>
-          <button type="button" onclick="renderApp()" class="px-5 py-2.5 rounded-xl bg-plum text-ivory text-sm font-bold cursor-pointer">
-            إعادة المحاولة
-          </button>
-        </div>
-      `;
-    }
-
-    function renderApp() {
-      const root = document.getElementById("app-root");
-      if (!root) return;
-
+    /*************************************************************************
+     * 9. INITIALIZATION
+     *************************************************************************/
+    document.addEventListener("DOMContentLoaded", () => {
       try {
-        updateTopBar();
-
-        const nextScreenKey = (!state.studentName || !state.studentName.trim())
-          ? "welcome"
-          : (state.isSubmitted ? "results" : "exam");
-
-        const screenChanged = currentScreenKey !== "" && currentScreenKey !== nextScreenKey;
-        currentScreenKey = nextScreenKey;
-
-        if (nextScreenKey === "welcome") {
-          renderWelcomeScreen(root);
-        } else if (nextScreenKey === "results") {
-          renderFinalResultsScreen(root);
-        } else {
-          renderContinuousExamScreen(root);
+        if (state.screen === "final") {
+          envelopeStage = "expanded";
         }
-
-        if (screenChanged) {
-          resetScrollToTop();
-        }
-      } catch (err) {
-        renderErrorFallback(root, err && err.message ? err.message : "");
-      }
-    }
-
-    window.addEventListener("error", (event) => {
-      const root = document.getElementById("app-root");
-      if (root && !root.innerHTML.trim()) {
-        renderErrorFallback(root, event && event.message ? event.message : "");
-      }
-    });
-
-    window.addEventListener("DOMContentLoaded", () => {
-      try {
-        renderApp();
+        render({ resetScroll: true });
       } catch (err) {
         const root = document.getElementById("app-root");
-        renderErrorFallback(root, err && err.message ? err.message : "");
+        if (root) {
+          root.innerHTML = `<div class="p-6 text-center text-plum font-bold">حدث خطأ غير متوقع أثناء تحميل التطبيق. يرجى تحديث الصفحة.</div>`;
+        }
       }
     });
   </script>
