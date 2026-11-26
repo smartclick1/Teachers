@@ -1,0 +1,2489 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>خطة علاجية لمهارات الاختبار التشخيصي | ثانوية أضم للبنات</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            plum: {
+              DEFAULT: '#49304F',
+              dark: '#35213A',
+              light: '#62426A',
+            },
+            lavender: {
+              DEFAULT: '#B5A3C7',
+              light: '#DDD3E7',
+              soft: '#EFEBF4',
+            },
+            blush: {
+              DEFAULT: '#F5E7EB',
+              light: '#FAF2F5',
+            },
+            ivory: {
+              DEFAULT: '#FFFDF8',
+              warm: '#FBF7EE',
+            },
+            gold: {
+              DEFAULT: '#C8A46A',
+              dark: '#A48247',
+              light: '#E3CCA3',
+              pale: '#F6EEDF',
+            }
+          },
+          fontFamily: {
+            arabic: ['Tajawal', 'Cairo', 'system-ui', 'sans-serif'],
+            serifAr: ['Amiri', 'Georgia', 'serif'],
+            english: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            academic: '0 10px 30px -8px rgba(73, 48, 79, 0.09)',
+            card: '0 4px 20px -2px rgba(73, 48, 79, 0.06)',
+            goldGlow: '0 8px 25px -4px rgba(200, 164, 106, 0.35)',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --plum: #49304F;
+      --lavender: #B5A3C7;
+      --blush: #F5E7EB;
+      --ivory: #FFFDF8;
+      --gold: #C8A46A;
+    }
+
+    html {
+      scroll-behavior: auto;
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: #FFFDF8;
+      color: #49304F;
+      font-family: 'Tajawal', 'Cairo', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Shared application wrapper outside individual page components */
+    .app-content-wrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      padding-top: calc(16px + env(safe-area-inset-top, 0px));
+    }
+
+    /* Google Sites & iPhone Safari top-aligned main container */
+    .safe-main-shell {
+      width: 100%;
+      max-width: 56rem;
+      margin-left: auto;
+      margin-right: auto;
+      padding-top: 1.25rem;
+      padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+      padding-left: max(0.875rem, env(safe-area-inset-left, 0px));
+      padding-right: max(0.875rem, env(safe-area-inset-right, 0px));
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+    }
+
+    .envelope-rig {
+      position: relative;
+      width: min(88vw, 400px);
+      height: 230px;
+      margin: 2px auto 0;
+      perspective: 1400px;
+      cursor: pointer;
+      transition:
+        opacity 0.55s ease,
+        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+        height 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+        margin 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .envelope-rig.stage-expanded {
+      height: 0px;
+      margin-top: 0px;
+      opacity: 0;
+      transform: translateY(24px) scale(0.92);
+      pointer-events: none;
+    }
+
+    .env-back-wall {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      background: linear-gradient(155deg, #3A2440 0%, #2C1A31 100%);
+      border-radius: 16px;
+      border: 2px solid #C8A46A;
+      box-shadow: 0 16px 36px -12px rgba(73, 48, 79, 0.32);
+    }
+
+    .env-front-pocket {
+      position: absolute;
+      inset: 0;
+      z-index: 30;
+      pointer-events: none;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .env-front-pocket::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, #523659 0%, #3E2644 100%);
+      clip-path: polygon(0 26%, 50% 63%, 100% 26%, 100% 100%, 0 100%);
+      border-bottom: 2px solid #C8A46A;
+    }
+
+    .env-pocket-trim {
+      position: absolute;
+      inset: 0;
+      z-index: 31;
+      pointer-events: none;
+    }
+
+    .env-top-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 58%;
+      z-index: 40;
+      background: linear-gradient(180deg, #614169 0%, #49304F 100%);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top center;
+      transition: transform 0.65s cubic-bezier(0.34, 1.25, 0.64, 1), z-index 0s linear 0.28s;
+      border-top: 2px solid #C8A46A;
+      pointer-events: none;
+    }
+
+    .envelope-rig.is-open .env-top-flap {
+      transform: rotateX(180deg);
+      z-index: 12;
+    }
+
+    .env-wax-seal {
+      position: absolute;
+      top: 48%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 45;
+      width: 56px;
+      height: 56px;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 35% 30%, #EFE0BE, #C8A46A 58%, #9A763C 100%);
+      border: 2px solid #FFFDF8;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: opacity 0.35s ease, transform 0.4s ease;
+    }
+
+    .envelope-rig.is-open .env-wax-seal {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.55);
+      pointer-events: none;
+    }
+
+    /* Single Real Certificate Element */
+    .single-certificate-stage {
+      position: relative;
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      transform-origin: top center;
+      transition:
+        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.5s ease,
+        margin-top 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .single-certificate-stage.cert-in-pocket {
+      z-index: 20;
+      margin-top: -205px;
+      transform: scale(0.42) translateY(20px);
+      opacity: 0.96;
+      pointer-events: none;
+      clip-path: inset(0 0 28% 0 round 14px);
+    }
+
+    .single-certificate-stage.cert-emerging {
+      z-index: 50;
+      margin-top: -215px;
+      transform: scale(0.6) translateY(-75px);
+      opacity: 1;
+      clip-path: inset(0 0 0 0 round 14px);
+    }
+
+    .single-certificate-stage.cert-full-focus {
+      z-index: 50;
+      margin-top: 0px;
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      clip-path: none;
+    }
+
+    @media (max-width: 640px) {
+      .envelope-rig {
+        height: 180px;
+      }
+      .single-certificate-stage.cert-in-pocket {
+        margin-top: -160px;
+        transform: scale(0.48) translateY(12px);
+      }
+      .single-certificate-stage.cert-emerging {
+        margin-top: -170px;
+        transform: scale(0.72) translateY(-55px);
+      }
+    }
+
+    .gold-sparkle {
+      position: absolute;
+      color: #C8A46A;
+      pointer-events: none;
+      z-index: 48;
+      opacity: 0;
+      animation: sparkleFloat 1.3s ease-out forwards;
+    }
+
+    @keyframes sparkleFloat {
+      0% {
+        opacity: 0;
+        transform: translateY(6px) scale(0.5);
+      }
+      35% {
+        opacity: 0.9;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-24px) scale(1);
+      }
+    }
+
+    /* Horizontal A4 Landscape Rectangle (297 / 210) on Mobile & Desktop */
+    .certificate-frame {
+      background:
+        radial-gradient(circle at 50% 45%, rgba(255, 253, 248, 0.99) 42%, rgba(245, 231, 235, 0.34) 100%),
+        linear-gradient(155deg, #FFFDF8 0%, #FAF4E8 100%);
+      border: 2px solid #C8A46A;
+      position: relative;
+      width: 100%;
+      aspect-ratio: 297 / 210;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(5px, 1.3vw, 13px);
+      box-sizing: border-box;
+      overflow: hidden;
+      box-shadow:
+        0 16px 38px -12px rgba(73, 48, 79, 0.18),
+        0 4px 12px -2px rgba(200, 164, 106, 0.2);
+    }
+
+    .certificate-inner-border {
+      border: 1px solid rgba(200, 164, 106, 0.75);
+      position: relative;
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(7px, 1.9vw, 22px) clamp(10px, 2.8vw, 34px);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .cert-school-badge {
+      font-size: clamp(8.5px, 1.55vw, 13px);
+      padding: clamp(2px, 0.45vw, 5px) clamp(9px, 2vw, 18px);
+    }
+
+    .cert-main-title {
+      font-size: clamp(13px, 3vw, 29px);
+      line-height: 1.2;
+      margin-top: clamp(3px, 0.8vw, 9px);
+    }
+
+    .cert-divider-line {
+      width: clamp(60px, 15vw, 150px);
+      height: 1px;
+      margin: clamp(3px, 0.65vw, 7px) auto 0;
+      background: linear-gradient(90deg, transparent, #C8A46A, transparent);
+    }
+
+    .cert-intro-text {
+      font-size: clamp(8.5px, 1.6vw, 14.5px);
+      line-height: 1.3;
+    }
+
+    .cert-student-name {
+      font-size: clamp(14px, 3.2vw, 32px);
+      line-height: 1.22;
+      padding: clamp(1px, 0.35vw, 4px) clamp(10px, 2.6vw, 24px);
+      margin: clamp(2px, 0.7vw, 7px) auto;
+    }
+
+    .cert-program-text {
+      font-size: clamp(8.5px, 1.6vw, 14.5px);
+      line-height: 1.3;
+    }
+
+    .cert-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(6px, 1.5vw, 14px);
+      width: 100%;
+      max-width: clamp(230px, 64%, 520px);
+      margin: clamp(4px, 1.1vw, 12px) auto 0;
+    }
+
+    .cert-metric-box {
+      padding: clamp(3px, 0.8vw, 8px) clamp(6px, 1.3vw, 12px);
+      border-radius: clamp(7px, 1.2vw, 12px);
+    }
+
+    .cert-metric-label {
+      font-size: clamp(7px, 1.2vw, 11px);
+      line-height: 1.2;
+    }
+
+    .cert-metric-value {
+      font-size: clamp(9.5px, 1.9vw, 17px);
+      line-height: 1.22;
+      margin-top: 2px;
+    }
+
+    .cert-signatures-row {
+      padding-top: clamp(4px, 0.9vw, 10px);
+      border-top: 1px solid rgba(200, 164, 106, 0.45);
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+    }
+
+    .cert-sig-role {
+      font-size: clamp(7.5px, 1.3vw, 11.5px);
+      line-height: 1.2;
+    }
+
+    .cert-sig-name {
+      font-size: clamp(9px, 1.75vw, 15.5px);
+      line-height: 1.22;
+      margin-top: 2px;
+    }
+
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 8mm;
+      }
+      body {
+        background: #FFFDF8 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      header,
+      .top-safe-spacer,
+      #toast-container,
+      #modal-backdrop,
+      #certificate-actions-bar,
+      section:not(#printable-certificate-section) {
+        display: none !important;
+      }
+      main {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+      }
+      #printable-certificate-section {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .single-certificate-stage {
+        transform: none !important;
+        opacity: 1 !important;
+        margin: 0 auto !important;
+        max-width: 100% !important;
+        clip-path: none !important;
+      }
+      .certificate-frame {
+        box-shadow: none !important;
+        width: 100% !important;
+        max-height: 185mm !important;
+      }
+    }
+  </style>
+</head>
+<body class="academic-bg font-arabic antialiased selection:bg-blush selection:text-plum">
+
+  <!-- Toast Notification Container (No alert()) -->
+  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 w-[92vw] max-w-md pointer-events-none"></div>
+
+  <!-- Custom Modal / Confirmation Dialog Container (No confirm()) -->
+  <div id="modal-backdrop" class="fixed inset-0 z-[90] bg-plum-dark/55 hidden items-center justify-center p-4">
+    <div id="modal-card" class="bg-ivory border border-gold/60 rounded-3xl max-w-md w-full p-6 shadow-2xl fade-in-panel"></div>
+  </div>
+
+  <!-- Shared Application Wrapper (keeps only background behind Safari address bar across ALL screens) -->
+  <div id="app-wrapper" class="app-content-wrapper">
+    <!-- Minimal Top Header Bar -->
+    <header class="z-40 bg-ivory/95 border-b border-lavender-light/70">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 min-h-[3.5rem] sm:min-h-[4rem] py-1.5 flex items-center justify-between gap-3">
+        <!-- Right side in RTL: School & Program Title -->
+        <button type="button" onclick="navigateHome()" class="flex items-center gap-2.5 text-right group focus:outline-none">
+          <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-plum text-gold-light flex items-center justify-center font-serifAr font-bold text-base shadow-sm group-hover:bg-plum-light transition-colors shrink-0">
+            ض
+          </span>
+          <div class="leading-tight">
+            <p class="text-xs sm:text-sm font-extrabold text-plum">خطة علاجية لمهارات الاختبار التشخيصي</p>
+            <p class="text-[11px] text-plum/70 font-medium">ثانوية أضم للبنات</p>
+          </div>
+        </button>
+
+        <!-- Left side in RTL: Student badge, Fullscreen & Reset -->
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <span id="header-student-pill" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blush/85 border border-lavender-light text-xs font-bold text-plum max-w-[180px] truncate"></span>
+
+          <button type="button" onclick="toggleFullscreen()" title="ملء الشاشة" aria-label="ملء الشاشة"
+            class="p-2 rounded-xl text-plum/80 hover:text-plum hover:bg-lavender-soft/80 transition-colors">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+            </svg>
+          </button>
+
+          <button type="button" id="header-reset-btn" onclick="confirmResetProgress()" title="إعادة ضبط التقدم" aria-label="إعادة ضبط التقدم"
+            class="hidden items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold text-rose-800 bg-rose-50/80 hover:bg-rose-100 border border-rose-200/80 transition-colors">
+            <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+            </svg>
+            <span class="hidden sm:inline">إعادة ضبط</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main id="app-root" class="safe-main-shell"></main>
+  </div>
+
+  <script>
+    /*************************************************************************
+     * 1. APPROVED METADATA & PLAN 1 QUESTION BANK (60 QUESTIONS, 12 SKILLS)
+     *************************************************************************/
+    const PROGRAM_META = Object.freeze({
+      title: "خطة علاجية لمهارات الاختبار التشخيصي",
+      school: "ثانوية أضم للبنات",
+      teacher: "سميرة فهد المتعاني",
+      principal: "غالية المالكي",
+      certificateTitle: "شهادة إتمام الخطة العلاجية",
+      totalQuestions: 60,
+      totalSkills: 12,
+      questionsPerSkill: 5
+    });
+
+    const SKILLS_DATA = Object.freeze([
+      {
+        id: 1,
+        enTitle: "Present Perfect Tense",
+        arTitle: "المضارع التام",
+        questions: [
+          {
+            id: "q1",
+            number: 1,
+            text: "Sara ______ her homework already.",
+            options: { A: "finish", B: "finished", C: "has finished", D: "finishing" },
+            correct: "C",
+            explanation: "يُستخدم المضارع التام (has/have + التصريف الثالث) مع كلمة already، ومع المفرد Sara نستخدم has finished."
+          },
+          {
+            id: "q2",
+            number: 2,
+            text: "We ______ in this city since 2020.",
+            options: { A: "have lived", B: "lived", C: "are living", D: "live" },
+            correct: "A",
+            explanation: "وجود since متبوعًا بنقطة بداية زمنية (2020) يدل على المضارع التام، ومع We نستخدم have lived."
+          },
+          {
+            id: "q3",
+            number: 3,
+            text: "Have you ______ visited London?",
+            options: { A: "never", B: "ever", C: "yet", D: "since" },
+            correct: "B",
+            explanation: "تُستخدم ever في السؤال عن الخبرة الحياتية في زمن المضارع التام."
+          },
+          {
+            id: "q4",
+            number: 4,
+            text: "My brother hasn't cleaned his room ______.",
+            options: { A: "already", B: "since", C: "for", D: "yet" },
+            correct: "D",
+            explanation: "تُستخدم yet في نهاية الجملة المنفية أو السؤال للدلالة على عدم حدوث الفعل حتى الآن."
+          },
+          {
+            id: "q5",
+            number: 5,
+            text: "They ______ three books this month.",
+            options: { A: "reads", B: "have read", C: "reading", D: "has read" },
+            correct: "B",
+            explanation: "مع الجمع They في المضارع التام نستخدم have + التصريف الثالث للفعل (have read)."
+          }
+        ]
+      },
+      {
+        id: 2,
+        enTitle: "Vocabulary: Personality Traits (Honesty)",
+        arTitle: "صفات الشخصية",
+        questions: [
+          {
+            id: "q6",
+            number: 6,
+            text: "An honest person always tells the ______.",
+            options: { A: "truth", B: "joke", C: "secret", D: "story" },
+            correct: "A",
+            explanation: "الشخص الصادق يقول الحقيقة دائمًا (tells the truth)."
+          },
+          {
+            id: "q7",
+            number: 7,
+            text: "Someone who never lies is ______.",
+            options: { A: "lazy", B: "rude", C: "honest", D: "selfish" },
+            correct: "C",
+            explanation: "الشخص الذي لا يكذب أبدًا يوصف بأنه صادق (honest)."
+          },
+          {
+            id: "q8",
+            number: 8,
+            text: "Fatimah returned the money she found because she is ______.",
+            options: { A: "careless", B: "trustworthy", C: "impatient", D: "jealous" },
+            correct: "B",
+            explanation: "إعادة المال المفقود تدل على الأمانة ومحل الثقة (trustworthy)."
+          },
+          {
+            id: "q9",
+            number: 9,
+            text: "Which word is the opposite of \"honest\"?",
+            options: { A: "polite", B: "generous", C: "friendly", D: "dishonest" },
+            correct: "D",
+            explanation: "إضافة البادئة dis إلى honest تعطي الضد: dishonest (غير صادق / مخادع)."
+          },
+          {
+            id: "q10",
+            number: 10,
+            text: "A person who admits a mistake instead of hiding it shows ______.",
+            options: { A: "honesty", B: "laziness", C: "anger", D: "fear" },
+            correct: "A",
+            explanation: "الاعتراف بالخطأ بدل إخفائه يُظهر الصدق والأمانة (honesty)."
+          }
+        ]
+      },
+      {
+        id: 3,
+        enTitle: "Superlative Adjectives",
+        arTitle: "صيغة التفضيل العليا",
+        questions: [
+          {
+            id: "q11",
+            number: 11,
+            text: "Mount Everest is ______ mountain in the world.",
+            options: { A: "higher", B: "the highest", C: "high", D: "highest than" },
+            correct: "B",
+            explanation: "للمقارنة بين شيء ومجموعة كاملة (في العالم) نستخدم صيغة التفضيل العليا: the + صفة + est."
+          },
+          {
+            id: "q12",
+            number: 12,
+            text: "This is ______ movie I have ever watched.",
+            options: { A: "interesting", B: "more interesting", C: "the most interesting", D: "most interesting than" },
+            correct: "C",
+            explanation: "الصفة الطويلة interesting تأخذ the most في صيغة التفضيل العليا: the most interesting."
+          },
+          {
+            id: "q13",
+            number: 13,
+            text: "Of all the students in the class, Amal is ______.",
+            options: { A: "the tallest", B: "taller", C: "tall", D: "most tall" },
+            correct: "A",
+            explanation: "عبارة Of all the students تدل على التفضيل الأعلى، والصفة القصيرة tall تصبح the tallest."
+          },
+          {
+            id: "q14",
+            number: 14,
+            text: "Which sentence is correct?",
+            options: {
+              A: "This is the goodest restaurant in town.",
+              B: "This is the better restaurant in town.",
+              C: "This is the most good restaurant in town.",
+              D: "This is the best restaurant in town."
+            },
+            correct: "D",
+            explanation: "صفة good شاذة في صيغة التفضيل العليا وتصبح the best."
+          },
+          {
+            id: "q15",
+            number: 15,
+            text: "February is ______ month of the year.",
+            options: { A: "shorter", B: "the shortest", C: "shortest than", D: "the most short" },
+            correct: "B",
+            explanation: "للمقارنة بين شهر وبقية أشهر السنة نستخدم صيغة التفضيل العليا: the shortest."
+          }
+        ]
+      },
+      {
+        id: 4,
+        enTitle: "Modal Verbs (Should / Shouldn’t)",
+        arTitle: "الأفعال الناقصة",
+        questions: [
+          {
+            id: "q16",
+            number: 16,
+            text: "You ______ drink enough water every day.",
+            options: { A: "shouldn't", B: "should", C: "don't", D: "aren't" },
+            correct: "B",
+            explanation: "نستخدم should لإعطاء نصيحة إيجابية مفيدة: شرب كمية كافية من الماء يوميًا."
+          },
+          {
+            id: "q17",
+            number: 17,
+            text: "Students ______ use their phones during an exam.",
+            options: { A: "should", B: "are", C: "shouldn't", D: "have" },
+            correct: "C",
+            explanation: "نستخدم shouldn't للنصح بعدم القيام بفعل غير مناسب أثناء الاختبار."
+          },
+          {
+            id: "q18",
+            number: 18,
+            text: "You look tired. You ______ get some rest.",
+            options: { A: "should", B: "shouldn't", C: "doesn't", D: "aren't" },
+            correct: "A",
+            explanation: "الشخص المتعب يُنصح بأخذ قسط من الراحة باستخدام should."
+          },
+          {
+            id: "q19",
+            number: 19,
+            text: "Which sentence gives correct advice?",
+            options: {
+              A: "You should to study every day.",
+              B: "You should studying every day.",
+              C: "You should studies every day.",
+              D: "You should study every day."
+            },
+            correct: "D",
+            explanation: "يأتي بعد should الفعل في المصدر المجرد (base verb) دون to أو s أو ing."
+          },
+          {
+            id: "q20",
+            number: 20,
+            text: "People ______ throw rubbish in the street.",
+            options: { A: "should", B: "shouldn't", C: "can to", D: "should to" },
+            correct: "B",
+            explanation: "رمي النفايات في الشارع سلوك خاطئ، لذا نستخدم shouldn't."
+          }
+        ]
+      },
+      {
+        id: 5,
+        enTitle: "Quantifiers (Much / Many / Few)",
+        arTitle: "أدوات الكمية",
+        questions: [
+          {
+            id: "q21",
+            number: 21,
+            text: "How ______ students are there in your classroom?",
+            options: { A: "much", B: "many", C: "little", D: "any" },
+            correct: "B",
+            explanation: "كلمة students اسم جمع معدود، فنسأل عنه بـ How many."
+          },
+          {
+            id: "q22",
+            number: 22,
+            text: "There isn't ______ milk left in the refrigerator.",
+            options: { A: "many", B: "few", C: "much", D: "several" },
+            correct: "C",
+            explanation: "كلمة milk اسم غير معدود، وفي الجملة المنفية نستخدم much."
+          },
+          {
+            id: "q23",
+            number: 23,
+            text: "Only a ______ students attended the extra lesson.",
+            options: { A: "few", B: "much", C: "little", D: "any" },
+            correct: "A",
+            explanation: "تُستخدم a few مع الأسماء المعدودة الجمع (students) للدلالة على عدد قليل."
+          },
+          {
+            id: "q24",
+            number: 24,
+            text: "How ______ time do we have before the exam starts?",
+            options: { A: "many", B: "few", C: "several", D: "much" },
+            correct: "D",
+            explanation: "كلمة time هنا غير معدودة، لذا نستخدم How much للسؤال عن الكمية/المدة."
+          },
+          {
+            id: "q25",
+            number: 25,
+            text: "Which sentence is grammatically correct?",
+            options: {
+              A: "There are much books on the shelf.",
+              B: "There is many water in the bottle.",
+              C: "There are a few apples in the basket.",
+              D: "There are little chairs in the room."
+            },
+            correct: "C",
+            explanation: "apples اسم جمع معدود، لذا يصح معه There are a few."
+          }
+        ]
+      },
+      {
+        id: 6,
+        enTitle: "Future with Be Going To",
+        arTitle: "المستقبل باستخدام Going To",
+        questions: [
+          {
+            id: "q26",
+            number: 26,
+            text: "I ______ visit my grandmother next weekend.",
+            options: { A: "am going to", B: "is going to", C: "are going to", D: "going to" },
+            correct: "A",
+            explanation: "الضمير I يأخذ am متبوعًا بـ going to + المصدر."
+          },
+          {
+            id: "q27",
+            number: 27,
+            text: "Look at those dark clouds! It ______ rain.",
+            options: { A: "are going to", B: "is going to", C: "am going to", D: "going" },
+            correct: "B",
+            explanation: "الضمير It يأخذ is going to للتنبؤ المبني على دليل واضح (الغيوم الداكنة)."
+          },
+          {
+            id: "q28",
+            number: 28,
+            text: "They ______ travel to Jeddah tomorrow.",
+            options: { A: "is going to", B: "am going to", C: "are going to", D: "going to" },
+            correct: "C",
+            explanation: "الضمير They يأخذ are going to للتعبير عن خطة أو نية مستقبلية."
+          },
+          {
+            id: "q29",
+            number: 29,
+            text: "Which sentence is correct?",
+            options: {
+              A: "She going to buy a new bag.",
+              B: "She is going buy a new bag.",
+              C: "She are going to buy a new bag.",
+              D: "She is going to buy a new bag."
+            },
+            correct: "D",
+            explanation: "الصيغة الصحيحة هي فاعل + (am/is/are) + going to + مصدر الفعل: She is going to buy..."
+          },
+          {
+            id: "q30",
+            number: 30,
+            text: "______ you going to study English tonight?",
+            options: { A: "Is", B: "Are", C: "Am", D: "Do" },
+            correct: "B",
+            explanation: "في السؤال مع الضمير you في صيغة going to نبدأ بـ Are."
+          }
+        ]
+      },
+      {
+        id: 7,
+        enTitle: "Relative Pronouns (Who / Which / Whose / Where)",
+        arTitle: "ضمائر الوصل",
+        questions: [
+          {
+            id: "q31",
+            number: 31,
+            text: "The teacher ______ helped me is very kind.",
+            options: { A: "which", B: "where", C: "who", D: "whose" },
+            correct: "C",
+            explanation: "نستخدم ضمير الوصل who للإشارة إلى العاقل (The teacher)."
+          },
+          {
+            id: "q32",
+            number: 32,
+            text: "This is the book ______ I bought yesterday.",
+            options: { A: "which", B: "who", C: "where", D: "whose" },
+            correct: "A",
+            explanation: "نستخدم ضمير الوصل which للإشارة إلى غير العاقل (the book)."
+          },
+          {
+            id: "q33",
+            number: 33,
+            text: "The girl ______ father is a doctor is my friend.",
+            options: { A: "which", B: "who", C: "where", D: "whose" },
+            correct: "D",
+            explanation: "نستخدم whose للدلالة على الملكية (والد الفتاة: whose father)."
+          },
+          {
+            id: "q34",
+            number: 34,
+            text: "This is the school ______ my mother works.",
+            options: { A: "who", B: "where", C: "whose", D: "which" },
+            correct: "B",
+            explanation: "نستخدم where للإشارة إلى المكان الذي يحدث فيه الفعل (تعمل فيه والدتي)."
+          },
+          {
+            id: "q35",
+            number: 35,
+            text: "The man ______ lives next door is an engineer.",
+            options: { A: "who", B: "which", C: "whose", D: "where" },
+            correct: "A",
+            explanation: "نستخدم who مع الاسم العاقل (The man)."
+          }
+        ]
+      },
+      {
+        id: 8,
+        enTitle: "Adjectives and Adverbs",
+        arTitle: "الصفات والظروف",
+        questions: [
+          {
+            id: "q36",
+            number: 36,
+            text: "The student answered the question ______.",
+            options: { A: "correct", B: "correctly", C: "correction", D: "correcting" },
+            correct: "B",
+            explanation: "نحتاج إلى ظرف حال (adverb) ليصف كيفية حدوث الفعل answered، لذا نختار correctly."
+          },
+          {
+            id: "q37",
+            number: 37,
+            text: "She is a ______ driver.",
+            options: { A: "carefully", B: "care", C: "careful", D: "caring" },
+            correct: "C",
+            explanation: "نحتاج إلى صفة (adjective) قبل الاسم المفرد driver، فنختار careful."
+          },
+          {
+            id: "q38",
+            number: 38,
+            text: "The children played ______ in the garden.",
+            options: { A: "happy", B: "happiness", C: "happier", D: "happily" },
+            correct: "D",
+            explanation: "نصف الفعل played بالظرف happily (بسعادة)."
+          },
+          {
+            id: "q39",
+            number: 39,
+            text: "The exam was very ______.",
+            options: { A: "easy", B: "easily", C: "ease", D: "easiest" },
+            correct: "A",
+            explanation: "بعد الفعل الناسخ was نستخدم صفة تصف الاختبار: easy."
+          },
+          {
+            id: "q40",
+            number: 40,
+            text: "Which sentence uses an adverb correctly?",
+            options: {
+              A: "He speaks English fluent.",
+              B: "He speaks English fluency.",
+              C: "He speaks English fluently.",
+              D: "He speaks English more fluent."
+            },
+            correct: "C",
+            explanation: "الظرف fluently يصف طريقة التحدث (speaks English fluently) بشكل صحيح."
+          }
+        ]
+      },
+      {
+        id: 9,
+        enTitle: "Gerunds and Infinitives",
+        arTitle: "المصدر باستخدام ing أو to + verb",
+        questions: [
+          {
+            id: "q41",
+            number: 41,
+            text: "I enjoy ______ English stories.",
+            options: { A: "read", B: "reading", C: "to reading", D: "reads" },
+            correct: "B",
+            explanation: "الفعل enjoy يتبعه عادةً فعل بصيغة Gerund (verb + ing): reading."
+          },
+          {
+            id: "q42",
+            number: 42,
+            text: "She decided ______ a new language.",
+            options: { A: "learn", B: "learning", C: "learns", D: "to learn" },
+            correct: "D",
+            explanation: "الفعل decide يتبعه المصدر to + verb: to learn."
+          },
+          {
+            id: "q43",
+            number: 43,
+            text: "They want ______ a new computer.",
+            options: { A: "to buy", B: "buying", C: "buy", D: "buys" },
+            correct: "A",
+            explanation: "الفعل want يتبعه to + verb: to buy."
+          },
+          {
+            id: "q44",
+            number: 44,
+            text: "My sister is interested in ______ photographs.",
+            options: { A: "take", B: "to take", C: "taking", D: "takes" },
+            correct: "C",
+            explanation: "بعد حروف الجر مثل in نستخدم صيغة verb + ing: taking."
+          },
+          {
+            id: "q45",
+            number: 45,
+            text: "Which sentence is correct?",
+            options: {
+              A: "He hopes passing the exam.",
+              B: "He hopes to pass the exam.",
+              C: "He hopes pass the exam.",
+              D: "He hopes to passing the exam."
+            },
+            correct: "B",
+            explanation: "الفعل hope يتبعه to + المصدر المجرد: He hopes to pass the exam."
+          }
+        ]
+      },
+      {
+        id: 10,
+        enTitle: "Past Continuous Tense",
+        arTitle: "الماضي المستمر",
+        questions: [
+          {
+            id: "q46",
+            number: 46,
+            text: "I ______ TV when my mother called me.",
+            options: { A: "watch", B: "watched", C: "was watching", D: "am watching" },
+            correct: "C",
+            explanation: "حدث كان مستمرًا في الماضي عندما قطعه حدث آخر يستخدم الماضي المستمر: was watching."
+          },
+          {
+            id: "q47",
+            number: 47,
+            text: "They ______ football at five o'clock yesterday.",
+            options: { A: "were playing", B: "was playing", C: "are playing", D: "play" },
+            correct: "A",
+            explanation: "تحديد وقت محدد في الماضي (at five o'clock yesterday) مع الجمع They يأخذ were playing."
+          },
+          {
+            id: "q48",
+            number: 48,
+            text: "While Sara ______ her sister was reading.",
+            options: { A: "cook", B: "cooks", C: "is cooking", D: "was cooking" },
+            correct: "D",
+            explanation: "مع الرابط While وحدث مستمر في الماضي مع المفرد Sara نستخدم was cooking."
+          },
+          {
+            id: 49,
+            number: 49,
+            text: "What ______ you doing when the lights went out?",
+            options: { A: "was", B: "were", C: "are", D: "did" },
+            correct: "B",
+            explanation: "في صيغة السؤال بالماضي المستمر مع الضمير you نستخدم were."
+          },
+          {
+            id: "q50",
+            number: 50,
+            text: "Which sentence is correct?",
+            options: {
+              A: "The students was studying when the bell rang.",
+              B: "The students were study when the bell rang.",
+              C: "The students were studying when the bell rang.",
+              D: "The students are studying when the bell rang."
+            },
+            correct: "C",
+            explanation: "الفاعل الجمع The students يأخذ were + verb-ing: were studying."
+          }
+        ]
+      },
+      {
+        id: 11,
+        enTitle: "First Conditional",
+        arTitle: "الحالة الشرطية الأولى",
+        questions: [
+          {
+            id: "q51",
+            number: 51,
+            text: "If it rains tomorrow, we ______ at home.",
+            options: { A: "stay", B: "stayed", C: "staying", D: "will stay" },
+            correct: "D",
+            explanation: "في الحالة الشرطية الأولى يكون جواب الشرط مستقبلًا باستخدام will + المصدر: will stay."
+          },
+          {
+            id: "q52",
+            number: 52,
+            text: "If you study hard, you ______ the exam.",
+            options: { A: "will pass", B: "passed", C: "passing", D: "passes" },
+            correct: "A",
+            explanation: "جملة الشرط في المضارع البسيط (study) وجواب الشرط يستخدم will pass."
+          },
+          {
+            id: "q53",
+            number: 53,
+            text: "If she ______ early, she will catch the bus.",
+            options: { A: "leave", B: "leaves", C: "will leave", D: "leaving" },
+            correct: "B",
+            explanation: "في جملة If بالحالة الأولى نستخدم المضارع البسيط، ومع المفرد she نضيف s: leaves."
+          },
+          {
+            id: "q54",
+            number: 54,
+            text: "Which sentence uses the first conditional correctly?",
+            options: {
+              A: "If I will have time, I will call you.",
+              B: "If I had time, I will call you.",
+              C: "If I have time, I will call you.",
+              D: "If I having time, I will call you."
+            },
+            correct: "C",
+            explanation: "الصيغة الصحيحة: If + مضارع بسيط (I have time)، والنتيجة will + مصدر (I will call you)."
+          },
+          {
+            id: "q55",
+            number: 55,
+            text: "We will go to the park if the weather ______ nice.",
+            options: { A: "will be", B: "was", C: "being", D: "is" },
+            correct: "D",
+            explanation: "بعد if في الحالة الأولى نستخدم المضارع البسيط، ومع المفرد the weather نختار is."
+          }
+        ]
+      },
+      {
+        id: 12,
+        enTitle: "Reported Speech",
+        arTitle: "الكلام المنقول",
+        questions: [
+          {
+            id: "q56",
+            number: 56,
+            text: "Direct: \"I am tired,\" Sara said. Choose the reported speech.",
+            options: {
+              A: "Sara said that she was tired.",
+              B: "Sara said that I am tired.",
+              C: "Sara said that she is tire.",
+              D: "Sara said that she were tired."
+            },
+            correct: "A",
+            explanation: "في الكلام المنقول يتحول الضمير I إلى she والزمن من am إلى was."
+          },
+          {
+            id: "q57",
+            number: 57,
+            text: "Direct: \"I like English,\" Huda said. Choose the reported speech.",
+            options: {
+              A: "Huda said that she liking English.",
+              B: "Huda said that she liked English.",
+              C: "Huda said that I like English.",
+              D: "Huda said that she likes English yesterday."
+            },
+            correct: "B",
+            explanation: "يتحول المضارع البسيط like إلى ماضٍ بسيط liked مع تغيير الضمير إلى she."
+          },
+          {
+            id: "q58",
+            number: 58,
+            text: "Direct: \"We are studying,\" the students said. Choose the reported speech.",
+            options: {
+              A: "The students said that they are study.",
+              B: "The students said that we were studying.",
+              C: "The students said that they were studying.",
+              D: "The students said that they studying."
+            },
+            correct: "C",
+            explanation: "تتحول We إلى they ويتحول المضارع المستمر are studying إلى ماضٍ مستمر were studying."
+          },
+          {
+            id: "q59",
+            number: 59,
+            text: "Direct: \"I will help you,\" Ali told Omar. Choose the reported speech.",
+            options: {
+              A: "Ali told Omar that I will help him.",
+              B: "Ali told Omar that he will helped him.",
+              C: "Ali told Omar that he helps him yesterday.",
+              D: "Ali told Omar that he would help him."
+            },
+            correct: "D",
+            explanation: "تتحول will إلى would مع تحويل الضمائر لتناسب المتكلم والمخاطب: he would help him."
+          },
+          {
+            id: "q60",
+            number: 60,
+            text: "Direct: \"I have finished my homework,\" Maha said. Choose the reported speech.",
+            options: {
+              A: "Maha said that she has finish her homework.",
+              B: "Maha said that she had finished her homework.",
+              C: "Maha said that I have finished my homework.",
+              D: "Maha said that she finishing her homework."
+            },
+            correct: "B",
+            explanation: "يتحول المضارع التام have finished إلى ماضٍ تام had finished مع الضمير she."
+          }
+        ]
+      }
+    ]);
+
+    const ALL_QUESTIONS = SKILLS_DATA.flatMap((skill, sIdx) =>
+      skill.questions.map((q, qIdx) => ({
+        ...q,
+        questionNumber: sIdx * 5 + qIdx + 1,
+        skillId: skill.id,
+        skillNumber: sIdx + 1,
+        skillEnTitle: skill.enTitle,
+        skillArTitle: skill.arTitle
+      }))
+    );
+
+    /*************************************************************************
+     * 2. PERSISTENT STATE MANAGEMENT (LOCALSTORAGE)
+     *************************************************************************/
+    const STORAGE_KEY = "adham_girls_high_diag_remedial_plan1_v1";
+
+    function createDefaultState() {
+      return {
+        studentName: "",
+        currentQuestionIndex: 0,
+        answers: {},
+        isSubmitted: false,
+        completionDate: null,
+        reviewFilter: "all",
+        reviewExpanded: false
+      };
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return createDefaultState();
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== "object") return createDefaultState();
+        return {
+          ...createDefaultState(),
+          ...parsed,
+          answers: parsed.answers && typeof parsed.answers === "object" ? parsed.answers : {}
+        };
+      } catch (err) {
+        return createDefaultState();
+      }
+    }
+
+    let state = loadState();
+    let revealTimers = [];
+    let currentScreenKey = "";
+
+    function resetScrollToTop() {
+      try {
+        window.scrollTo(0, 0);
+        if (document.documentElement) document.documentElement.scrollTop = 0;
+        if (document.body) document.body.scrollTop = 0;
+        window.requestAnimationFrame(() => {
+          window.scrollTo(0, 0);
+          if (document.documentElement) document.documentElement.scrollTop = 0;
+          if (document.body) document.body.scrollTop = 0;
+        });
+      } catch (e) {
+        // Ignore scroll errors safely
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (err) {
+        // Ignore storage errors safely
+      }
+    }
+
+    function hasAnyProgress() {
+      return Boolean(
+        (state.studentName && state.studentName.trim()) ||
+        Object.keys(state.answers).length > 0 ||
+        state.isSubmitted
+      );
+    }
+
+    /*************************************************************************
+     * 3. SCORING & MASTERY HELPERS
+     *************************************************************************/
+    function calculateSkillScore(skill) {
+      let correct = 0;
+      skill.questions.forEach(q => {
+        if (state.answers[q.id] === q.correct) {
+          correct += 1;
+        }
+      });
+      const percentage = Math.round((correct / skill.questions.length) * 100);
+      return {
+        score: correct,
+        total: skill.questions.length,
+        percentage,
+        correct,
+        incorrect: skill.questions.length - correct
+      };
+    }
+
+    function getOverallStats() {
+      let totalCorrect = 0;
+      ALL_QUESTIONS.forEach(q => {
+        if (state.answers[q.id] === q.correct) {
+          totalCorrect += 1;
+        }
+      });
+      const total = ALL_QUESTIONS.length;
+      const totalIncorrect = total - totalCorrect;
+      const rawPct = (totalCorrect / total) * 100;
+      const roundedPct = Math.round(rawPct * 10) / 10;
+      const formattedPercentage = Number.isInteger(roundedPct) ? `${roundedPct}%` : `${roundedPct.toFixed(1)}%`;
+
+      return {
+        totalCorrect,
+        totalIncorrect,
+        total,
+        percentage: roundedPct,
+        formattedPercentage
+      };
+    }
+
+    function getMasteryClassification(percentage) {
+      if (percentage >= 90) {
+        return {
+          label: "إتقان ممتاز",
+          badgeClass: "bg-emerald-50 text-emerald-900 border-emerald-300",
+          barColor: "#15803D"
+        };
+      }
+      if (percentage >= 80) {
+        return {
+          label: "إتقان جيد جدًا",
+          badgeClass: "bg-teal-50 text-teal-900 border-teal-300",
+          barColor: "#0F766E"
+        };
+      }
+      if (percentage >= 60) {
+        return {
+          label: "إتقان جيد ويحتاج تعزيزًا",
+          badgeClass: "bg-gold-pale text-plum border-gold",
+          barColor: "#C8A46A"
+        };
+      }
+      return {
+        label: "تحتاج المهارة إلى مراجعة",
+        badgeClass: "bg-rose-50 text-rose-900 border-rose-300",
+        barColor: "#BE123C"
+      };
+    }
+
+    function formatArabicDate(isoOrDate) {
+      try {
+        const d = isoOrDate ? new Date(isoOrDate) : new Date();
+        if (Number.isNaN(d.getTime())) {
+          return new Date().toLocaleDateString("ar-SA-u-nu-latn", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          });
+        }
+        return d.toLocaleDateString("ar-SA-u-nu-latn", {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+      } catch (e) {
+        return new Date().toISOString().slice(0, 10);
+      }
+    }
+
+    /*************************************************************************
+     * 4. UI UTILITIES: TOASTS, MODALS, NAVIGATION & FULLSCREEN
+     *************************************************************************/
+    function showToast(message) {
+      const container = document.getElementById("toast-container");
+      if (!container) return;
+      const toast = document.createElement("div");
+      toast.className = "pointer-events-auto bg-plum text-ivory border border-gold/70 px-4 py-3 rounded-2xl shadow-lg text-xs sm:text-sm font-bold flex items-center justify-between gap-3 fade-in-panel";
+      toast.innerHTML = `<span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transition = "opacity 0.3s ease";
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    function openModal(htmlContent) {
+      const backdrop = document.getElementById("modal-backdrop");
+      const card = document.getElementById("modal-card");
+      if (!backdrop || !card) return;
+      card.innerHTML = htmlContent;
+      backdrop.classList.remove("hidden");
+      backdrop.classList.add("flex");
+    }
+
+    function closeModal() {
+      const backdrop = document.getElementById("modal-backdrop");
+      if (!backdrop) return;
+      backdrop.classList.add("hidden");
+      backdrop.classList.remove("flex");
+    }
+
+    function navigateHome() {
+      if (!state.studentName || !state.studentName.trim()) {
+        renderApp();
+        return;
+      }
+      if (state.isSubmitted) {
+        renderApp();
+        return;
+      }
+      openModal(`
+        <div class="space-y-4 text-right">
+          <h3 class="text-lg font-extrabold text-plum">العودة إلى شاشة البداية</h3>
+          <p class="text-sm text-plum/80 leading-relaxed">
+            جميع إجاباتكِ محفوظة تلقائيًا على هذا الجهاز. هل ترغبين بالانتقال إلى شاشة البداية؟
+          </p>
+          <div class="flex items-center justify-end gap-2.5 pt-2">
+            <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-lavender-soft text-plum hover:bg-lavender-light transition-colors">
+              متابعة الاختبار
+            </button>
+            <button type="button" onclick="goToWelcomeKeepingProgress()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-plum text-ivory hover:bg-plum-light transition-colors">
+              شاشة البداية
+            </button>
+          </div>
+        </div>
+      `);
+    }
+
+    function goToWelcomeKeepingProgress() {
+      closeModal();
+      const tempName = state.studentName;
+      state.studentName = "";
+      saveState();
+      renderApp();
+      const input = document.getElementById("student-name-input");
+      if (input && tempName) input.value = tempName;
+    }
+
+    function confirmResetProgress() {
+      openModal(`
+        <div class="space-y-4 text-right">
+          <h3 class="text-lg font-extrabold text-rose-900">تأكيد إعادة ضبط التقدم</h3>
+          <p class="text-sm text-plum/85 leading-relaxed">
+            سيؤدي هذا الإجراء إلى مسح اسم الطالبة وجميع الإجابات المحفوظة والنتيجة النهائية من هذا المتصفح. هل أنتِ متأكدة؟
+          </p>
+          <div class="flex items-center justify-end gap-2.5 pt-2">
+            <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-lavender-soft text-plum hover:bg-lavender-light transition-colors">
+              إلغاء
+            </button>
+            <button type="button" onclick="performResetProgress()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-rose-700 text-white hover:bg-rose-800 transition-colors">
+              نعم، إعادة الضبط
+            </button>
+          </div>
+        </div>
+      `);
+    }
+
+    function performResetProgress() {
+      clearRevealTimers();
+      closeModal();
+      state = createDefaultState();
+      saveState();
+      renderApp();
+      showToast("تمت إعادة ضبط التقدم بنجاح.");
+    }
+
+    function toggleFullscreen() {
+      try {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {
+            showToast("وضع ملء الشاشة غير مدعوم في هذا الإطار.");
+          });
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      } catch (e) {
+        showToast("تعذر تبديل وضع ملء الشاشة.");
+      }
+    }
+
+    function updateTopBar() {
+      const pill = document.getElementById("header-student-pill");
+      const resetBtn = document.getElementById("header-reset-btn");
+
+      if (pill) {
+        if (state.studentName && state.studentName.trim()) {
+          pill.textContent = `الطالبة: ${state.studentName.trim()}`;
+          pill.classList.remove("hidden");
+        } else {
+          pill.classList.add("hidden");
+        }
+      }
+
+      if (resetBtn) {
+        if (hasAnyProgress()) {
+          resetBtn.classList.remove("hidden");
+          resetBtn.classList.add("inline-flex");
+        } else {
+          resetBtn.classList.add("hidden");
+          resetBtn.classList.remove("inline-flex");
+        }
+      }
+    }
+
+    /*************************************************************************
+     * 5. SCREEN 1: WELCOME SCREEN
+     *************************************************************************/
+    function renderWelcomeScreen(container) {
+      const savedDraftName = loadState().studentName || "";
+      const hasSavedExam = Object.keys(state.answers).length > 0 && !state.isSubmitted;
+
+      container.innerHTML = `
+        <section class="rounded-3xl academic-card p-6 sm:p-10 text-center space-y-6 fade-in-panel">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-pale border border-gold/55 text-plum text-xs sm:text-sm font-bold">
+            <span>${PROGRAM_META.school}</span>
+            <span class="text-gold-dark">•</span>
+            <span>الخطة العلاجية الأولى</span>
+          </div>
+
+          <div class="space-y-2.5 max-w-2xl mx-auto">
+            <h1 class="text-2xl sm:text-4xl font-extrabold text-plum font-serifAr leading-snug">
+              ${PROGRAM_META.title}
+            </h1>
+            <p class="text-sm sm:text-lg text-plum/80 font-medium leading-relaxed">
+              ابدئي رحلة الإتقان، واكتشفي تقدمك في مهارات اللغة الإنجليزية.
+            </p>
+          </div>
+
+          <!-- Summary Strip -->
+          <div class="inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 px-4 py-2.5 rounded-2xl bg-blush-light/90 border border-lavender-light text-xs sm:text-sm font-extrabold text-plum">
+            <span>12 مهارة</span>
+            <span class="text-gold-dark">|</span>
+            <span>60 سؤالًا</span>
+            <span class="text-gold-dark">|</span>
+            <span>رحلة نحو الإتقان</span>
+          </div>
+
+          <!-- Staff Metadata -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl mx-auto pt-1">
+            <div class="p-3.5 rounded-2xl bg-ivory-warm border border-lavender-light/70">
+              <p class="text-xs text-plum/65 font-bold">المعلمة</p>
+              <p class="text-sm sm:text-base font-extrabold text-plum mt-0.5">${PROGRAM_META.teacher}</p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-ivory-warm border border-lavender-light/70">
+              <p class="text-xs text-plum/65 font-bold">مديرة المدرسة</p>
+              <p class="text-sm sm:text-base font-extrabold text-plum mt-0.5">${PROGRAM_META.principal}</p>
+            </div>
+          </div>
+
+          <!-- Student Name Form & Start Button -->
+          <form onsubmit="handleStartExam(event)" class="max-w-md mx-auto space-y-4 pt-2 text-right">
+            <div>
+              <label for="student-name-input" class="block text-sm font-extrabold text-plum mb-2">
+                الاسم الثلاثي أو الكامل للطالبة <span class="text-rose-700">*</span>
+              </label>
+              <input
+                id="student-name-input"
+                type="text"
+                value="${escapeHtml(savedDraftName)}"
+                placeholder="اكتبي اسمكِ ليظهر في الشهادة..."
+                autocomplete="name"
+                class="w-full px-4 py-3.5 rounded-2xl bg-ivory border-2 border-lavender-light focus:border-gold focus:outline-none text-plum font-bold transition-colors"
+              />
+              <p id="name-error-msg" class="hidden mt-1.5 text-xs font-bold text-rose-700">
+                يرجى إدخال اسم الطالبة قبل بدء الاختبار.
+              </p>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full py-3.5 px-6 rounded-2xl bg-plum hover:bg-plum-light active:scale-[0.99] text-ivory font-extrabold text-base sm:text-lg shadow-academic border border-gold/60 transition-all cursor-pointer"
+            >
+              ${hasSavedExam ? "متابعة الاختبار" : "ابدئي الاختبار"}
+            </button>
+          </form>
+
+          <p class="text-[11px] sm:text-xs text-plum/60 max-w-lg mx-auto leading-relaxed">
+            يُحفظ تقدمكِ وإجاباتكِ محليًا على متصفح هذا الجهاز تلقائيًا. في حال مسح بيانات المتصفح أو فتح الرابط من جهاز آخر قد لا يتوفر التقدم السابق.
+          </p>
+        </section>
+      `;
+    }
+
+    function handleStartExam(event) {
+      event.preventDefault();
+      const input = document.getElementById("student-name-input");
+      const errEl = document.getElementById("name-error-msg");
+      const nameVal = input ? input.value.trim() : "";
+
+      if (!nameVal) {
+        if (errEl) errEl.classList.remove("hidden");
+        if (input) input.focus();
+        return;
+      }
+
+      if (errEl) errEl.classList.add("hidden");
+
+      if (input && typeof input.blur === "function") {
+        input.blur();
+      }
+      if (document.activeElement && typeof document.activeElement.blur === "function") {
+        document.activeElement.blur();
+      }
+
+      state.studentName = nameVal;
+      if (
+        typeof state.currentQuestionIndex !== "number" ||
+        state.currentQuestionIndex < 0 ||
+        state.currentQuestionIndex >= ALL_QUESTIONS.length
+      ) {
+        state.currentQuestionIndex = 0;
+      }
+      saveState();
+
+      // Allow iOS Safari keyboard to dismiss before rendering and resetting scroll position
+      window.setTimeout(() => {
+        renderApp();
+        window.setTimeout(resetScrollToTop, 60);
+      }, 140);
+    }
+
+    /*************************************************************************
+     * 6. SCREEN 2: CONTINUOUS 60-QUESTION EXAM (NO SCROLL JUMP)
+     *************************************************************************/
+    function renderContinuousExamScreen(container) {
+      const idx = state.currentQuestionIndex;
+      const q = ALL_QUESTIONS[idx];
+      const selectedAns = state.answers[q.id] || null;
+      const answeredCount = Object.keys(state.answers).length;
+      const progressPct = Math.round(((idx + 1) / ALL_QUESTIONS.length) * 100);
+      const isLastQuestion = idx === ALL_QUESTIONS.length - 1;
+
+      const optionKeys = ["A", "B", "C", "D"];
+      const optionsHtml = optionKeys.map(key => {
+        const isSelected = selectedAns === key;
+        const optText = q.options[key];
+        return `
+          <button
+            type="button"
+            onclick="selectAnswer('${q.id}', '${key}')"
+            aria-pressed="${isSelected}"
+            class="w-full text-left p-4 sm:p-5 rounded-2xl border-2 transition-colors flex items-center gap-3.5 sm:gap-4 cursor-pointer select-none ${
+              isSelected
+                ? "bg-plum text-ivory border-gold shadow-md"
+                : "bg-ivory hover:bg-blush-light/85 text-plum border-lavender-light/80 hover:border-gold/70"
+            }"
+            dir="ltr"
+          >
+            <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center font-english font-bold text-sm sm:text-base shrink-0 ${
+              isSelected
+                ? "bg-gold text-plum-dark"
+                : "bg-lavender-soft text-plum"
+            }">
+              ${key}
+            </span>
+            <span class="font-english text-sm sm:text-base font-semibold leading-snug flex-1">
+              ${escapeHtml(optText)}
+            </span>
+          </button>
+        `;
+      }).join("");
+
+      container.innerHTML = `
+        <div class="space-y-4 sm:space-y-5">
+          <!-- Minimal Progress Header -->
+          <section class="rounded-2xl academic-card p-4 sm:p-5 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="px-2.5 py-1 rounded-lg bg-plum text-gold-light text-xs font-extrabold">
+                  المهارة ${q.skillNumber} من ${PROGRAM_META.totalSkills}
+                </span>
+                <span class="text-xs text-plum/55 font-bold">—</span>
+                <span dir="ltr" class="font-english text-sm sm:text-base font-bold text-plum">
+                  ${escapeHtml(q.skillEnTitle)}
+                </span>
+              </div>
+
+              <span class="text-xs sm:text-sm font-extrabold text-gold-dark">
+                السؤال ${q.questionNumber} من ${PROGRAM_META.totalQuestions}
+              </span>
+            </div>
+
+            <!-- Thin Progress Bar Across All 60 Questions -->
+            <div class="w-full h-2 rounded-full bg-lavender-soft overflow-hidden">
+              <div class="h-full rounded-full bg-gradient-to-l from-gold to-plum transition-all duration-300" style="width: ${progressPct}%;"></div>
+            </div>
+
+            <div class="flex items-center justify-between text-[11px] text-plum/65 font-semibold">
+              <span>${escapeHtml(q.skillArTitle)}</span>
+              <span>المجاب عنها: ${answeredCount} / ${PROGRAM_META.totalQuestions}</span>
+            </div>
+          </section>
+
+          <!-- Single Active Question Card -->
+          <section id="question-card-box" class="rounded-3xl academic-card p-5 sm:p-8 space-y-5 sm:space-y-6">
+            <div class="space-y-2">
+              <span class="inline-block text-xs font-bold text-gold-dark bg-gold-pale/80 border border-gold/40 px-3 py-1 rounded-full">
+                Question ${q.questionNumber}
+              </span>
+              <h2 dir="ltr" class="font-english text-left text-lg sm:text-2xl font-bold text-plum leading-relaxed pt-1">
+                ${escapeHtml(q.text)}
+              </h2>
+            </div>
+
+            <!-- Four Selectable Answer Cards -->
+            <div id="options-list" class="grid grid-cols-1 gap-3">
+              ${optionsHtml}
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="pt-3 border-t border-lavender-light/60 flex items-center justify-between gap-3">
+              <button
+                type="button"
+                onclick="goToQuestion(${idx - 1})"
+                ${idx === 0 ? "disabled" : ""}
+                class="px-4 sm:px-5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold border transition-colors ${
+                  idx === 0
+                    ? "bg-lavender-soft/40 text-plum/35 border-lavender-light/40 cursor-not-allowed"
+                    : "bg-ivory hover:bg-lavender-soft text-plum border-lavender-light cursor-pointer"
+                }"
+              >
+                السابق
+              </button>
+
+              ${
+                !isLastQuestion
+                  ? `
+                    <button
+                      type="button"
+                      onclick="goToQuestion(${idx + 1})"
+                      class="px-5 sm:px-7 py-3 rounded-2xl text-xs sm:text-sm font-extrabold bg-plum hover:bg-plum-light text-ivory border border-gold/60 shadow-sm transition-colors cursor-pointer"
+                    >
+                      التالي
+                    </button>
+                  `
+                  : `
+                    <button
+                      type="button"
+                      onclick="handleFinalSubmissionFlow()"
+                      class="px-5 sm:px-7 py-3 rounded-2xl text-xs sm:text-sm font-extrabold bg-gold hover:bg-gold-dark text-plum-dark border border-plum/20 shadow-goldGlow transition-colors cursor-pointer"
+                    >
+                      إنهاء الاختبار وعرض النتيجة
+                    </button>
+                  `
+              }
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    function selectAnswer(questionId, optionKey) {
+      state.answers[questionId] = optionKey;
+      saveState();
+
+      const q = ALL_QUESTIONS[state.currentQuestionIndex];
+      if (!q || q.id !== questionId) return;
+
+      const optionsContainer = document.getElementById("options-list");
+      if (!optionsContainer) return;
+
+      const buttons = optionsContainer.querySelectorAll("button");
+      const keys = ["A", "B", "C", "D"];
+      buttons.forEach((btn, i) => {
+        const k = keys[i];
+        const isSelected = k === optionKey;
+        btn.setAttribute("aria-pressed", String(isSelected));
+        btn.className = `w-full text-left p-4 sm:p-5 rounded-2xl border-2 transition-colors flex items-center gap-3.5 sm:gap-4 cursor-pointer select-none ${
+          isSelected
+            ? "bg-plum text-ivory border-gold shadow-md"
+            : "bg-ivory hover:bg-blush-light/85 text-plum border-lavender-light/80 hover:border-gold/70"
+        }`;
+        const badge = btn.querySelector("span:first-child");
+        if (badge) {
+          badge.className = `w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center font-english font-bold text-sm sm:text-base shrink-0 ${
+            isSelected
+              ? "bg-gold text-plum-dark"
+              : "bg-lavender-soft text-plum"
+          }`;
+        }
+      });
+
+      updateTopBar();
+    }
+
+    function goToQuestion(targetIndex) {
+      if (targetIndex < 0 || targetIndex >= ALL_QUESTIONS.length) return;
+      state.currentQuestionIndex = targetIndex;
+      saveState();
+      renderApp();
+    }
+
+    function handleFinalSubmissionFlow() {
+      const unanswered = ALL_QUESTIONS.filter(q => !state.answers[q.id]);
+      if (unanswered.length > 0) {
+        const firstUnansweredIndex = ALL_QUESTIONS.findIndex(q => !state.answers[q.id]);
+        openModal(`
+          <div class="space-y-4 text-right">
+            <h3 class="text-lg font-extrabold text-plum">تنبيه: توجد أسئلة لم تتم إجابتها</h3>
+            <p class="text-sm text-plum/85 leading-relaxed">
+              تبقى لديكِ <span class="font-extrabold text-rose-700">${unanswered.length}</span> سؤالًا لم تتم إجابته من أصل 60 سؤالًا. يرجى إجابة جميع الأسئلة قبل اعتماد النتيجة النهائية.
+            </p>
+            <div class="flex items-center justify-end gap-2.5 pt-2">
+              <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-lavender-soft text-plum hover:bg-lavender-light transition-colors">
+                إغلاق
+              </button>
+              <button type="button" onclick="closeModal(); goToQuestion(${firstUnansweredIndex});" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-plum text-ivory hover:bg-plum-light transition-colors">
+                الانتقال إلى السؤال غير المجاب
+              </button>
+            </div>
+          </div>
+        `);
+        return;
+      }
+
+      openModal(`
+        <div class="space-y-4 text-right">
+          <h3 class="text-lg font-extrabold text-plum">تأكيد إنهاء الاختبار</h3>
+          <p class="text-sm text-plum/85 leading-relaxed">
+            لقد أجبتِ عن جميع الأسئلة الـ 60. بعد التأكيد سيتم احتساب نتيجتكِ النهائية وإظهار شهادة الإتمام وتقرير الأداء.
+          </p>
+          <div class="flex items-center justify-end gap-2.5 pt-2">
+            <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-lavender-soft text-plum hover:bg-lavender-light transition-colors">
+              مراجعة إجاباتي
+            </button>
+            <button type="button" onclick="confirmSubmitExam()" class="px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-plum text-ivory hover:bg-plum-light border border-gold/60 transition-colors">
+              تأكيد وعرض النتيجة
+            </button>
+          </div>
+        </div>
+      `);
+    }
+
+    function confirmSubmitExam() {
+      closeModal();
+      state.isSubmitted = true;
+      if (!state.completionDate) {
+        state.completionDate = new Date().toISOString();
+      }
+      saveState();
+      renderApp();
+    }
+
+    /*************************************************************************
+     * 7. REUSABLE SINGLE CERTIFICATE & ENVELOPE REVEAL
+     *************************************************************************/
+    function buildCertificateMarkup(stats, formattedDate) {
+      return `
+        <div id="certificate-printable-area" dir="rtl" class="certificate-frame rounded-xl sm:rounded-2xl select-none">
+          <div class="certificate-inner-border rounded-lg sm:rounded-xl text-center">
+            <!-- Header -->
+            <div>
+              <div class="cert-school-badge inline-flex items-center justify-center rounded-full bg-plum text-gold-light border border-gold font-bold shadow-xs">
+                <span>${PROGRAM_META.school}</span>
+              </div>
+
+              <h2 class="cert-main-title font-serifAr font-bold text-plum tracking-wide">
+                ${PROGRAM_META.certificateTitle}
+              </h2>
+              <div class="cert-divider-line"></div>
+            </div>
+
+            <!-- Middle Body -->
+            <div class="my-auto flex flex-col items-center justify-center">
+              <p class="cert-intro-text text-plum/85 font-medium">
+                تشهد إدارة ومعلمة اللغة الإنجليزية في <span class="font-bold text-plum">${PROGRAM_META.school}</span> بأن الطالبة:
+              </p>
+
+              <!-- Student Name Prominently Displayed -->
+              <div class="cert-student-name inline-block border-b-2 border-gold max-w-full bg-gradient-to-r from-transparent via-gold-pale/60 to-transparent rounded">
+                <p class="font-serifAr font-bold text-plum truncate">
+                  ${escapeHtml(state.studentName)}
+                </p>
+              </div>
+
+              <!-- Program Title -->
+              <p class="cert-program-text text-plum/85 max-w-2xl mx-auto">
+                قد أتمّت بنجاح جميع متطلبات ومهارات البرنامج العلاجي:
+                <span class="font-extrabold text-plum">«${PROGRAM_META.title}»</span>
+              </p>
+
+              <!-- Separate Balanced Sections: Score & Mastery Percentage vs Completion Date -->
+              <div class="cert-metrics-row">
+                <div class="cert-metric-box bg-blush-light/95 border border-gold/65 flex flex-col items-center justify-center">
+                  <span class="cert-metric-label font-bold text-plum/75">الدرجة ونسبة الإتقان</span>
+                  <div class="cert-metric-value font-extrabold text-plum">
+                    <span>${stats.formattedPercentage}</span>
+                    <span class="text-gold-dark font-bold mr-1">(${stats.totalCorrect} / 60)</span>
+                  </div>
+                </div>
+
+                <div class="cert-metric-box bg-blush-light/95 border border-gold/65 flex flex-col items-center justify-center">
+                  <span class="cert-metric-label font-bold text-plum/75">تاريخ الإتمام</span>
+                  <span class="cert-metric-value font-extrabold text-plum">
+                    ${escapeHtml(formattedDate)}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Signatures Row: Teacher on FAR RIGHT, Principal on FAR LEFT -->
+            <div dir="rtl" class="cert-signatures-row">
+              <div class="text-right">
+                <p class="cert-sig-role font-bold text-gold-dark">المعلمة</p>
+                <p class="cert-sig-name font-extrabold text-plum">${PROGRAM_META.teacher}</p>
+              </div>
+
+              <div class="w-5 h-5 sm:w-8 sm:h-8 rounded-full border border-gold/70 bg-gold-pale/65 flex items-center justify-center text-gold-dark shrink-0" aria-hidden="true">
+                <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                </svg>
+              </div>
+
+              <div class="text-left">
+                <p class="cert-sig-role font-bold text-gold-dark">مديرة المدرسة</p>
+                <p class="cert-sig-name font-extrabold text-plum">${PROGRAM_META.principal}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function clearRevealTimers() {
+      revealTimers.forEach(id => clearTimeout(id));
+      revealTimers = [];
+    }
+
+    function runEnvelopeRevealSequence(skipIntroDelay = false) {
+      clearRevealTimers();
+
+      const envRig = document.getElementById("envelope-rig");
+      const certStage = document.getElementById("single-certificate-stage");
+      const actionsBar = document.getElementById("certificate-actions-bar");
+      const promptHint = document.getElementById("envelope-open-hint");
+
+      if (!envRig || !certStage) return;
+
+      const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      envRig.classList.remove("is-open", "stage-expanded");
+      certStage.classList.remove("cert-emerging", "cert-full-focus");
+      certStage.classList.add("cert-in-pocket");
+      if (actionsBar) actionsBar.classList.add("opacity-0", "pointer-events-none");
+      if (promptHint) promptHint.classList.remove("hidden");
+
+      if (reducedMotion) {
+        envRig.classList.add("is-open", "stage-expanded");
+        certStage.classList.remove("cert-in-pocket", "cert-emerging");
+        certStage.classList.add("cert-full-focus");
+        if (actionsBar) actionsBar.classList.remove("opacity-0", "pointer-events-none");
+        if (promptHint) promptHint.classList.add("hidden");
+        return;
+      }
+
+      const t1 = skipIntroDelay ? 100 : 550;
+      const t2 = t1 + 600;
+      const t3 = t2 + 750;
+
+      revealTimers.push(setTimeout(() => {
+        envRig.classList.add("is-open");
+        if (promptHint) promptHint.classList.add("hidden");
+        spawnGoldSparkles();
+      }, t1));
+
+      revealTimers.push(setTimeout(() => {
+        certStage.classList.remove("cert-in-pocket");
+        certStage.classList.add("cert-emerging");
+      }, t2));
+
+      revealTimers.push(setTimeout(() => {
+        envRig.classList.add("stage-expanded");
+        certStage.classList.remove("cert-emerging");
+        certStage.classList.add("cert-full-focus");
+        if (actionsBar) {
+          actionsBar.classList.remove("opacity-0", "pointer-events-none");
+        }
+      }, t3));
+    }
+
+    function replayCertificateAnimation() {
+      runEnvelopeRevealSequence(true);
+    }
+
+    function spawnGoldSparkles() {
+      const theater = document.getElementById("reveal-theater");
+      if (!theater) return;
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      theater.querySelectorAll(".gold-sparkle").forEach(el => el.remove());
+
+      const count = 16;
+      for (let i = 0; i < count; i++) {
+        const spark = document.createElement("span");
+        spark.className = "gold-sparkle";
+        spark.textContent = i % 2 === 0 ? "✦" : "✧";
+        spark.style.left = `${15 + Math.random() * 70}%`;
+        spark.style.top = `${18 + Math.random() * 50}%`;
+        spark.style.fontSize = `${12 + Math.random() * 12}px`;
+        spark.style.animationDelay = `${Math.random() * 0.45}s`;
+        theater.appendChild(spark);
+      }
+    }
+
+    /*************************************************************************
+     * 8. SCREEN 3: FINAL RESULTS PAGE
+     *************************************************************************/
+    function renderFinalResultsScreen(container) {
+      const stats = getOverallStats();
+      if (!state.completionDate) {
+        state.completionDate = new Date().toISOString();
+        saveState();
+      }
+      const formattedDate = formatArabicDate(state.completionDate);
+
+      const skillCardsHtml = SKILLS_DATA.map((skill, idx) => {
+        const res = calculateSkillScore(skill);
+        const mastery = getMasteryClassification(res.percentage);
+        return `
+          <div class="p-4 rounded-2xl bg-ivory-warm border border-lavender-light/70 space-y-2.5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-lg bg-plum text-ivory text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
+                  <span dir="ltr" class="font-english text-sm sm:text-base font-bold text-plum">${escapeHtml(skill.enTitle)}</span>
+                </div>
+                <p class="text-xs text-plum/70 font-semibold mt-0.5 mr-8">${escapeHtml(skill.arTitle)}</p>
+              </div>
+
+              <div class="flex items-center gap-2 mr-8 sm:mr-0 shrink-0">
+                <span class="px-2.5 py-1 rounded-lg text-xs font-bold border ${mastery.badgeClass}">
+                  ${mastery.label}
+                </span>
+                <span class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-plum text-gold-light">
+                  ${res.score}/5 (${res.percentage}%)
+                </span>
+              </div>
+            </div>
+
+            <div class="w-full h-2.5 rounded-full bg-lavender-soft overflow-hidden">
+              <div class="h-full rounded-full transition-all duration-700"
+                   style="width: ${res.percentage}%; background-color: ${mastery.barColor};"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      container.innerHTML = `
+        <div class="space-y-5 sm:space-y-6 fade-in-panel pb-10">
+          <!-- 1. Short Congratulatory Message + Replay Button -->
+          <section class="text-center space-y-2">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold-pale border border-gold/50 text-gold-dark text-xs font-bold">
+              <span>إتمام الاختبار التشخيصي بنجاح</span>
+            </div>
+            <h1 class="text-xl sm:text-3xl font-extrabold text-plum leading-snug">
+              مبارك لكِ الإنجاز يا <span class="text-gold-dark underline decoration-gold/60 underline-offset-4">${escapeHtml(state.studentName)}</span>
+            </h1>
+            <p class="text-xs sm:text-base text-plum/80 max-w-xl mx-auto">
+              أتممتِ الإجابة عن جميع أسئلة الخطة العلاجية (60 سؤالًا). إليكِ شهادتكِ المعتمدة وتقرير أدائكِ الشامل.
+            </p>
+            <div class="pt-1">
+              <button type="button" onclick="replayCertificateAnimation()"
+                class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-ivory-warm hover:bg-lavender-soft text-plum text-xs font-bold border border-lavender-light transition-colors cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-gold-dark" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
+                <span>إعادة عرض الشهادة</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- 2, 3, 4. Envelope Reveal, A4 Landscape Certificate & Compact Download Buttons -->
+          <section id="printable-certificate-section" class="space-y-3">
+            <div id="reveal-theater" class="reveal-theater">
+              <div id="envelope-rig" class="envelope-rig" onclick="runEnvelopeRevealSequence(true)">
+                <div class="env-back-wall"></div>
+                <div class="env-front-pocket"></div>
+                <svg class="env-pocket-trim" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <polyline points="0,26 50,63 100,26" fill="none" stroke="#C8A46A" stroke-width="0.6" />
+                </svg>
+                <div class="env-top-flap"></div>
+                <button type="button" class="env-wax-seal" aria-label="فتح الظرف لعرض الشهادة">
+                  <svg class="w-6 h-6 text-plum" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342" />
+                  </svg>
+                </button>
+              </div>
+
+              <p id="envelope-open-hint" class="mt-1.5 text-xs font-bold text-gold-dark">
+                جاري فتح الظرف لاستخراج شهادتكِ...
+              </p>
+
+              <!-- Single Real Certificate Element -->
+              <div id="single-certificate-stage" class="single-certificate-stage cert-in-pocket">
+                ${buildCertificateMarkup(stats, formattedDate)}
+              </div>
+            </div>
+
+            <!-- Compact Side-by-Side Download Buttons -->
+            <div id="certificate-actions-bar" class="opacity-0 pointer-events-none transition-opacity duration-500 flex items-center justify-center gap-2.5 pt-0.5">
+              <button type="button" onclick="downloadCertificatePNG()"
+                class="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-plum hover:bg-plum-light text-ivory text-xs sm:text-sm font-bold shadow-xs border border-gold/60 transition-colors cursor-pointer">
+                <svg class="w-4 h-4 text-gold-light shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+                <span>تحميل PNG</span>
+              </button>
+
+              <button type="button" onclick="printCertificatePDF()"
+                class="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-gold-pale hover:bg-gold-light/50 text-plum text-xs sm:text-sm font-bold border border-gold/70 transition-colors cursor-pointer">
+                <svg class="w-4 h-4 text-plum shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" />
+                </svg>
+                <span>تحميل PDF</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- 5. Overall Performance Summary -->
+          <section class="rounded-3xl academic-card p-6 sm:p-8 space-y-5">
+            <div class="border-b border-lavender-light/60 pb-3.5">
+              <h2 class="text-lg sm:text-xl font-extrabold text-plum">ملخص الأداء العام</h2>
+              <p class="text-xs sm:text-sm text-plum/70 mt-0.5">النتيجة الإجمالية المحسوبة من جميع الأسئلة المعتمدة (60 سؤالًا)</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+              <div class="p-4 rounded-2xl bg-plum text-ivory text-center">
+                <p class="text-xs text-blush/85 font-medium">الدرجة الكلية</p>
+                <p class="text-2xl sm:text-3xl font-extrabold text-gold-light mt-1">${stats.totalCorrect} <span class="text-sm font-normal text-ivory/75">/ 60</span></p>
+              </div>
+              <div class="p-4 rounded-2xl bg-gold-pale/80 border border-gold/50 text-center">
+                <p class="text-xs text-plum/75 font-medium">النسبة المئوية الكلية</p>
+                <p class="text-2xl sm:text-3xl font-extrabold text-plum mt-1">${stats.formattedPercentage}</p>
+              </div>
+              <div class="p-4 rounded-2xl bg-emerald-50/85 border border-emerald-200 text-center">
+                <p class="text-xs text-emerald-800 font-medium">إجمالي الإجابات الصحيحة</p>
+                <p class="text-2xl sm:text-3xl font-extrabold text-emerald-900 mt-1">${stats.totalCorrect}</p>
+              </div>
+              <div class="p-4 rounded-2xl bg-rose-50/85 border border-rose-200 text-center">
+                <p class="text-xs text-rose-800 font-medium">إجمالي الإجابات الخاطئة</p>
+                <p class="text-2xl sm:text-3xl font-extrabold text-rose-900 mt-1">${stats.totalIncorrect}</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- 6. Detailed Performance Across All 12 Skills -->
+          <section class="rounded-3xl academic-card p-6 sm:p-8 space-y-4">
+            <div class="border-b border-lavender-light/60 pb-3.5">
+              <h2 class="text-lg sm:text-xl font-extrabold text-plum">تحليل الأداء التفصيلي للمهارات (12 مهارة)</h2>
+              <p class="text-xs sm:text-sm text-plum/70 mt-0.5">مستوى الإتقان في كل مهارة من مهارات الخطة العلاجية</p>
+            </div>
+            <div class="grid grid-cols-1 gap-3">
+              ${skillCardsHtml}
+            </div>
+          </section>
+
+          <!-- 7. Collapsible Question Review Section -->
+          <section class="rounded-3xl academic-card p-6 sm:p-8 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h2 class="text-lg sm:text-xl font-extrabold text-plum">مراجعة الأسئلة والإجابات النموذجية</h2>
+                <p class="text-xs sm:text-sm text-plum/70 mt-0.5">استعراض تفصيلي لإجاباتكِ مع التوضيح التعليمي لكل سؤال</p>
+              </div>
+
+              <button type="button" onclick="toggleReviewSection()" id="toggle-review-btn"
+                class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold bg-plum hover:bg-plum-light text-ivory border border-gold/60 transition-colors cursor-pointer self-start sm:self-auto">
+                ${state.reviewExpanded ? "إخفاء مراجعة الأسئلة" : "عرض مراجعة الأسئلة (60)"}
+              </button>
+            </div>
+
+            <div id="review-panel-wrapper" class="${state.reviewExpanded ? '' : 'hidden'} space-y-4 pt-2 border-t border-lavender-light/60">
+              <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="setReviewFilter('all')"
+                  id="filter-btn-all"
+                  class="px-3.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${state.reviewFilter === 'all' ? 'bg-plum text-ivory' : 'bg-lavender-soft text-plum'}">
+                  جميع الأسئلة (60)
+                </button>
+                <button type="button" onclick="setReviewFilter('incorrect')"
+                  id="filter-btn-incorrect"
+                  class="px-3.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${state.reviewFilter === 'incorrect' ? 'bg-rose-700 text-white' : 'bg-rose-50 text-rose-800 border border-rose-200'}">
+                  غير الصحيحة فقط (${stats.totalIncorrect})
+                </button>
+              </div>
+
+              <div id="final-review-list" class="space-y-3.5">
+                ${renderFinalReviewItems(state.reviewFilter)}
+              </div>
+            </div>
+          </section>
+        </div>
+      `;
+
+      runEnvelopeRevealSequence(false);
+    }
+
+    function toggleReviewSection() {
+      state.reviewExpanded = !state.reviewExpanded;
+      saveState();
+      const panel = document.getElementById("review-panel-wrapper");
+      const btn = document.getElementById("toggle-review-btn");
+      if (panel) {
+        panel.classList.toggle("hidden", !state.reviewExpanded);
+      }
+      if (btn) {
+        btn.textContent = state.reviewExpanded ? "إخفاء مراجعة الأسئلة" : "عرض مراجعة الأسئلة (60)";
+      }
+    }
+
+    function setReviewFilter(filter) {
+      state.reviewFilter = filter;
+      saveState();
+      const listEl = document.getElementById("final-review-list");
+      const allBtn = document.getElementById("filter-btn-all");
+      const incBtn = document.getElementById("filter-btn-incorrect");
+
+      if (listEl) listEl.innerHTML = renderFinalReviewItems(filter);
+      if (allBtn) {
+        allBtn.className = `px-3.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${filter === 'all' ? 'bg-plum text-ivory' : 'bg-lavender-soft text-plum'}`;
+      }
+      if (incBtn) {
+        const stats = getOverallStats();
+        incBtn.className = `px-3.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${filter === 'incorrect' ? 'bg-rose-700 text-white' : 'bg-rose-50 text-rose-800 border border-rose-200'}`;
+        incBtn.textContent = `غير الصحيحة فقط (${stats.totalIncorrect})`;
+      }
+    }
+
+    function renderFinalReviewItems(filter) {
+      const items = filter === "incorrect"
+        ? ALL_QUESTIONS.filter(q => state.answers[q.id] !== q.correct)
+        : ALL_QUESTIONS;
+
+      if (items.length === 0) {
+        return `
+          <div class="p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-center text-emerald-900 font-bold text-sm">
+            رائع! جميع إجاباتكِ في الاختبار صحيحة بنسبة 100%.
+          </div>
+        `;
+      }
+
+      return items.map(q => {
+        const studentAns = state.answers[q.id];
+        const isCorrect = studentAns === q.correct;
+        const studentOptionText = studentAns ? `${studentAns}. ${q.options[studentAns]}` : "لم تتم الإجابة";
+        const correctOptionText = `${q.correct}. ${q.options[q.correct]}`;
+
+        return `
+          <article class="rounded-2xl bg-ivory-warm border ${isCorrect ? 'border-emerald-200/90' : 'border-rose-200/90'} p-4 sm:p-5">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-lg bg-plum text-ivory text-xs font-bold">سؤال ${q.questionNumber}</span>
+                <span dir="ltr" class="font-english text-xs font-bold text-plum/75">${escapeHtml(q.skillEnTitle)}</span>
+              </div>
+              ${isCorrect ? `
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                  صحيحة
+                </span>
+              ` : `
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-rose-800 border border-rose-200">
+                  غير صحيحة
+                </span>
+              `}
+            </div>
+
+            <p dir="ltr" class="font-english text-left text-base font-bold text-plum mb-3">
+              ${escapeHtml(q.text)}
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-3">
+              <div dir="ltr" class="font-english text-left p-2.5 rounded-xl border ${isCorrect ? 'bg-emerald-50/70 border-emerald-200 text-emerald-950' : 'bg-rose-50/70 border-rose-200 text-rose-950'}">
+                <p class="font-arabic text-right text-[11px] font-bold opacity-75 mb-0.5">إجابتكِ المختارة:</p>
+                <p class="text-sm font-bold">${escapeHtml(studentOptionText)}</p>
+              </div>
+
+              <div dir="ltr" class="font-english text-left p-2.5 rounded-xl border bg-ivory border-gold/60 text-plum">
+                <p class="font-arabic text-right text-[11px] font-bold text-gold-dark mb-0.5">الإجابة الصحيحة:</p>
+                <p class="text-sm font-bold">${escapeHtml(correctOptionText)}</p>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-blush-light/80 border border-lavender-light/60 text-xs sm:text-sm text-plum/85 leading-relaxed">
+              <span class="font-bold text-plum">التوضيح:</span> ${escapeHtml(q.explanation)}
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    /*************************************************************************
+     * 9. HIGH-RESOLUTION CERTIFICATE EXPORT (PNG & PRINTABLE PDF)
+     *************************************************************************/
+    async function downloadCertificatePNG() {
+      try {
+        const stats = getOverallStats();
+        const formattedDate = formatArabicDate(state.completionDate);
+
+        if (document.fonts && document.fonts.ready) {
+          await document.fonts.ready;
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = 1684;
+        canvas.height = 1190;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        const bgGrad = ctx.createLinearGradient(0, 0, 1684, 1190);
+        bgGrad.addColorStop(0, "#FFFDF8");
+        bgGrad.addColorStop(1, "#FAF3E6");
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, 1684, 1190);
+
+        const radGrad = ctx.createRadialGradient(842, 595, 110, 842, 595, 900);
+        radGrad.addColorStop(0, "rgba(255, 253, 248, 0)");
+        radGrad.addColorStop(1, "rgba(245, 231, 235, 0.45)");
+        ctx.fillStyle = radGrad;
+        ctx.fillRect(0, 0, 1684, 1190);
+
+        // Clean Double Gold Border
+        ctx.strokeStyle = "#C8A46A";
+        ctx.lineWidth = 5;
+        roundRectPath(ctx, 36, 36, 1612, 1118, 24);
+        ctx.stroke();
+
+        ctx.strokeStyle = "rgba(200, 164, 106, 0.75)";
+        ctx.lineWidth = 2.5;
+        roundRectPath(ctx, 56, 56, 1572, 1078, 16);
+        ctx.stroke();
+
+        ctx.direction = "rtl";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        ctx.fillStyle = "#49304F";
+        roundRectPath(ctx, 662, 112, 360, 56, 28);
+        ctx.fill();
+        ctx.strokeStyle = "#C8A46A";
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        ctx.fillStyle = "#E3CCA3";
+        ctx.font = "700 24px Tajawal, Cairo, sans-serif";
+        ctx.fillText(PROGRAM_META.school, 842, 141);
+
+        ctx.fillStyle = "#49304F";
+        ctx.font = "700 60px Amiri, Tajawal, serif";
+        ctx.fillText(PROGRAM_META.certificateTitle, 842, 240);
+
+        const lineGrad = ctx.createLinearGradient(580, 0, 1104, 0);
+        lineGrad.addColorStop(0, "rgba(200, 164, 106, 0)");
+        lineGrad.addColorStop(0.5, "#C8A46A");
+        lineGrad.addColorStop(1, "rgba(200, 164, 106, 0)");
+        ctx.strokeStyle = lineGrad;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(580, 294);
+        ctx.lineTo(1104, 294);
+        ctx.stroke();
+
+        ctx.fillStyle = "rgba(73, 48, 79, 0.85)";
+        ctx.font = "500 27px Tajawal, Cairo, sans-serif";
+        ctx.fillText(`تشهد إدارة ومعلمة اللغة الإنجليزية في ${PROGRAM_META.school} بأن الطالبة:`, 842, 365);
+
+        ctx.fillStyle = "#49304F";
+        ctx.font = "700 54px Amiri, Tajawal, serif";
+        ctx.fillText(state.studentName, 842, 455);
+
+        const nameMetrics = ctx.measureText(state.studentName);
+        const lineHalf = Math.min(500, Math.max(230, nameMetrics.width / 2 + 44));
+        ctx.strokeStyle = "#C8A46A";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(842 - lineHalf, 502);
+        ctx.lineTo(842 + lineHalf, 502);
+        ctx.stroke();
+
+        ctx.fillStyle = "rgba(73, 48, 79, 0.88)";
+        ctx.font = "500 27px Tajawal, Cairo, sans-serif";
+        ctx.fillText("قد أتمّت بنجاح جميع متطلبات ومهارات البرنامج العلاجي:", 842, 568);
+
+        ctx.fillStyle = "#49304F";
+        ctx.font = "800 31px Tajawal, Cairo, sans-serif";
+        ctx.fillText(`«${PROGRAM_META.title}»`, 842, 618);
+
+        // Two Separate Balanced Boxes
+        ctx.fillStyle = "#FAF2F5";
+        roundRectPath(ctx, 872, 685, 440, 150, 22);
+        ctx.fill();
+        ctx.strokeStyle = "#C8A46A";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = "rgba(73, 48, 79, 0.78)";
+        ctx.font = "700 22px Tajawal, Cairo, sans-serif";
+        ctx.fillText("الدرجة ونسبة الإتقان", 1092, 724);
+
+        ctx.fillStyle = "#49304F";
+        ctx.font = "800 37px Tajawal, Cairo, sans-serif";
+        ctx.fillText(`${stats.formattedPercentage}  (${stats.totalCorrect} / 60)`, 1092, 780);
+
+        ctx.fillStyle = "#FAF2F5";
+        roundRectPath(ctx, 372, 685, 440, 150, 22);
+        ctx.fill();
+        ctx.strokeStyle = "#C8A46A";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = "rgba(73, 48, 79, 0.78)";
+        ctx.font = "700 22px Tajawal, Cairo, sans-serif";
+        ctx.fillText("تاريخ الإتمام", 592, 724);
+
+        ctx.fillStyle = "#49304F";
+        ctx.font = "800 29px Tajawal, Cairo, sans-serif";
+        ctx.fillText(formattedDate, 592, 780);
+
+        ctx.strokeStyle = "rgba(200, 164, 106, 0.5)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(140, 905);
+        ctx.lineTo(1544, 905);
+        ctx.stroke();
+
+        // Teacher on FAR RIGHT, Principal on FAR LEFT
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#A48247";
+        ctx.font = "700 22px Tajawal, Cairo, sans-serif";
+        ctx.fillText("المعلمة", 1520, 956);
+        ctx.fillStyle = "#49304F";
+        ctx.font = "800 31px Tajawal, Cairo, sans-serif";
+        ctx.fillText(PROGRAM_META.teacher, 1520, 1006);
+
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#A48247";
+        ctx.font = "700 22px Tajawal, Cairo, sans-serif";
+        ctx.fillText("مديرة المدرسة", 164, 956);
+        ctx.fillStyle = "#49304F";
+        ctx.font = "800 31px Tajawal, Cairo, sans-serif";
+        ctx.fillText(PROGRAM_META.principal, 164, 1006);
+
+        const dataUrl = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        const safeFileName = state.studentName.replace(/[^\u0600-\u06FFa-zA-Z0-9\s]/g, "").trim().replace(/\s+/g, "_") || "شهادة_إتمام";
+        link.download = `شهادة_إتمام_الخطة_العلاجية_${safeFileName}.png`;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        showToast("تم تحميل الشهادة بصيغة PNG عالية الجودة.");
+      } catch (err) {
+        showToast("تعذر تصدير PNG، يمكنكِ استخدام خيار تحميل PDF للطباعة.");
+      }
+    }
+
+    function printCertificatePDF() {
+      try {
+        window.print();
+      } catch (err) {
+        showToast("يرجى استخدام خيار الطباعة من المتصفح لحفظ الشهادة كـ PDF.");
+      }
+    }
+
+    function roundRectPath(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    /*************************************************************************
+     * 10. ERROR BOUNDARY, SECURITY & MAIN RENDER ORCHESTRATOR
+     *************************************************************************/
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function renderErrorFallback(root, message) {
+      if (!root) return;
+      root.innerHTML = `
+        <div class="rounded-3xl academic-card p-6 sm:p-8 text-center space-y-4">
+          <h2 class="text-lg font-extrabold text-plum">تعذر عرض هذا الجزء مؤقتًا</h2>
+          <p class="text-sm text-plum/80">${escapeHtml(message || "حدث خطأ غير متوقع أثناء العرض.")}</p>
+          <button type="button" onclick="renderApp()" class="px-5 py-2.5 rounded-xl bg-plum text-ivory text-sm font-bold cursor-pointer">
+            إعادة المحاولة
+          </button>
+        </div>
+      `;
+    }
+
+    function renderApp() {
+      const root = document.getElementById("app-root");
+      if (!root) return;
+
+      try {
+        updateTopBar();
+
+        const nextScreenKey = (!state.studentName || !state.studentName.trim())
+          ? "welcome"
+          : (state.isSubmitted ? "results" : "exam");
+
+        const screenChanged = currentScreenKey !== "" && currentScreenKey !== nextScreenKey;
+        currentScreenKey = nextScreenKey;
+
+        if (nextScreenKey === "welcome") {
+          renderWelcomeScreen(root);
+        } else if (nextScreenKey === "results") {
+          renderFinalResultsScreen(root);
+        } else {
+          renderContinuousExamScreen(root);
+        }
+
+        if (screenChanged) {
+          resetScrollToTop();
+        }
+      } catch (err) {
+        renderErrorFallback(root, err && err.message ? err.message : "");
+      }
+    }
+
+    window.addEventListener("error", (event) => {
+      const root = document.getElementById("app-root");
+      if (root && !root.innerHTML.trim()) {
+        renderErrorFallback(root, event && event.message ? event.message : "");
+      }
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      try {
+        renderApp();
+      } catch (err) {
+        const root = document.getElementById("app-root");
+        renderErrorFallback(root, err && err.message ? err.message : "");
+      }
+    });
+  </script>
+</body>
+</html>
