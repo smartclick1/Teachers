@@ -92,16 +92,16 @@
       width: 100%;
       max-width: 100%;
       display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: flex-start;
-      padding-bottom: calc(clamp(24px, 4vh, 40px) + env(safe-area-inset-bottom, 0px));
-    }
-
-    /* Single shared layout wrapper for all screens driven by Visual Viewport offset */
+    /* Single shared layout wrapper for all screens with compact 16px mobile top padding */
     .shared-screen-layout {
       width: 100%;
-      padding-top: var(--vv-top-offset, max(env(safe-area-inset-top, 0px), 24px));
+      padding-top: max(env(safe-area-inset-top, 0px), 16px);
+    }
+
+    @media (min-width: 640px) {
+      .shared-screen-layout {
+        padding-top: max(env(safe-area-inset-top, 0px), 24px);
+      }
     }
 
     /* Prevent iOS Safari input focus zoom (>= 16px) */
@@ -3365,28 +3365,10 @@
     }
 
     function syncVisualViewportOffset() {
-      const rootEl = document.documentElement;
-      if (!rootEl) return;
-
-      const vv = window.visualViewport;
-      const vvOffsetTop = vv && typeof vv.offsetTop === 'number' && vv.offsetTop > 0 ? vv.offsetTop : 0;
-      const isEmbedded = window.self !== window.top;
-      const isTouchMobile =
-        (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
-        window.innerWidth < 768;
-
-      // Account for Safari top address bar & Google Sites top chrome dynamically
-      const baseClearance = isTouchMobile ? (isEmbedded ? 64 : 56) : 28;
-      const computedTop = Math.round(vvOffsetTop + baseClearance);
-
-      rootEl.style.setProperty(
-        '--vv-top-offset',
-        `max(env(safe-area-inset-top, 0px), ${computedTop}px)`
-      );
+      // No-op: compact top spacing is handled cleanly via CSS .shared-screen-layout
     }
 
     function alignContentBelowToolbar() {
-      syncVisualViewportOffset();
       if ('scrollRestoration' in history) {
         try {
           history.scrollRestoration = 'manual';
@@ -3399,27 +3381,13 @@
         } catch (e) {}
         if (document.documentElement) document.documentElement.scrollTop = 0;
         if (document.body) document.body.scrollTop = 0;
-
-        const anchor = document.getElementById('viewport-content-anchor');
-        if (anchor) {
-          const rect = anchor.getBoundingClientRect();
-          const vvTop = window.visualViewport ? window.visualViewport.offsetTop : 0;
-          if (rect.top < vvTop) {
-            window.scrollBy(0, rect.top - vvTop - 8);
-          }
-        }
       };
 
       performAlign();
       requestAnimationFrame(performAlign);
     }
 
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', syncVisualViewportOffset);
-      window.visualViewport.addEventListener('scroll', syncVisualViewportOffset);
-    }
     window.addEventListener('pageshow', () => {
-      syncVisualViewportOffset();
       alignContentBelowToolbar();
     });
 
