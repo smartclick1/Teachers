@@ -1,0 +1,2590 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>خطة علاجية للمهارات القبلية لاختبار STEP | ثانوية أضم للبنات</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --navy: #1B2C3D;
+      --teal: #38696C;
+      --mint: #E8EFEC;
+      --ivory: #F8F6F0;
+      --gold: #B69A60;
+    }
+
+    html {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    body {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--ivory);
+      background-image: radial-gradient(rgba(27, 44, 61, 0.045) 1px, transparent 1px),
+                        radial-gradient(rgba(182, 154, 96, 0.045) 1px, var(--ivory) 1px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+      color: var(--navy);
+      padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #app {
+      width: 100%;
+      max-width: 100%;
+      padding-top: calc(16px + env(safe-area-inset-top, 0px));
+    }
+
+    @media (min-width: 768px) {
+      #app {
+        padding-top: calc(24px + env(safe-area-inset-top, 0px));
+      }
+    }
+
+    input, textarea, select {
+      font-size: 16px !important;
+    }
+
+    .font-serif-ar {
+      font-family: 'Amiri', serif;
+    }
+
+    .font-en {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      direction: ltr;
+      text-align: left;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(23, 45, 64, 0.05);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(40, 107, 109, 0.35);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(40, 107, 109, 0.6);
+    }
+
+    /* Smooth subtle transitions */
+    .fade-in {
+      animation: fadeIn 0.28s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Envelope-to-Certificate Continuous Animation System */
+    .envelope-stage-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 820px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: min-height 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .envelope-assembly {
+      position: relative;
+      width: 100%;
+      max-width: 560px;
+      aspect-ratio: 16 / 10;
+      margin-top: 1.5rem;
+      margin-bottom: 0;
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
+      perspective: 1200px;
+    }
+
+    .envelope-back {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, #132535 0%, #172D40 100%);
+      border-radius: 14px;
+      box-shadow: 0 22px 45px -12px rgba(23, 45, 64, 0.35);
+      border: 1.5px solid rgba(196, 163, 106, 0.45);
+      z-index: 1;
+      transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Real Certificate Component Layer */
+    .certificate-carrier {
+      position: relative;
+      width: 100%;
+      z-index: 2;
+      transition:
+        transform 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+        width 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+        max-width 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.9s ease;
+      will-change: transform;
+    }
+
+    /* Stage 1 & 2: Certificate tucked inside envelope pocket */
+    .stage-closed .certificate-carrier,
+    .stage-opening .certificate-carrier {
+      position: absolute;
+      left: 50%;
+      bottom: 8%;
+      width: 90%;
+      transform: translateX(-50%) translateY(0) scale(0.62);
+      transform-origin: bottom center;
+      clip-path: inset(0 0 34% 0 round 10px);
+      pointer-events: none;
+    }
+
+    /* Stage 3: Certificate emerges upward out of the pocket */
+    .stage-emerging .certificate-carrier {
+      position: absolute;
+      left: 50%;
+      bottom: 18%;
+      width: 94%;
+      transform: translateX(-50%) translateY(-42%) scale(0.76);
+      transform-origin: bottom center;
+      clip-path: none;
+      z-index: 5;
+    }
+
+    /* Stage 4 & 5: Certificate scales to full readable landscape size */
+    .stage-revealed .certificate-carrier {
+      position: relative;
+      left: auto;
+      bottom: auto;
+      width: 100%;
+      max-width: 820px;
+      transform: translateX(0) translateY(0) scale(1);
+      clip-path: none;
+      z-index: 10;
+    }
+
+    /* Envelope Front Pocket */
+    .envelope-pocket {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(165deg, #1e3a52 0%, #172D40 100%);
+      border-radius: 14px;
+      clip-path: polygon(0 28%, 50% 62%, 100% 28%, 100% 100%, 0 100%);
+      border-bottom: 2px solid rgba(196, 163, 106, 0.55);
+      z-index: 4;
+      pointer-events: none;
+      transition: opacity 0.75s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Envelope Triangular Flap */
+    .envelope-flap {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, #244460 0%, #172D40 100%);
+      border-radius: 14px;
+      clip-path: polygon(0 0, 100% 0, 50% 56%);
+      transform-origin: top center;
+      z-index: 6;
+      pointer-events: none;
+      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.65s ease;
+    }
+
+    /* Envelope Gold Seal */
+    .envelope-seal {
+      position: absolute;
+      left: 50%;
+      top: 52%;
+      transform: translate(-50%, -50%);
+      width: 54px;
+      height: 54px;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 35% 35%, #e5c992, #C4A36A 65%, #9d7d44 100%);
+      border: 2px solid #FAF8F2;
+      color: #172D40;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+      z-index: 7;
+      pointer-events: none;
+      transition: transform 0.55s ease, opacity 0.45s ease;
+    }
+
+    .stage-opening .envelope-flap,
+    .stage-emerging .envelope-flap,
+    .stage-revealed .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .stage-opening .envelope-seal,
+    .stage-emerging .envelope-seal,
+    .stage-revealed .envelope-seal {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.75);
+    }
+
+    .stage-revealed .envelope-back,
+    .stage-revealed .envelope-pocket,
+    .stage-revealed .envelope-flap {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Responsive A4 Landscape Certificate (297:210 Aspect Ratio, Zero Clipping) */
+    .cert-card-box {
+      width: 100%;
+      max-width: 820px;
+      aspect-ratio: 297 / 210;
+      margin: 0 auto;
+      background-color: #FAF8F2;
+      background-image:
+        radial-gradient(circle at 0% 0%, rgba(220, 236, 232, 0.52) 0%, transparent 45%),
+        radial-gradient(circle at 100% 100%, rgba(196, 163, 106, 0.16) 0%, transparent 45%);
+      border: clamp(3px, 0.6vw, 5px) solid #172D40;
+      box-shadow: 0 18px 42px -14px rgba(23, 45, 64, 0.22);
+      padding: clamp(5px, 1.2vw, 12px);
+      box-sizing: border-box;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cert-inner-box {
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      border: 1.5px solid #C4A36A;
+      padding: clamp(8px, 2.2vw, 24px) clamp(10px, 3.6vw, 38px);
+      box-sizing: border-box;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+    }
+
+    .cert-school {
+      font-size: clamp(10px, 2.1vw, 16px);
+      font-weight: 700;
+      color: #286B6D;
+      line-height: 1.2;
+    }
+
+    .cert-title {
+      font-size: clamp(15px, 3.8vw, 32px);
+      font-weight: 700;
+      color: #172D40;
+      line-height: 1.15;
+    }
+
+    .cert-body-text {
+      font-size: clamp(9.5px, 2vw, 16px);
+      font-weight: 500;
+      color: #334155;
+      line-height: 1.25;
+    }
+
+    .cert-student-name {
+      font-family: 'Amiri', serif;
+      font-size: clamp(14px, 3.4vw, 29px);
+      font-weight: 700;
+      color: #172D40;
+      line-height: 1.2;
+      padding: 0 clamp(10px, 3vw, 28px) clamp(2px, 0.4vw, 4px);
+      border-bottom: 1.5px solid #C4A36A;
+      display: inline-block;
+      max-width: 92%;
+      word-break: break-word;
+    }
+
+    .cert-plan-title {
+      font-size: clamp(11px, 2.3vw, 19px);
+      font-weight: 700;
+      color: #172D40;
+      line-height: 1.25;
+    }
+
+    .cert-grade {
+      font-size: clamp(11px, 2.4vw, 20px);
+      font-weight: 700;
+      color: #286B6D;
+      line-height: 1.2;
+    }
+
+    .cert-closing {
+      font-size: clamp(9.5px, 2vw, 16px);
+      font-weight: 600;
+      color: #172D40;
+      line-height: 1.2;
+    }
+
+    .cert-footer-row {
+      width: 100%;
+      padding-top: clamp(5px, 1.2vw, 12px);
+      border-top: 1px solid rgba(23, 45, 64, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .cert-sign-role {
+      font-size: clamp(8.5px, 1.65vw, 13px);
+      font-weight: 600;
+      color: #286B6D;
+      line-height: 1.2;
+    }
+
+    .cert-sign-name {
+      font-size: clamp(9.5px, 1.9vw, 15px);
+      font-weight: 700;
+      color: #172D40;
+      line-height: 1.25;
+      margin-top: 1px;
+    }
+
+    .cert-gold-seal {
+      width: clamp(28px, 6vw, 50px);
+      height: clamp(28px, 6vw, 50px);
+      border-radius: 9999px;
+      background: radial-gradient(circle at 35% 35%, #e3c68f, #C4A36A 65%, #9f7f47 100%);
+      border: 1.5px solid #172D40;
+      box-shadow: 0 2px 6px rgba(23, 45, 64, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .envelope-assembly,
+      .certificate-carrier,
+      .envelope-flap,
+      .envelope-pocket,
+      .envelope-back,
+      .envelope-seal,
+      .fade-in {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+      html, body {
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FAF8F2 !important;
+      }
+      body * {
+        visibility: hidden;
+      }
+      #printable-certificate, #printable-certificate * {
+        visibility: visible;
+      }
+      #printable-certificate {
+        position: fixed !important;
+        left: 50% !important;
+        top: 50% !important;
+        width: 286mm !important;
+        max-width: none !important;
+        transform: translate(-50%, -50%) !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-[#DCECE8] selection:text-[#172D40]">
+  <div id="app" class="w-full flex flex-col justify-start"></div>
+
+  <script>
+    // =========================================================================
+    // 1. SCHOOL & ASSESSMENT METADATA
+    // =========================================================================
+    const SCHOOL_INFO = {
+      titleAr: "خطة علاجية للمهارات القبلية لاختبار STEP",
+      titleLine1Ar: "خطة علاجية للمهارات القبلية",
+      titleLine2Ar: "لاختبار STEP",
+      subtitleEn: "STEP ASSESSMENT",
+      schoolAr: "ثانوية أضم للبنات",
+      teacherAr: "سميرة فهد المتعاني",
+      principalAr: "غالية المالكي",
+      encouragementAr: "“خطوة نحو الإتقان، وفرصة لتطوير مهاراتك في اللغة الإنجليزية.”"
+    };
+
+    const STORAGE_KEY = "adham_step_remedial_assessment_v1";
+
+    const SECTIONS = [
+      { id: "listening", area: "listening", nameEn: "Listening Comprehension", nameAr: "فهم المسموع", questionRange: [1, 25], total: 25 },
+      { id: "grammar", area: "grammar", nameEn: "Grammar", nameAr: "القواعد النحوية", questionRange: [26, 65], total: 40 },
+      { id: "writing", area: "writing", nameEn: "Writing Analysis", nameAr: "تحليل الكتابة", questionRange: [66, 75], total: 10 },
+      { id: "reading1", area: "reading", nameEn: "Reading Comprehension — Passage 1", nameAr: "فهم المقروء — القطعة الأولى", questionRange: [76, 100], total: 25 },
+      { id: "reading2", area: "reading", nameEn: "Reading Comprehension — Passage 2", nameAr: "فهم المقروء — القطعة الثانية", questionRange: [101, 125], total: 25 }
+    ];
+
+    const SKILLS = [
+      { id: 1, sectionId: "listening", area: "listening", nameEn: "Listening for Specific Information", nameAr: "الاستماع للمعلومات المحددة", recommendationAr: "تدربي على تحديد الفكرة الرئيسية والجهات المشاركة والهدف العام من الإعلانات المدرسية." },
+      { id: 2, sectionId: "listening", area: "listening", nameEn: "Listening for Specific Details (Dates)", nameAr: "الاستماع للتفاصيل الدقيقة (التواريخ والأيام)", recommendationAr: "ركزي أثناء الاستماع على أيام الأسبوع والتواريخ والمواعيد النهائية ودونيها ذهنياً." },
+      { id: 3, sectionId: "listening", area: "listening", nameEn: "Listening for Specific Details (Locations)", nameAr: "الاستماع للتفاصيل الدقيقة (الأماكن والقاعات)", recommendationAr: "اربطي كل نشاط أو ورشة عمل بالمكان أو القاعة المخصصة له أثناء الاستماع." },
+      { id: 4, sectionId: "listening", area: "listening", nameEn: "Listening for Location Information", nameAr: "الاستماع لمعلومات المواقع والاتجاهات", recommendationAr: "انتبهي لحروف الجر المكانية ووصف مواقع المرافق داخل النص المسموع." },
+      { id: 5, sectionId: "listening", area: "listening", nameEn: "Listening for Key Details (Instructions)", nameAr: "الاستماع للتفاصيل الأساسية (التعليمات والمتطلبات)", recommendationAr: "راجعي أفعال الإلزام والتعليمات مثل must و should لفهم شروط التسجيل والحضور." },
+
+      { id: 6, sectionId: "grammar", area: "grammar", nameEn: "Present Simple Tense", nameAr: "زمن المضارع البسيط", recommendationAr: "راجعي تصريف الأفعال في المضارع البسيط مع الفاعل المفرد والجمع وصيغ النفي والسؤال." },
+      { id: 7, sectionId: "grammar", area: "grammar", nameEn: "Past Continuous Tense", nameAr: "زمن الماضي المستمر", recommendationAr: "تدربي على استخدام was/were + V-ing للتعبير عن حدث مستمر في الماضي مع when و while." },
+      { id: 8, sectionId: "grammar", area: "grammar", nameEn: "First Conditional / Passive Voice", nameAr: "الحالة الشرطية الأولى والمبني للمجهول", recommendationAr: "راجعي تركيب جملة الشرط الأولى (If + Present Simple, will + V) وصيغة المبني للمجهول." },
+      { id: 9, sectionId: "grammar", area: "grammar", nameEn: "Relative Pronouns", nameAr: "ضمائر الوصل", recommendationAr: "فرقي بين استخدام who للعاقل، which لغير العاقل، whose للملكية، و where للمكان." },
+      { id: 10, sectionId: "grammar", area: "grammar", nameEn: "Quantifiers (Much / Many)", nameAr: "محددات الكمية (Much / Many)", recommendationAr: "راجعي الفرق بين الأسماء المعدودة التي تأخذ many وغير المعدودة التي تأخذ much." },
+      { id: 11, sectionId: "grammar", area: "grammar", nameEn: "Past Perfect Tense", nameAr: "زمن الماضي التام", recommendationAr: "تدربي على استخدام had + V3 للتعبير عن الحدث الأقدم وقوعاً في الماضي قبل حدث آخر." },
+      { id: 12, sectionId: "grammar", area: "grammar", nameEn: "Modal Verbs (Must)", nameAr: "الأفعال الناقصة (Must / Must not)", recommendationAr: "تذكري أن الفعل بعد must و must not يأتي دائماً في المصدر بدون to أو إضافات." },
+      { id: 13, sectionId: "grammar", area: "grammar", nameEn: "Comparative Adjectives", nameAr: "صفات المقارنة", recommendationAr: "راجعي قواعد إضافة -er للصفات القصيرة واستخدام more قبل الصفات الطويلة مع than." },
+
+      { id: 14, sectionId: "writing", area: "writing", nameEn: "Punctuation", nameAr: "علامات الترقيم", recommendationAr: "تدربي على مواضع الفاصلة بعد العبارات التمهيدية، الفاصلة العليا للملكية، وعلامات التنصيص." },
+      { id: 15, sectionId: "writing", area: "writing", nameEn: "Sentence Sequencing and Paragraph Organization", nameAr: "ترتيب الجمل وتنظيم الفقرة", recommendationAr: "انتبهي لكلمات الربط الزمنية (First, Next, Then, Finally) وترابط الجملة الافتتاحية والختامية." },
+
+      { id: 16, sectionId: "reading1", area: "reading", nameEn: "Identifying the Main Purpose / Target Audience", nameAr: "تحديد الهدف الرئيسي والفئة المستهدفة", recommendationAr: "اقرئي الفقرة الأولى بعناية لتحديد الفئة العمرية المستهدفة والغرض العام من النص." },
+      { id: 17, sectionId: "reading1", area: "reading", nameEn: "Scanning for Specific Information (Time)", nameAr: "المسح السريع للمعلومات المحددة (الأوقات)", recommendationAr: "ابحثي مباشرة عن الأرقام وصيغ الوقت (a.m. / p.m.) واحسبي المدة الزمنية بدقة." },
+      { id: 18, sectionId: "reading1", area: "reading", nameEn: "Identifying Supporting Details", nameAr: "تحديد التفاصيل الداعمة", recommendationAr: "طابقي الكلمات المفتاحية في السؤال مع الجمل التفصيلية في النص للتحقق من كل معلومة." },
+      { id: 19, sectionId: "reading1", area: "reading", nameEn: "Scanning for Specific Information (Dates)", nameAr: "المسح السريع للمعلومات المحددة (التواريخ)", recommendationAr: "حددي تواريخ البداية والنهاية والتسجيل واستنتجي التواريخ المرتبطة بها بدقة." },
+      { id: 20, sectionId: "reading1", area: "reading", nameEn: "Understanding Cause and Effect", nameAr: "فهم السبب والنتيجة", recommendationAr: "انتبهي لأدوات التعليل والنتيجة مثل because و to prevent لفهم دوافع الأحداث ونتائجها." },
+
+      { id: 21, sectionId: "reading2", area: "reading", nameEn: "Identifying the Main Idea", nameAr: "تحديد الفكرة الرئيسية للنص", recommendationAr: "اربطي تحول موقف الشخصية من بداية القصة إلى نهايتها لاستخلاص الرسالة المركزية." },
+      { id: 22, sectionId: "reading2", area: "reading", nameEn: "Reading for Specific Details", nameAr: "القراءة لاستخراج التفاصيل الدقيقة", recommendationAr: "راجعي الأسماء والأماكن والأعمار والتكرار الزمني الوارد في أحداث القصة." },
+      { id: 23, sectionId: "reading2", area: "reading", nameEn: "Understanding Cause and Effect / Change of Opinion", nameAr: "فهم السبب والنتيجة وتغير الرأي", recommendationAr: "تتبعي اللحظة المفصلية التي غيرت قناعة الشخصية والأسباب التي دفعتها للاستمرار." },
+      { id: 24, sectionId: "reading2", area: "reading", nameEn: "Making Inferences", nameAr: "الاستنتاج الضمني", recommendationAr: "استنتجي المعاني غير المصرح بها مباشرة من خلال سلوك الشخصيات وردود أفعالها." },
+      { id: 25, sectionId: "reading2", area: "reading", nameEn: "Identifying Unstated Information", nameAr: "تحديد المعلومات غير الواردة في النص", recommendationAr: "تحققي من كل خيار في النص واستبعدي الخيارات المذكورة للوصول إلى المعلومة غير الواردة." }
+    ];
+
+    // =========================================================================
+    // 2. AUTHORITATIVE LISTENING SCRIPT (AUDIO ONLY — NEVER DISPLAYED IN UI)
+    // =========================================================================
+    const LISTENING_SCRIPT = [
+      "Good morning, students! Welcome to our annual Skills and Career Week at Al Noor Secondary School.",
+      "The event will take place from Monday, March 9, to Thursday, March 12, 2026.",
+      "On Monday, the opening ceremony will begin at 8:30 a.m. in the main auditorium.",
+      "After the ceremony, a career guidance session will start at 10:00 a.m. in Room 204.",
+      "Students who are interested in technology can attend a coding workshop on Tuesday at 9:15 a.m. in Computer Lab 2.",
+      "On Wednesday, we will organize a university information session at 11:00 a.m. in the school library.",
+      "Representatives from three universities will explain admission requirements and scholarship opportunities.",
+      "On Thursday, students can join an interview skills workshop at 1:30 p.m. in the training hall.",
+      "Please register for the workshops by Friday, March 6, using the school website.",
+      "You must bring your student ID card to every session.",
+      "For the coding workshop, bring your own laptop if possible, but the school will provide computers for students who need them.",
+      "Students attending the interview workshop should prepare a short introduction about themselves.",
+      "If you have questions, visit the information desk next to the main entrance.",
+      "It will be open daily from 8:00 a.m. to 2:00 p.m.",
+      "Students who attend at least three sessions will receive a participation certificate on Thursday afternoon.",
+      "We hope this week helps you explore your interests and prepare for your future careers!"
+    ];
+
+    // =========================================================================
+    // 3. AUTHORITATIVE READING PASSAGES (PASSAGE 1 & PASSAGE 2)
+    // =========================================================================
+    const READING_PASSAGES = {
+      passage1: {
+        id: "passage1",
+        title: "Future Skills Summer Program",
+        paragraphs: [
+          "The Future Skills Center is offering a four-week summer program for secondary school students aged 15 to 18. The program is designed for students who want to develop practical skills in technology, communication, and teamwork before entering university.",
+          "The program will run from July 5 to July 30, 2026, at the Future Skills Center in Jeddah. Classes will take place from Sunday to Thursday, between 9:00 a.m. and 1:00 p.m. Students should arrive by 8:45 a.m. on the first day to complete registration.",
+          "Participants can choose from three courses: Introduction to Programming, Public Speaking, and Digital Design. The programming course teaches students how to build simple applications. Public Speaking focuses on presentation skills and confidence. Digital Design introduces students to creating posters and visual content.",
+          "Registration opens on May 10 and closes on June 20. Students must complete an online application and upload a copy of their school ID. The program costs 300 Saudi riyals, but students with excellent academic records may apply for a full scholarship.",
+          "Last year, some students arrived late because they had not checked the updated class timetable. To prevent the same problem, the center will email the final schedule to all accepted students one week before the program begins.",
+          "Participants must attend at least 80% of their classes to receive a completion certificate. The center also encourages students to work in groups because teamwork helps them exchange ideas and solve problems more effectively. Students who need further information can contact the center by email at info@futureskills.example."
+        ]
+      },
+      passage2: {
+        id: "passage2",
+        title: "A Change of Perspective: Learning Through Volunteering",
+        paragraphs: [
+          "At the beginning of the school year, Lina believed that volunteering was a waste of time. She preferred spending her weekends studying or watching educational videos at home. When her English teacher announced a community volunteering project, Lina was not interested in joining.",
+          "However, her best friend, Aisha, encouraged her to participate. The project involved helping children at a local community library. Volunteers organized books, read stories aloud, and assisted younger students with their homework. Lina agreed to join for one Saturday because she wanted to support her friend.",
+          "During her first visit, Lina met a ten-year-old girl named Mariam who was having difficulty reading English. Lina patiently helped her understand a short story. When Mariam finally read a complete paragraph independently, she smiled proudly and thanked Lina.",
+          "That moment changed Lina's opinion. She realized that volunteering was not simply about giving away free time; it was also an opportunity to make a positive difference in someone else's life. She also discovered that explaining lessons to others improved her own communication skills.",
+          "Over the following two months, Lina continued volunteering every Saturday. She became more confident when speaking to unfamiliar people and learned how to organize activities for younger children. Her teacher noticed these improvements and asked her to share her experience during a school assembly.",
+          "At the assembly, Lina explained that volunteering had taught her patience, responsibility, and teamwork. She encouraged other students to try activities outside their usual routines because new experiences could reveal abilities they did not know they had.",
+          "By the end of the school year, Lina had decided to continue volunteering during the summer. Although she was still focused on her studies, she had learned that helping others and developing personal skills could happen at the same time."
+        ]
+      }
+    };
+
+    // =========================================================================
+    // 4. APPROVED 125 QUESTIONS (PLAN 2 — STEP DIAGNOSTIC TEST)
+    // =========================================================================
+    const QUESTIONS = [
+      // Section 1: Listening Comprehension (1–25)
+      // Skill 1: Listening for Specific Information (1–5)
+      { id: 1, skillId: 1, sectionId: "listening", text: "What is the main event announced in the recording?", options: { A: "A sports competition", B: "Skills and Career Week", C: "A science examination", D: "A school graduation ceremony" }, correct: "B" },
+      { id: 2, skillId: 1, sectionId: "listening", text: "Who will explain admission requirements and scholarships?", options: { A: "School nurses", B: "Local business owners", C: "University representatives", D: "Sports coaches" }, correct: "C" },
+      { id: 3, skillId: 1, sectionId: "listening", text: "How many universities will participate in the information session?", options: { A: "Two", B: "Three", C: "Four", D: "Five" }, correct: "B" },
+      { id: 4, skillId: 1, sectionId: "listening", text: "What will students receive if they attend at least three sessions?", options: { A: "A laptop", B: "A scholarship", C: "A participation certificate", D: "A school uniform" }, correct: "C" },
+      { id: 5, skillId: 1, sectionId: "listening", text: "What is the purpose of the event?", options: { A: "To prepare students for future careers", B: "To organize a holiday trip", C: "To replace regular examinations", D: "To teach students new sports" }, correct: "A" },
+
+      // Skill 2: Listening for Specific Details (Dates) (6–10)
+      { id: 6, skillId: 2, sectionId: "listening", text: "When does Skills and Career Week begin?", options: { A: "March 6, 2026", B: "March 9, 2026", C: "March 12, 2026", D: "March 15, 2026" }, correct: "B" },
+      { id: 7, skillId: 2, sectionId: "listening", text: "What is the last day of the event?", options: { A: "Monday, March 9", B: "Tuesday, March 10", C: "Wednesday, March 11", D: "Thursday, March 12" }, correct: "D" },
+      { id: 8, skillId: 2, sectionId: "listening", text: "What is the registration deadline?", options: { A: "Friday, March 6", B: "Monday, March 9", C: "Wednesday, March 11", D: "Thursday, March 12" }, correct: "A" },
+      { id: 9, skillId: 2, sectionId: "listening", text: "On which day will the coding workshop take place?", options: { A: "Monday", B: "Tuesday", C: "Wednesday", D: "Thursday" }, correct: "B" },
+      { id: 10, skillId: 2, sectionId: "listening", text: "When will participation certificates be given?", options: { A: "Monday morning", B: "Tuesday afternoon", C: "Wednesday morning", D: "Thursday afternoon" }, correct: "D" },
+
+      // Skill 3: Listening for Specific Details (Locations) (11–15)
+      { id: 11, skillId: 3, sectionId: "listening", text: "Where will the opening ceremony take place?", options: { A: "In the library", B: "In the training hall", C: "In the main auditorium", D: "In Computer Lab 2" }, correct: "C" },
+      { id: 12, skillId: 3, sectionId: "listening", text: "Where will the career guidance session be held?", options: { A: "Room 204", B: "Room 104", C: "The main entrance", D: "The school library" }, correct: "A" },
+      { id: 13, skillId: 3, sectionId: "listening", text: "Where will students attend the coding workshop?", options: { A: "The training hall", B: "Computer Lab 2", C: "The main auditorium", D: "Room 204" }, correct: "B" },
+      { id: 14, skillId: 3, sectionId: "listening", text: "Where will the university information session take place?", options: { A: "The sports hall", B: "The school library", C: "The computer lab", D: "The cafeteria" }, correct: "B" },
+      { id: 15, skillId: 3, sectionId: "listening", text: "Where will the interview skills workshop be held?", options: { A: "The training hall", B: "The library", C: "The main auditorium", D: "Room 204" }, correct: "A" },
+
+      // Skill 4: Listening for Location Information (16–20)
+      { id: 16, skillId: 4, sectionId: "listening", text: "Where can students ask questions about the event?", options: { A: "At the information desk", B: "In the principal's office", C: "At the school cafeteria", D: "In the sports hall" }, correct: "A" },
+      { id: 17, skillId: 4, sectionId: "listening", text: "Where is the information desk located?", options: { A: "Behind the library", B: "Next to the main entrance", C: "Inside Computer Lab 2", D: "Opposite the training hall" }, correct: "B" },
+      { id: 18, skillId: 4, sectionId: "listening", text: "Which location should a student visit to learn about university admissions?", options: { A: "The school library", B: "Room 204", C: "The main auditorium", D: "The training hall" }, correct: "A" },
+      { id: 19, skillId: 4, sectionId: "listening", text: "A student wants to practise job interviews. Where should she go?", options: { A: "Computer Lab 2", B: "The training hall", C: "The library", D: "The main auditorium" }, correct: "B" },
+      { id: 20, skillId: 4, sectionId: "listening", text: "Which two activities take place in different rooms on Monday?", options: { A: "Coding and interview workshops", B: "University and coding sessions", C: "Opening ceremony and career guidance session", D: "University session and interview workshop" }, correct: "C" },
+
+      // Skill 5: Listening for Key Details (Instructions) (21–25)
+      { id: 21, skillId: 5, sectionId: "listening", text: "How should students register for workshops?", options: { A: "By calling the principal", B: "Through the school website", C: "By sending a paper letter", D: "At the school cafeteria" }, correct: "B" },
+      { id: 22, skillId: 5, sectionId: "listening", text: "What must students bring to every session?", options: { A: "A laptop", B: "A notebook", C: "A student ID card", D: "A printed timetable" }, correct: "C" },
+      { id: 23, skillId: 5, sectionId: "listening", text: "What should students do if they do not have a laptop for the coding workshop?", options: { A: "Cancel their registration", B: "Borrow a phone", C: "Attend a different workshop", D: "Use a school-provided computer" }, correct: "D" },
+      { id: 24, skillId: 5, sectionId: "listening", text: "What should students prepare for the interview workshop?", options: { A: "A short self-introduction", B: "A science report", C: "A written examination", D: "A group presentation about sports" }, correct: "A" },
+      { id: 25, skillId: 5, sectionId: "listening", text: "What is required to receive a participation certificate?", options: { A: "Attend every session", B: "Attend at least three sessions", C: "Complete a final exam", D: "Register for the coding workshop only" }, correct: "B" },
+
+      // Section 2: Grammar (26–65)
+      // Skill 6: Present Simple Tense (26–30)
+      { id: 26, skillId: 6, sectionId: "grammar", text: "My father ______ to work every morning.", options: { A: "drive", B: "drives", C: "driving", D: "drove" }, correct: "B" },
+      { id: 27, skillId: 6, sectionId: "grammar", text: "They ______ English at school twice a week.", options: { A: "studies", B: "studying", C: "study", D: "studied" }, correct: "C" },
+      { id: 28, skillId: 6, sectionId: "grammar", text: "Sara ______ coffee in the evening.", options: { A: "doesn't drink", B: "don't drink", C: "isn't drink", D: "doesn't drinks" }, correct: "A" },
+      { id: 29, skillId: 6, sectionId: "grammar", text: "______ your brother play football on Fridays?", options: { A: "Do", B: "Is", C: "Does", D: "Has" }, correct: "C" },
+      { id: 30, skillId: 6, sectionId: "grammar", text: "Water ______ at 100 degrees Celsius at standard atmospheric pressure.", options: { A: "boil", B: "boiling", C: "boiled", D: "boils" }, correct: "D" },
+
+      // Skill 7: Past Continuous Tense (31–35)
+      { id: 31, skillId: 7, sectionId: "grammar", text: "I ______ my homework when the phone rang.", options: { A: "do", B: "was doing", C: "am doing", D: "have done" }, correct: "B" },
+      { id: 32, skillId: 7, sectionId: "grammar", text: "The children ______ in the park at 5 p.m. yesterday.", options: { A: "were playing", B: "was playing", C: "play", D: "have played" }, correct: "A" },
+      { id: 33, skillId: 7, sectionId: "grammar", text: "While my mother was cooking, I ______ the table.", options: { A: "set", B: "am setting", C: "was setting", D: "have set" }, correct: "C" },
+      { id: 34, skillId: 7, sectionId: "grammar", text: "What ______ you doing when the teacher entered?", options: { A: "did", B: "are", C: "was", D: "were" }, correct: "D" },
+      { id: 35, skillId: 7, sectionId: "grammar", text: "Which sentence is grammatically correct?", options: { A: "She were reading when I arrived.", B: "She was read when I arrived.", C: "She was reading when I arrived.", D: "She is reading when I arrived yesterday." }, correct: "C" },
+
+      // Skill 8: First Conditional / Passive Voice (36–40)
+      { id: 36, skillId: 8, sectionId: "grammar", text: "If the project is completed today, it ______ tomorrow.", options: { A: "will be presented", B: "presents", C: "was presented", D: "presenting" }, correct: "A" },
+      { id: 37, skillId: 8, sectionId: "grammar", text: "If the tickets ______ early, more students will attend the event.", options: { A: "will sell", B: "are sold", C: "sold", D: "selling" }, correct: "B" },
+      { id: 38, skillId: 8, sectionId: "grammar", text: "If the classroom is cleaned, it ______ ready for the meeting.", options: { A: "were", B: "has", C: "will be", D: "being" }, correct: "C" },
+      { id: 39, skillId: 8, sectionId: "grammar", text: "If the homework ______ on time, the teacher will check it tomorrow.", options: { A: "submits", B: "will submit", C: "submitting", D: "is submitted" }, correct: "D" },
+      { id: 40, skillId: 8, sectionId: "grammar", text: "Which sentence correctly combines the first conditional and passive voice?", options: { A: "If the documents are approved, they will be sent by email.", B: "If the documents will approve, they are sent by email.", C: "If the documents approved, they will sent by email.", D: "If the documents are approve, they will be sending by email." }, correct: "A" },
+
+      // Skill 9: Relative Pronouns (41–45)
+      { id: 41, skillId: 9, sectionId: "grammar", text: "The woman ______ teaches science is very friendly.", options: { A: "which", B: "who", C: "where", D: "whose" }, correct: "B" },
+      { id: 42, skillId: 9, sectionId: "grammar", text: "This is the laptop ______ I bought last month.", options: { A: "who", B: "whose", C: "which", D: "where" }, correct: "C" },
+      { id: 43, skillId: 9, sectionId: "grammar", text: "The student ______ project won the competition is my friend.", options: { A: "whose", B: "who", C: "which", D: "where" }, correct: "A" },
+      { id: 44, skillId: 9, sectionId: "grammar", text: "This is the library ______ we usually study.", options: { A: "whose", B: "which", C: "who", D: "where" }, correct: "D" },
+      { id: 45, skillId: 9, sectionId: "grammar", text: "The doctor ______ helped my sister works at the new hospital.", options: { A: "where", B: "who", C: "whose", D: "which" }, correct: "B" },
+
+      // Skill 10: Quantifiers (Much / Many) (46–50)
+      { id: 46, skillId: 10, sectionId: "grammar", text: "How ______ books did you borrow from the library?", options: { A: "much", B: "many", C: "little", D: "any" }, correct: "B" },
+      { id: 47, skillId: 10, sectionId: "grammar", text: "There isn't ______ water in the bottle.", options: { A: "many", B: "few", C: "much", D: "several" }, correct: "C" },
+      { id: 48, skillId: 10, sectionId: "grammar", text: "How ______ money do we need for the trip?", options: { A: "much", B: "many", C: "few", D: "several" }, correct: "A" },
+      { id: 49, skillId: 10, sectionId: "grammar", text: "We don't have ______ chairs for all the guests.", options: { A: "much", B: "little", C: "a little", D: "many" }, correct: "D" },
+      { id: 50, skillId: 10, sectionId: "grammar", text: "Which sentence is correct?", options: { A: "How much students are absent?", B: "How many students are absent?", C: "How many milk is left?", D: "How much pencils do you need?" }, correct: "B" },
+
+      // Skill 11: Past Perfect Tense (51–55)
+      { id: 51, skillId: 11, sectionId: "grammar", text: "By the time we arrived, the movie ______ already started.", options: { A: "has", B: "had", C: "was", D: "is" }, correct: "B" },
+      { id: 52, skillId: 11, sectionId: "grammar", text: "She ______ her homework before she went to bed.", options: { A: "had finished", B: "has finished", C: "finishes", D: "is finishing" }, correct: "A" },
+      { id: 53, skillId: 11, sectionId: "grammar", text: "They were tired because they ______ all day.", options: { A: "work", B: "have worked", C: "had worked", D: "are working" }, correct: "C" },
+      { id: 54, skillId: 11, sectionId: "grammar", text: "When I reached the station, the train ______.", options: { A: "leaves", B: "has left", C: "is leaving", D: "had left" }, correct: "D" },
+      { id: 55, skillId: 11, sectionId: "grammar", text: "Which sentence correctly uses the past perfect?", options: { A: "I had eat breakfast before school.", B: "I had eaten breakfast before school started.", C: "I have ate breakfast before school started.", D: "I was eaten breakfast before school started." }, correct: "B" },
+
+      // Skill 12: Modal Verbs (Must) (56–60)
+      { id: 56, skillId: 12, sectionId: "grammar", text: "You ______ wear a seat belt when travelling by car.", options: { A: "must", B: "must to", C: "musting", D: "are must" }, correct: "A" },
+      { id: 57, skillId: 12, sectionId: "grammar", text: "Students ______ follow the safety instructions in the laboratory.", options: { A: "must to", B: "must", C: "musts", D: "musting" }, correct: "B" },
+      { id: 58, skillId: 12, sectionId: "grammar", text: "You ______ touch the electrical wires. They are dangerous.", options: { A: "must", B: "must to", C: "must not", D: "musts" }, correct: "C" },
+      { id: 59, skillId: 12, sectionId: "grammar", text: "Which sentence is correct?", options: { A: "She must to finish her assignment.", B: "She must finishing her assignment.", C: "She must finishes her assignment.", D: "She must finish her assignment." }, correct: "D" },
+      { id: 60, skillId: 12, sectionId: "grammar", text: "Visitors ______ show their identification before entering this restricted building.", options: { A: "must", B: "musting", C: "must to", D: "musts" }, correct: "A" },
+
+      // Skill 13: Comparative Adjectives (61–65)
+      { id: 61, skillId: 13, sectionId: "grammar", text: "My new phone is ______ than my old one.", options: { A: "fast", B: "fastest", C: "faster", D: "more fast" }, correct: "C" },
+      { id: 62, skillId: 13, sectionId: "grammar", text: "This book is ______ than the one I read last week.", options: { A: "more interesting", B: "most interesting", C: "interesting", D: "interestinger" }, correct: "A" },
+      { id: 63, skillId: 13, sectionId: "grammar", text: "The weather today is ______ than yesterday.", options: { A: "coldest", B: "colder", C: "most cold", D: "cold" }, correct: "B" },
+      { id: 64, skillId: 13, sectionId: "grammar", text: "This exercise is ______ than the previous one.", options: { A: "easy", B: "easiest", C: "more easy", D: "easier" }, correct: "D" },
+      { id: 65, skillId: 13, sectionId: "grammar", text: "Which sentence uses a comparative adjective correctly?", options: { A: "This road is more long than that one.", B: "This road is longest than that one.", C: "This road is longer than that one.", D: "This road is the longer than that one." }, correct: "C" },
+
+      // Section 3: Writing Analysis (66–75)
+      // Skill 14: Punctuation (66–70)
+      { id: 66, skillId: 14, sectionId: "writing", text: "Which sentence uses punctuation correctly?", options: { A: "After the meeting we went home.", B: "After the meeting, we went home.", C: "After, the meeting we went home.", D: "After the meeting we, went home." }, correct: "B" },
+      { id: 67, skillId: 14, sectionId: "writing", text: "Which sentence uses a question mark correctly?", options: { A: "Where did you buy your new laptop?", B: "Where did you buy your new laptop.", C: "Where? did you buy your new laptop.", D: "Where did you buy your new laptop!" }, correct: "A" },
+      { id: 68, skillId: 14, sectionId: "writing", text: "Which sentence uses the apostrophe correctly to show that a bag belongs to one student?", options: { A: "The students bag is on the desk.", B: "The students' bag is on the desk.", C: "The student's bag is on the desk.", D: "The student bag's is on the desk." }, correct: "C" },
+      { id: 69, skillId: 14, sectionId: "writing", text: "Which sentence uses commas correctly in a list?", options: { A: "We bought apples oranges and bananas.", B: "We bought, apples oranges, and bananas.", C: "We bought apples, oranges and, bananas.", D: "We bought apples, oranges, and bananas." }, correct: "D" },
+      { id: 70, skillId: 14, sectionId: "writing", text: "Which sentence uses quotation marks correctly?", options: { A: "The teacher said, \"Please open your books.\"", B: "The teacher said, Please open your books.", C: "The teacher \"said, Please open your books.\"", D: "\"The teacher said, Please open your books.\"" }, correct: "A" },
+
+      // Skill 15: Sentence Sequencing and Paragraph Organization (71–75)
+      {
+        id: 71, skillId: 15, sectionId: "writing",
+        text: "Choose the best order:",
+        sequenceItems: [
+          "1. Finally, she submitted her research project.",
+          "2. First, Nora selected an interesting topic.",
+          "3. Next, she collected information from reliable sources."
+        ],
+        options: { A: "1-2-3", B: "3-2-1", C: "2-3-1", D: "2-1-3" },
+        correct: "C"
+      },
+      { id: 72, skillId: 15, sectionId: "writing", text: "Which sentence is the best topic sentence for a paragraph about online learning?", options: { A: "My sister bought a new phone yesterday.", B: "Online learning offers students several useful benefits.", C: "The weather was sunny last weekend.", D: "I usually eat breakfast at seven." }, correct: "B" },
+      { id: 73, skillId: 15, sectionId: "writing", text: "Choose the best concluding sentence: Reading regularly improves vocabulary, increases knowledge, and develops concentration. It also helps students express their ideas more clearly.", options: { A: "Some people prefer travelling by car.", B: "My favorite color is blue.", C: "Libraries usually have many shelves.", D: "Therefore, reading is a valuable habit for students." }, correct: "D" },
+      {
+        id: 74, skillId: 15, sectionId: "writing",
+        text: "Choose the best order:",
+        sequenceItems: [
+          "1. After reviewing, take a short practice test.",
+          "2. First, make a study timetable.",
+          "3. Finally, get enough sleep before exam day.",
+          "4. Then, review the most important lessons."
+        ],
+        options: { A: "2-4-1-3", B: "1-2-3-4", C: "3-1-4-2", D: "4-2-1-3" },
+        correct: "A"
+      },
+      {
+        id: 75, skillId: 15, sectionId: "writing",
+        text: "Which sentence does NOT belong?",
+        sequenceItems: [
+          "1. Exercise helps people stay healthy.",
+          "2. Walking every day can improve physical fitness.",
+          "3. My favorite school subject is history.",
+          "4. Regular physical activity can also reduce stress."
+        ],
+        options: { A: "Sentence 1", B: "Sentence 2", C: "Sentence 3", D: "Sentence 4" },
+        correct: "C"
+      },
+
+      // Section 4: Reading Comprehension — Passage 1 (76–100)
+      // Skill 16: Identifying the Main Purpose / Target Audience (76–80)
+      { id: 76, skillId: 16, sectionId: "reading1", passageId: "passage1", text: "Who is the program mainly designed for?", options: { A: "University professors", B: "Secondary school students aged 15 to 18", C: "Primary school teachers", D: "Business owners" }, correct: "B" },
+      { id: 77, skillId: 16, sectionId: "reading1", passageId: "passage1", text: "What is the main purpose of the program?", options: { A: "To develop practical skills before university", B: "To prepare students for a sports competition", C: "To teach primary school subjects", D: "To organize international travel" }, correct: "A" },
+      { id: 78, skillId: 16, sectionId: "reading1", passageId: "passage1", text: "Which student would benefit most from this program?", options: { A: "A student who wants to learn programming and communication skills", B: "A student looking for a full-time job as a teacher", C: "A child beginning primary school", D: "A university professor conducting research" }, correct: "A" },
+      { id: 79, skillId: 16, sectionId: "reading1", passageId: "passage1", text: "Why was this text most likely written?", options: { A: "To describe a historical event", B: "To review a television program", C: "To advertise and explain a summer learning opportunity", D: "To report the results of a school examination" }, correct: "C" },
+      { id: 80, skillId: 16, sectionId: "reading1", passageId: "passage1", text: "Which title best reflects the intended audience and purpose?", options: { A: "A Guide to University Employment", B: "Developing Skills for Secondary School Students", C: "Professional Training for Company Managers", D: "A History of Digital Technology" }, correct: "B" },
+
+      // Skill 17: Scanning for Specific Information (Time) (81–85)
+      { id: 81, skillId: 17, sectionId: "reading1", passageId: "passage1", text: "What time do classes begin each day?", options: { A: "8:00 a.m.", B: "8:45 a.m.", C: "9:00 a.m.", D: "10:00 a.m." }, correct: "C" },
+      { id: 82, skillId: 17, sectionId: "reading1", passageId: "passage1", text: "What time do classes end?", options: { A: "11:00 a.m.", B: "12:00 p.m.", C: "1:00 p.m.", D: "2:00 p.m." }, correct: "C" },
+      { id: 83, skillId: 17, sectionId: "reading1", passageId: "passage1", text: "What time should students arrive on the first day?", options: { A: "8:45 a.m.", B: "9:30 a.m.", C: "10:00 a.m.", D: "1:00 p.m." }, correct: "A" },
+      { id: 84, skillId: 17, sectionId: "reading1", passageId: "passage1", text: "How many hours of classes are scheduled each day?", options: { A: "Two hours", B: "Three hours", C: "Four hours", D: "Five hours" }, correct: "C" },
+      { id: 85, skillId: 17, sectionId: "reading1", passageId: "passage1", text: "Which time range matches the daily class schedule?", options: { A: "8:00 a.m. to 12:00 p.m.", B: "8:45 a.m. to 1:00 p.m.", C: "9:00 a.m. to 1:00 p.m.", D: "10:00 a.m. to 2:00 p.m." }, correct: "C" },
+
+      // Skill 18: Identifying Supporting Details (86–90)
+      { id: 86, skillId: 18, sectionId: "reading1", passageId: "passage1", text: "What does the programming course teach students?", options: { A: "How to build simple applications", B: "How to repair cars", C: "How to prepare meals", D: "How to conduct medical examinations" }, correct: "A" },
+      { id: 87, skillId: 18, sectionId: "reading1", passageId: "passage1", text: "What is the main focus of the Public Speaking course?", options: { A: "Learning foreign languages", B: "Presentation skills and confidence", C: "Designing mobile applications", D: "Writing computer code" }, correct: "B" },
+      { id: 88, skillId: 18, sectionId: "reading1", passageId: "passage1", text: "What will students learn in the Digital Design course?", options: { A: "How to write business contracts", B: "How to manage a restaurant", C: "How to create posters and visual content", D: "How to conduct scientific experiments" }, correct: "C" },
+      { id: 89, skillId: 18, sectionId: "reading1", passageId: "passage1", text: "What must students upload when applying?", options: { A: "A passport photograph only", B: "A copy of their school ID", C: "A university degree", D: "A driving licence" }, correct: "B" },
+      { id: 90, skillId: 18, sectionId: "reading1", passageId: "passage1", text: "What is the minimum attendance required for a completion certificate?", options: { A: "50%", B: "60%", C: "70%", D: "80%" }, correct: "D" },
+
+      // Skill 19: Scanning for Specific Information (Dates) (91–95)
+      { id: 91, skillId: 19, sectionId: "reading1", passageId: "passage1", text: "When does registration open?", options: { A: "May 10", B: "June 20", C: "July 5", D: "July 30" }, correct: "A" },
+      { id: 92, skillId: 19, sectionId: "reading1", passageId: "passage1", text: "What is the final registration date?", options: { A: "May 10", B: "June 20", C: "July 5", D: "July 30" }, correct: "B" },
+      { id: 93, skillId: 19, sectionId: "reading1", passageId: "passage1", text: "When does the summer program begin?", options: { A: "May 10", B: "June 20", C: "July 5", D: "July 30" }, correct: "C" },
+      { id: 94, skillId: 19, sectionId: "reading1", passageId: "passage1", text: "When does the program finish?", options: { A: "June 20", B: "July 5", C: "July 20", D: "July 30" }, correct: "D" },
+      { id: 95, skillId: 19, sectionId: "reading1", passageId: "passage1", text: "On which date will the final schedule be emailed, according to the one-week-before rule?", options: { A: "June 20", B: "June 28", C: "July 5", D: "July 12" }, correct: "B" },
+
+      // Skill 20: Understanding Cause and Effect (96–100)
+      { id: 96, skillId: 20, sectionId: "reading1", passageId: "passage1", text: "Why will the center email the final timetable before the program?", options: { A: "To increase course fees", B: "To prevent students from arriving late", C: "To cancel the workshops", D: "To change the program location" }, correct: "B" },
+      { id: 97, skillId: 20, sectionId: "reading1", passageId: "passage1", text: "Why does the center encourage group work?", options: { A: "Because it reduces the number of teachers", B: "Because it makes lessons shorter", C: "Because it helps students exchange ideas and solve problems", D: "Because it replaces all individual assignments" }, correct: "C" },
+      { id: 98, skillId: 20, sectionId: "reading1", passageId: "passage1", text: "What may happen if a student attends only 60% of classes?", options: { A: "The student will automatically receive a scholarship.", B: "The student will become a course instructor.", C: "The student will be moved to another city.", D: "The student will not qualify for a completion certificate." }, correct: "D" },
+      { id: 99, skillId: 20, sectionId: "reading1", passageId: "passage1", text: "Why did some students arrive late last year?", options: { A: "They did not check the updated timetable.", B: "They forgot to pay the course fee.", C: "They could not find the application website.", D: "They attended the wrong school." }, correct: "A" },
+      { id: 100, skillId: 20, sectionId: "reading1", passageId: "passage1", text: "Why might a student with excellent academic results apply for a scholarship?", options: { A: "To receive a new laptop", B: "To avoid attending classes", C: "To have the program fee fully covered", D: "To shorten the program" }, correct: "C" },
+
+      // Section 5: Reading Comprehension — Passage 2 (101–125)
+      // Skill 21: Identifying the Main Idea (101–105)
+      { id: 101, skillId: 21, sectionId: "reading2", passageId: "passage2", text: "What is the main idea of the passage?", options: { A: "Students should spend all their time studying.", B: "Volunteering can change attitudes and develop personal skills.", C: "Libraries should replace traditional classrooms.", D: "Watching educational videos is the best way to learn." }, correct: "B" },
+      { id: 102, skillId: 21, sectionId: "reading2", passageId: "passage2", text: "What is the passage mainly about?", options: { A: "Lina's experience and personal growth through volunteering", B: "The history of community libraries", C: "A competition between two schools", D: "How to prepare for an English examination" }, correct: "A" },
+      { id: 103, skillId: 21, sectionId: "reading2", passageId: "passage2", text: "Which statement best summarizes Lina's experience?", options: { A: "She disliked volunteering and never changed her opinion.", B: "She joined a project but stopped after one day.", C: "She discovered the value of volunteering through helping others.", D: "She decided to stop studying to become a volunteer." }, correct: "C" },
+      { id: 104, skillId: 21, sectionId: "reading2", passageId: "passage2", text: "Which title best suits the passage?", options: { A: "The Importance of School Examinations", B: "A Difficult English Assignment", C: "A Weekend at Home", D: "How Volunteering Changed Lina's Life" }, correct: "D" },
+      { id: 105, skillId: 21, sectionId: "reading2", passageId: "passage2", text: "What central message does the writer communicate?", options: { A: "Trying new experiences can help people discover their abilities.", B: "Academic success depends only on studying alone.", C: "Community projects are suitable only for adults.", D: "Volunteering prevents students from achieving their goals." }, correct: "A" },
+
+      // Skill 22: Reading for Specific Details (106–110)
+      { id: 106, skillId: 22, sectionId: "reading2", passageId: "passage2", text: "Who encouraged Lina to join the volunteering project?", options: { A: "Her mother", B: "Her English teacher", C: "Her best friend Aisha", D: "Her younger sister" }, correct: "C" },
+      { id: 107, skillId: 22, sectionId: "reading2", passageId: "passage2", text: "Where did the volunteering project take place?", options: { A: "At a hospital", B: "At a community library", C: "At a sports club", D: "At a university" }, correct: "B" },
+      { id: 108, skillId: 22, sectionId: "reading2", passageId: "passage2", text: "How old was Mariam?", options: { A: "Eight", B: "Nine", C: "Ten", D: "Twelve" }, correct: "C" },
+      { id: 109, skillId: 22, sectionId: "reading2", passageId: "passage2", text: "How often did Lina volunteer during the following two months?", options: { A: "Every Saturday", B: "Every Monday", C: "Twice a year", D: "Once a month" }, correct: "A" },
+      { id: 110, skillId: 22, sectionId: "reading2", passageId: "passage2", text: "What did Lina's teacher ask her to do?", options: { A: "Write a science report", B: "Organize a school trip", C: "Teach a university course", D: "Share her experience at a school assembly" }, correct: "D" },
+
+      // Skill 23: Understanding Cause and Effect / Change of Opinion (111–115)
+      { id: 111, skillId: 23, sectionId: "reading2", passageId: "passage2", text: "Why did Lina initially refuse to join the project?", options: { A: "She thought volunteering was a waste of time.", B: "She disliked reading books.", C: "She had already joined another project.", D: "She did not know her English teacher." }, correct: "A" },
+      { id: 112, skillId: 23, sectionId: "reading2", passageId: "passage2", text: "Why did Lina agree to volunteer for one Saturday?", options: { A: "She wanted to receive a financial reward.", B: "She wanted to support her friend.", C: "She needed to complete a university application.", D: "She wanted to avoid schoolwork." }, correct: "B" },
+      { id: 113, skillId: 23, sectionId: "reading2", passageId: "passage2", text: "What caused Lina to change her opinion about volunteering?", options: { A: "Receiving a new certificate", B: "Watching an educational video", C: "Seeing Mariam succeed after receiving her help", D: "Winning a school competition" }, correct: "C" },
+      { id: 114, skillId: 23, sectionId: "reading2", passageId: "passage2", text: "Why did Lina become more confident when speaking to unfamiliar people?", options: { A: "She stopped attending school.", B: "She studied fewer subjects.", C: "She avoided working with children.", D: "She gained experience interacting with others during volunteering." }, correct: "D" },
+      { id: 115, skillId: 23, sectionId: "reading2", passageId: "passage2", text: "Why did Lina decide to continue volunteering during the summer?", options: { A: "She discovered that helping others was valuable and helped her grow.", B: "Her school required her to volunteer every day.", C: "She wanted to stop studying completely.", D: "The community library offered her a full-time job." }, correct: "A" },
+
+      // Skill 24: Making Inferences (116–120)
+      { id: 116, skillId: 24, sectionId: "reading2", passageId: "passage2", text: "What can be inferred about Lina before she started volunteering?", options: { A: "She had extensive experience teaching children.", B: "She preferred familiar activities and focused mainly on her studies.", C: "She had already worked in several libraries.", D: "She enjoyed speaking to large audiences." }, correct: "B" },
+      { id: 117, skillId: 24, sectionId: "reading2", passageId: "passage2", text: "What can we infer from Mariam's reaction after reading the paragraph?", options: { A: "She was disappointed with Lina.", B: "She wanted to leave the library immediately.", C: "She felt proud of her progress.", D: "She no longer wanted to learn English." }, correct: "C" },
+      { id: 118, skillId: 24, sectionId: "reading2", passageId: "passage2", text: "What does the teacher's decision to invite Lina to speak at the assembly suggest?", options: { A: "The teacher recognized Lina's personal development.", B: "The teacher wanted Lina to stop volunteering.", C: "The teacher believed volunteering was unnecessary.", D: "The teacher wanted to cancel the library project." }, correct: "A" },
+      { id: 119, skillId: 24, sectionId: "reading2", passageId: "passage2", text: "What can be inferred about Lina's communication skills after two months?", options: { A: "They became worse.", B: "They remained completely unchanged.", C: "She no longer needed to communicate with others.", D: "They improved through regular interaction and teaching." }, correct: "D" },
+      { id: 120, skillId: 24, sectionId: "reading2", passageId: "passage2", text: "What can readers infer about Lina's future attitude toward new opportunities?", options: { A: "She will probably reject every unfamiliar activity.", B: "She may be more willing to try new experiences.", C: "She will stop helping other students.", D: "She will avoid teamwork in the future." }, correct: "B" },
+
+      // Skill 25: Identifying Unstated Information (121–125)
+      { id: 121, skillId: 25, sectionId: "reading2", passageId: "passage2", text: "Which detail is NOT mentioned in the passage?", options: { A: "The name of Lina's best friend", B: "The location of the volunteering project", C: "The exact name of the community library", D: "The age of the girl Lina helped" }, correct: "C" },
+      { id: 122, skillId: 25, sectionId: "reading2", passageId: "passage2", text: "Which information is NOT provided about Lina's volunteering experience?", options: { A: "The day she usually volunteered", B: "The exact number of books she organized", C: "The type of children she helped", D: "The skills she developed" }, correct: "B" },
+      { id: 123, skillId: 25, sectionId: "reading2", passageId: "passage2", text: "Which detail about Mariam is NOT stated?", options: { A: "She was ten years old.", B: "She had difficulty reading English.", C: "She read a paragraph independently.", D: "She attended the same school as Lina." }, correct: "D" },
+      { id: 124, skillId: 25, sectionId: "reading2", passageId: "passage2", text: "Which information about the school assembly is NOT mentioned?", options: { A: "The exact date of the assembly", B: "Lina shared her volunteering experience.", C: "Her teacher invited her to speak.", D: "Lina encouraged other students to try new activities." }, correct: "A" },
+      { id: 125, skillId: 25, sectionId: "reading2", passageId: "passage2", text: "Which detail about Lina's future plans is NOT stated?", options: { A: "She wanted to continue volunteering in the summer.", B: "She planned to continue focusing on her studies.", C: "She intended to become a full-time librarian.", D: "She valued helping others and learning new skills." }, correct: "C" }
+    ];
+
+    // =========================================================================
+    // 5. PERSISTENT AUDIO ENGINE (INDEPENDENT OF QUESTION NAVIGATION)
+    // =========================================================================
+    class ListeningAudioController {
+      constructor() {
+        this.sentences = LISTENING_SCRIPT;
+        this.state = "idle"; // idle | playing | paused | ended | error
+        this.currentSentenceIdx = 0;
+        this.progressPct = 0;
+        this.errorMessage = "";
+        this.activeUtterance = null;
+        this.playToken = 0;
+        this.keepAliveTimer = null;
+        this.nextSentenceTimer = null;
+        this.selectedVoice = null;
+
+        if (typeof window !== "undefined" && "speechSynthesis" in window) {
+          this.loadEnglishVoice();
+          if (typeof window.speechSynthesis.onvoiceschanged !== "undefined") {
+            window.speechSynthesis.onvoiceschanged = () => this.loadEnglishVoice();
+          }
+        }
+      }
+
+      loadEnglishVoice() {
+        try {
+          if (!("speechSynthesis" in window)) return;
+          const voices = window.speechSynthesis.getVoices() || [];
+          if (!voices.length) return;
+          this.selectedVoice =
+            voices.find(v => v.lang && v.lang.toLowerCase().startsWith("en-") && /natural|samantha|daniel|google|serena|aria|jenny|uk|us/i.test(v.name)) ||
+            voices.find(v => v.lang && v.lang.toLowerCase().startsWith("en")) ||
+            voices[0];
+        } catch (e) {}
+      }
+
+      clearTimers() {
+        if (this.keepAliveTimer) {
+          clearInterval(this.keepAliveTimer);
+          this.keepAliveTimer = null;
+        }
+        if (this.nextSentenceTimer) {
+          clearTimeout(this.nextSentenceTimer);
+          this.nextSentenceTimer = null;
+        }
+      }
+
+      startKeepAlive() {
+        this.clearTimers();
+        // Prevent Chrome/Safari long-speech stall bug
+        this.keepAliveTimer = setInterval(() => {
+          try {
+            if (this.state === "playing" && window.speechSynthesis && window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+              window.speechSynthesis.pause();
+              window.speechSynthesis.resume();
+            }
+          } catch (e) {}
+        }, 10000);
+      }
+
+      notifyUI() {
+        const mount = document.getElementById("audio-player-mount");
+        if (mount) {
+          mount.innerHTML = renderAudioPlayerInner();
+        }
+      }
+
+      speakSentence(index, token) {
+        if (token !== this.playToken) return;
+        if (index >= this.sentences.length) {
+          this.clearTimers();
+          this.state = "ended";
+          this.progressPct = 100;
+          this.activeUtterance = null;
+          this.notifyUI();
+          return;
+        }
+
+        this.currentSentenceIdx = index;
+        this.progressPct = Math.round((index / this.sentences.length) * 100);
+        this.notifyUI();
+
+        try {
+          const utter = new SpeechSynthesisUtterance(this.sentences[index]);
+          if (!this.selectedVoice) this.loadEnglishVoice();
+          if (this.selectedVoice) utter.voice = this.selectedVoice;
+          utter.lang = (this.selectedVoice && this.selectedVoice.lang) || "en-US";
+          utter.rate = 0.94;
+          utter.pitch = 1.0;
+
+          // Keep strong reference on instance & window to prevent GC premature cutoff
+          this.activeUtterance = utter;
+          window.__activeStepUtterance = utter;
+
+          utter.onboundary = (ev) => {
+            if (token !== this.playToken) return;
+            const len = this.sentences[index].length || 1;
+            const frac = Math.min(1, (ev.charIndex || 0) / len);
+            this.progressPct = Math.min(99, Math.round(((index + frac) / this.sentences.length) * 100));
+            const fill = document.getElementById("audio-progress-fill");
+            if (fill) fill.style.width = `${this.progressPct}%`;
+          };
+
+          utter.onend = () => {
+            if (token !== this.playToken) return;
+            this.nextSentenceTimer = setTimeout(() => {
+              if (token === this.playToken && this.state === "playing") {
+                this.speakSentence(index + 1, token);
+              }
+            }, 220);
+          };
+
+          utter.onerror = (ev) => {
+            if (token !== this.playToken) return;
+            if (ev && (ev.error === "canceled" || ev.error === "interrupted")) return;
+            this.clearTimers();
+            this.state = "error";
+            this.errorMessage = "تعذر تشغيل الصوت في هذا المتصفح. يرجى المحاولة مرة أخرى.";
+            this.notifyUI();
+          };
+
+          window.speechSynthesis.speak(utter);
+        } catch (err) {
+          this.clearTimers();
+          this.state = "error";
+          this.errorMessage = "خدمة النطق الصوتي غير مدعومة على هذا الجهاز.";
+          this.notifyUI();
+        }
+      }
+
+      playFrom(index) {
+        if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+          this.state = "error";
+          this.errorMessage = "المتصفح الحالي لا يدعم تشغيل التسجيل الصوتي.";
+          this.notifyUI();
+          return;
+        }
+        this.playToken += 1;
+        const token = this.playToken;
+        this.clearTimers();
+        try {
+          window.speechSynthesis.cancel();
+        } catch (e) {}
+
+        this.errorMessage = "";
+        this.state = "playing";
+        this.startKeepAlive();
+        this.speakSentence(index, token);
+      }
+
+      togglePlayPause() {
+        if (this.state === "playing") {
+          try {
+            if (window.speechSynthesis && window.speechSynthesis.speaking) {
+              window.speechSynthesis.pause();
+            }
+          } catch (e) {}
+          this.clearTimers();
+          this.state = "paused";
+          this.notifyUI();
+        } else if (this.state === "paused") {
+          this.state = "playing";
+          this.startKeepAlive();
+          try {
+            if (window.speechSynthesis && window.speechSynthesis.paused) {
+              window.speechSynthesis.resume();
+              this.notifyUI();
+              return;
+            }
+          } catch (e) {}
+          this.playFrom(this.currentSentenceIdx);
+        } else if (this.state === "ended") {
+          this.playFrom(0);
+        } else {
+          this.playFrom(this.currentSentenceIdx || 0);
+        }
+      }
+
+      replay() {
+        this.currentSentenceIdx = 0;
+        this.progressPct = 0;
+        this.playFrom(0);
+      }
+
+      stopCompletely() {
+        this.playToken += 1;
+        this.clearTimers();
+        try {
+          if (typeof window !== "undefined" && "speechSynthesis" in window) {
+            window.speechSynthesis.cancel();
+          }
+        } catch (e) {}
+        this.activeUtterance = null;
+        this.state = "idle";
+        this.currentSentenceIdx = 0;
+        this.progressPct = 0;
+        this.errorMessage = "";
+      }
+    }
+
+    const audioEngine = new ListeningAudioController();
+
+    // =========================================================================
+    // 6. APPLICATION STATE, PERSISTENCE & SCORING ENGINE
+    // =========================================================================
+    function loadSavedState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function clearSavedState() {
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch (e) {}
+    }
+
+    const initialSaved = loadSavedState();
+
+    const appState = {
+      screen: initialSaved && initialSaved.submitted && initialSaved.results
+        ? "results"
+        : "welcome",
+      studentName: (initialSaved && initialSaved.studentName) || "",
+      currentIndex: (initialSaved && typeof initialSaved.currentIndex === "number") ? initialSaved.currentIndex : 0,
+      answers: (initialSaved && initialSaved.answers) || {},
+      submitted: Boolean(initialSaved && initialSaved.submitted),
+      results: (initialSaved && initialSaved.results) || null,
+      completionDate: (initialSaved && initialSaved.completionDate) || null,
+      mobilePassageExpanded: true,
+      expandedSkillGroups: {
+        listening: true,
+        grammar: true,
+        writing: true,
+        reading: true
+      },
+      reviewExpanded: false,
+      reviewAreaFilter: "all",
+      modal: null
+    };
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          studentName: appState.studentName,
+          currentIndex: appState.currentIndex,
+          answers: appState.answers,
+          submitted: appState.submitted,
+          results: appState.results,
+          completionDate: appState.completionDate
+        }));
+      } catch (e) {}
+    }
+
+    function classifySkillScore(pct) {
+      if (pct === 100) {
+        return {
+          tier: "mastered",
+          classification: "إتقان ممتاز",
+          badgeStyle: "bg-emerald-50 text-emerald-800 border-emerald-200"
+        };
+      }
+      if (pct >= 80) {
+        return {
+          tier: "mastered",
+          classification: "إتقان جيد جدًا",
+          badgeStyle: "bg-[#DCECE8] text-[#172D40] border-[#286B6D]/30"
+        };
+      }
+      if (pct >= 60) {
+        return {
+          tier: "reinforce",
+          classification: "إتقان جيد ويحتاج تعزيزًا",
+          badgeStyle: "bg-amber-50 text-amber-900 border-amber-200"
+        };
+      }
+      return {
+        tier: "review",
+        classification: "تحتاج المهارة إلى مراجعة",
+        badgeStyle: "bg-rose-50 text-rose-800 border-rose-200"
+      };
+    }
+
+    function calculateFinalResults() {
+      let totalCorrect = 0;
+
+      const areaTotals = {
+        listening: { id: "listening", nameEn: "Listening Comprehension", nameAr: "فهم المسموع", correct: 0, total: 25, percentage: 0 },
+        grammar: { id: "grammar", nameEn: "Grammar", nameAr: "القواعد النحوية", correct: 0, total: 40, percentage: 0 },
+        writing: { id: "writing", nameEn: "Writing Analysis", nameAr: "تحليل الكتابة", correct: 0, total: 10, percentage: 0 },
+        reading: { id: "reading", nameEn: "Reading Comprehension", nameAr: "فهم المقروء", correct: 0, total: 50, percentage: 0 }
+      };
+
+      const passage1Score = { correct: 0, total: 25, percentage: 0 };
+      const passage2Score = { correct: 0, total: 25, percentage: 0 };
+
+      const skillCorrectMap = {};
+      SKILLS.forEach(s => { skillCorrectMap[s.id] = 0; });
+
+      QUESTIONS.forEach(q => {
+        const isCorrect = appState.answers[q.id] === q.correct;
+        if (isCorrect) {
+          totalCorrect += 1;
+          skillCorrectMap[q.skillId] += 1;
+
+          if (q.sectionId === "listening") areaTotals.listening.correct += 1;
+          else if (q.sectionId === "grammar") areaTotals.grammar.correct += 1;
+          else if (q.sectionId === "writing") areaTotals.writing.correct += 1;
+          else if (q.sectionId === "reading1") {
+            areaTotals.reading.correct += 1;
+            passage1Score.correct += 1;
+          } else if (q.sectionId === "reading2") {
+            areaTotals.reading.correct += 1;
+            passage2Score.correct += 1;
+          }
+        }
+      });
+
+      Object.values(areaTotals).forEach(a => {
+        a.percentage = Math.round((a.correct / a.total) * 100);
+      });
+      passage1Score.percentage = Math.round((passage1Score.correct / passage1Score.total) * 100);
+      passage2Score.percentage = Math.round((passage2Score.correct / passage2Score.total) * 100);
+
+      let completedSkillsCount = 0;
+      const skillResults = SKILLS.map(s => {
+        const correct = skillCorrectMap[s.id];
+        const percentage = Math.round((correct / 5) * 100);
+        if (percentage >= 80) completedSkillsCount += 1;
+        const meta = classifySkillScore(percentage);
+        return {
+          ...s,
+          correct,
+          total: 5,
+          percentage,
+          ...meta
+        };
+      });
+
+      const overallPercentage = Math.round((totalCorrect / 125) * 100);
+
+      return {
+        totalCorrect,
+        totalIncorrect: 125 - totalCorrect,
+        overallPercentage,
+        completedSkillsCount,
+        areaStats: areaTotals,
+        passage1Score,
+        passage2Score,
+        skillResults
+      };
+    }
+
+    async function downloadCertificatePNG() {
+      const btn = document.getElementById("btn-download-png");
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span>جاري التجهيز...</span>`;
+      }
+
+      try {
+        if (document.fonts && document.fonts.ready) {
+          await document.fonts.ready;
+        }
+
+        const res = appState.results;
+        const W = 1600;
+        const H = 1131; // Exact 297:210 A4 landscape ratio
+        const canvas = document.createElement("canvas");
+        canvas.width = W;
+        canvas.height = H;
+        const ctx = canvas.getContext("2d");
+
+        // Warm Ivory Background
+        ctx.fillStyle = "#FAF8F2";
+        ctx.fillRect(0, 0, W, H);
+
+        // Subtle Corner Radial Glows
+        const gradTL = ctx.createRadialGradient(0, 0, 20, 0, 0, 720);
+        gradTL.addColorStop(0, "rgba(220, 236, 232, 0.55)");
+        gradTL.addColorStop(1, "rgba(220, 236, 232, 0)");
+        ctx.fillStyle = gradTL;
+        ctx.fillRect(0, 0, W, H);
+
+        const gradBR = ctx.createRadialGradient(W, H, 20, W, H, 720);
+        gradBR.addColorStop(0, "rgba(196, 163, 106, 0.18)");
+        gradBR.addColorStop(1, "rgba(196, 163, 106, 0)");
+        ctx.fillStyle = gradBR;
+        ctx.fillRect(0, 0, W, H);
+
+        // Outer Navy Double Border
+        ctx.strokeStyle = "#172D40";
+        ctx.lineWidth = 10;
+        ctx.strokeRect(32, 32, W - 64, H - 64);
+
+        // Inner Gold Border
+        ctx.strokeStyle = "#C4A36A";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(56, 56, W - 112, H - 112);
+
+        ctx.direction = "rtl";
+        ctx.textAlign = "center";
+
+        // Top Gold Accent Bar
+        ctx.fillStyle = "#C4A36A";
+        ctx.fillRect((W - 160) / 2, 104, 160, 4);
+
+        // School Name
+        ctx.fillStyle = "#286B6D";
+        ctx.font = "700 32px 'IBM Plex Sans Arabic', sans-serif";
+        ctx.fillText(SCHOOL_INFO.schoolAr, W / 2, 162);
+
+        // Certificate Title
+        ctx.fillStyle = "#172D40";
+        ctx.font = "700 66px 'IBM Plex Sans Arabic', sans-serif";
+        ctx.fillText("شهادة إتمام", W / 2, 245);
+
+        // Intro Line
+        ctx.fillStyle = "#334155";
+        ctx.font = "500 32px 'IBM Plex Sans Arabic', sans-serif";
+        ctx.fillText("تتقدم معلمة مادة اللغة الإنجليزية بالثناء والشكر للطالبة", W / 2, 345);
+
+        // Student Name
+        ctx.fillStyle = "#172D40";
+        ctx.font = "700 58px 'Amiri', 'IBM Plex Sans Arabic', serif";
+        const nameText = appState.studentName.trim();
+        ctx.fillText(nameText, W / 2, 435);
+        const measuredName = Math.min(1000, Math.max(420, ctx.measureText(nameText).width + 90));
+        ctx.strokeStyle = "#C4A36A";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo((W - measuredName) / 2, 456);
+        ctx.lineTo((W + measuredName) / 2, 456);
+        ctx.stroke();
+
+        // Achievement Line
+        ctx.fillStyle = "#334155";
+        ctx.font = "500 32px 'IBM Plex Sans Arabic', sans-serif";
+        ctx.fillText("لتميزها واجتيازها", W / 2, 535);
+
+        // Plan Title
+        ctx.fillStyle = "#172D40";
+        ctx.font = "700 38px 'IBM Plex Sans Arabic', sans-serif";
+        ctx.fillText(SCHOOL_INFO.titleAr, W / 2, 600);
+
+        // Grade Percentage
+        ctx.fillStyle = "#286B6D";
+        ctx.font = "700 40px 'IBM Plex Sans Arabic', sans-serif";
+        ctx.fillText(`بتقدير ${res.overallPercentage}%`, W / 2, 668);
+
+        // Closing Line
+        ctx.fillStyle = "#172D40";
+        ctx.font = "600 32px 'IBM Plex Sans Arabic', sans-serif";
+        ctx.fillText("متمنية لها دوام التفوق والتميز", W / 2, 738);
+
+        // Footer Divider Line
+        ctx.strokeStyle = "rgba(23, 45, 64, 0.16)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(120, 825);
+        ctx.lineTo(W - 120, 825);
+        ctx.stroke();
+
+        // Far Right: Teacher
+        ctx.fillStyle = "#286B6D";
+        ctx.font = "600 26px 'IBM Plex Sans Arabic', sans-serif";
+        ctx.fillText("المعلمة", W - 300, 888);
+        ctx.fillStyle = "#172D40";
+        ctx.font = "700 30px 'IBM Plex Sans Arabic', sans-serif";
+        ctx.fillText(SCHOOL_INFO.teacherAr, W - 300, 932);
+
+        // Center Gold Seal
+        const sealX = W / 2;
+        const sealY = 905;
+        const sealGrad = ctx.createRadialGradient(sealX - 15, sealY - 15, 5, sealX, sealY, 54);
+        sealGrad.addColorStop(0, "#e3c68f");
+        sealGrad.addColorStop(0.65, "#C4A36A");
+        sealGrad.addColorStop(1, "#9f7f47");
+        ctx.fillStyle = sealGrad;
+        ctx.beginPath();
+        ctx.arc(sealX, sealY, 52, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = "#172D40";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.fillStyle = "#172D40";
+        ctx.font = "700 20px 'IBM Plex Sans Arabic', sans-serif";
+        ctx.fillText("إتقان", sealX, sealY - 2);
+        ctx.font = "700 16px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText("STEP", sealX, sealY + 20);
+
+        // Far Left: Principal
+        ctx.fillStyle = "#286B6D";
+        ctx.font = "600 26px 'IBM Plex Sans Arabic', sans-serif";
+        ctx.fillText("مديرة المدرسة", 300, 888);
+        ctx.fillStyle = "#172D40";
+        ctx.font = "700 30px 'IBM Plex Sans Arabic', sans-serif";
+        ctx.fillText(SCHOOL_INFO.principalAr, 300, 932);
+
+        // Trigger PNG Download
+        const dataUrl = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        const safeName = appState.studentName.trim().replace(/\s+/g, "_");
+        link.download = `شهادة_خطة_STEP_${safeName}.png`;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (err) {
+        console.error("PNG generation failed:", err);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `
+            <svg class="w-3 h-3 text-[#C4A36A] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            <span>تحميل PNG</span>
+          `;
+        }
+      }
+    }
+
+    function printCertificatePDF() {
+      window.print();
+    }
+
+    // =========================================================================
+    // 6. UI RENDERING HELPERS
+    // =========================================================================
+    function getSectionForQuestion(q) {
+      return SECTIONS.find(s => s.id === q.sectionId);
+    }
+
+    function getSkillForQuestion(q) {
+      return SKILLS.find(s => s.id === q.skillId);
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+    }
+
+    // Audio Player Inner Markup (Compact Card - Never contains transcript)
+    function renderAudioPlayerInner() {
+      const st = audioEngine.state;
+      const pct = audioEngine.progressPct;
+      const totalSegments = audioEngine.sentences.length || 1;
+      const currentSegmentDisplay = st === "ended"
+        ? totalSegments
+        : Math.min(totalSegments, audioEngine.currentSentenceIdx + (st === "playing" || st === "paused" ? 1 : 0));
+
+      const primaryBtnLabel = st === "playing"
+        ? "إيقاف مؤقت"
+        : st === "paused"
+          ? "متابعة التسجيل"
+          : "تشغيل التسجيل";
+
+      const statusText = st === "playing"
+        ? `جاري التشغيل (${currentSegmentDisplay}/${totalSegments})`
+        : st === "paused"
+          ? `متوقف مؤقتاً (${currentSegmentDisplay}/${totalSegments})`
+          : st === "ended"
+            ? "اكتمل التسجيل"
+            : `${pct}%`;
+
+      return `
+        <div class="bg-white border border-[#1B2C3D]/15 rounded-2xl px-3.5 py-2.5 sm:px-4 sm:py-3 shadow-xs mb-3.5">
+          <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 mb-2">
+            <div class="flex items-center gap-1.5 shrink-0">
+              <svg class="w-4 h-4 text-[#38696C] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+              <span class="text-xs sm:text-sm font-bold text-[#1B2C3D]">قسم الاستماع</span>
+            </div>
+            <p class="text-[11px] sm:text-xs text-[#1B2C3D]/80 font-medium">
+              استمعي للتسجيل ثم أجيبي عن الأسئلة.
+            </p>
+          </div>
+
+          ${st === "error" ? `
+            <div class="bg-rose-50 border border-rose-200 text-rose-900 rounded-xl px-3 py-1.5 mb-2 text-xs flex items-center justify-between gap-2">
+              <span>${audioEngine.errorMessage}</span>
+              <button type="button" onclick="audioEngine.replay()" class="px-2.5 py-1 bg-rose-700 text-white rounded-lg text-[11px] font-bold shrink-0">
+                إعادة من البداية
+              </button>
+            </div>
+          ` : ""}
+
+          <!-- Real Playback Progress Bar -->
+          <div class="flex items-center gap-2.5 mb-2.5">
+            <div class="flex-1 h-1.5 bg-[#E8EFEC] rounded-full overflow-hidden">
+              <div id="audio-progress-fill" class="h-full bg-[#38696C] transition-all duration-300" style="width: ${pct}%"></div>
+            </div>
+            <span class="text-[10px] font-semibold text-[#38696C] shrink-0">${statusText}</span>
+          </div>
+
+          <!-- Two Balanced Side-by-Side Controls -->
+          <div class="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onclick="audioEngine.togglePlayPause()"
+              class="inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl font-bold text-xs transition active:scale-[0.98] ${
+                st === "playing"
+                  ? "bg-[#B69A60] text-[#1B2C3D]"
+                  : "bg-[#1B2C3D] text-white hover:bg-[#243a50]"
+              }"
+            >
+              ${st === "playing" ? `
+                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+              ` : `
+                <svg class="w-3.5 h-3.5 text-[#B69A60]" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              `}
+              <span>${primaryBtnLabel}</span>
+            </button>
+
+            <button
+              type="button"
+              onclick="audioEngine.replay()"
+              class="inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-[#E8EFEC] text-[#1B2C3D] border border-[#38696C]/20 font-bold text-xs hover:bg-[#dce6e2] transition active:scale-[0.98]"
+            >
+              <svg class="w-3.5 h-3.5 text-[#38696C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <span>إعادة من البداية</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 7. SCREENS RENDERING
+    // =========================================================================
+
+    function renderWelcomeScreen() {
+      const saved = loadSavedState();
+      const hasUnfinished = saved && !saved.submitted && saved.studentName && Object.keys(saved.answers || {}).length > 0;
+      const answeredCount = hasUnfinished ? Object.keys(saved.answers).length : 0;
+
+      return `
+        <div class="w-full pt-0 pb-6 px-3 sm:px-5">
+          <!-- ONE Cohesive Main Container -->
+          <div class="max-w-xl mx-auto bg-[#FFFDF9] rounded-3xl border border-[#B69A60]/45 shadow-[0_14px_38px_-16px_rgba(27,44,61,0.14)] overflow-hidden fade-in">
+            <!-- Thin Decorative Gradient Line (Gold -> Teal -> Navy) -->
+            <div class="h-1.5 w-full bg-gradient-to-l from-[#B69A60] via-[#38696C] to-[#1B2C3D]"></div>
+
+            <div class="p-4 sm:p-6 space-y-4">
+              <!-- 1. School Badge (Centered Pill) & Separate Small Fullscreen Button (Upper-Left) -->
+              <div class="relative flex items-center justify-center min-h-[34px]">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E8EFEC] border border-[#38696C]/25">
+                  <svg class="w-4 h-4 text-[#B69A60] shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                  </svg>
+                  <span class="text-xs sm:text-sm font-bold text-[#1B2C3D]">${SCHOOL_INFO.schoolAr}</span>
+                </div>
+
+                <button
+                  type="button"
+                  onclick="toggleFullscreen()"
+                  title="ملء الشاشة"
+                  aria-label="ملء الشاشة"
+                  class="absolute left-0 top-1/2 -translate-y-1/2 p-1.5 rounded-xl border border-[#1B2C3D]/15 bg-[#F8F6F0] text-[#1B2C3D] hover:bg-[#E8EFEC] transition"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                </button>
+              </div>
+
+              <!-- 2 & 3. Main Two-Line Title & English Subtitle with Thin Gold Lines -->
+              <div class="text-center pt-0.5">
+                <h1 class="text-xl sm:text-2xl md:text-[26px] font-bold text-[#1B2C3D] leading-snug">
+                  <span class="block">${SCHOOL_INFO.titleLine1Ar}</span>
+                  <span class="block">${SCHOOL_INFO.titleLine2Ar}</span>
+                </h1>
+
+                <div class="flex items-center justify-center gap-3 mt-2.5">
+                  <span class="h-px w-10 sm:w-14 bg-[#B69A60]"></span>
+                  <span class="font-en text-xs sm:text-sm font-bold text-[#38696C] uppercase tracking-[0.18em]">
+                    ${SCHOOL_INFO.subtitleEn}
+                  </span>
+                  <span class="h-px w-10 sm:w-14 bg-[#B69A60]"></span>
+                </div>
+              </div>
+
+              <!-- 4. Teacher and Principal Information in ONE Shared Compact Container -->
+              <div class="bg-[#F8F6F0] border border-[#B69A60]/40 rounded-2xl px-4 py-2.5 text-center space-y-1">
+                <div class="flex items-center justify-center gap-2 text-xs sm:text-sm">
+                  <span class="w-2 h-2 rounded-full bg-[#38696C] shrink-0"></span>
+                  <span class="font-semibold text-[#1B2C3D]">المعلمة: <strong class="font-bold">${SCHOOL_INFO.teacherAr}</strong></span>
+                </div>
+                <div class="flex items-center justify-center gap-2 text-xs sm:text-sm">
+                  <span class="w-2 h-2 rounded-full bg-[#B69A60] shrink-0"></span>
+                  <span class="font-semibold text-[#1B2C3D]">مديرة المدرسة: <strong class="font-bold">${SCHOOL_INFO.principalAr}</strong></span>
+                </div>
+              </div>
+
+              <!-- 5. Motivational Message -->
+              <div class="bg-[#E8EFEC]/75 border-r-4 border-[#38696C] rounded-xl px-3.5 py-2.5 text-center">
+                <p class="text-xs sm:text-sm font-semibold text-[#1B2C3D] leading-relaxed">
+                  ${SCHOOL_INFO.encouragementAr}
+                </p>
+              </div>
+
+              <!-- 6. Three Equally Sized Statistics Cards in ONE Horizontal Row (RTL: 125, 25, 4) -->
+              <div class="grid grid-cols-3 gap-2.5 text-center">
+                <div class="bg-[#F8F6F0] border border-[#1B2C3D]/12 rounded-2xl py-2.5 px-2 flex flex-col items-center justify-center">
+                  <div class="text-xl sm:text-2xl font-bold text-[#1B2C3D] leading-none">125</div>
+                  <div class="text-xs font-semibold text-[#38696C] mt-1">سؤالًا</div>
+                </div>
+                <div class="bg-[#F8F6F0] border border-[#1B2C3D]/12 rounded-2xl py-2.5 px-2 flex flex-col items-center justify-center">
+                  <div class="text-xl sm:text-2xl font-bold text-[#1B2C3D] leading-none">25</div>
+                  <div class="text-xs font-semibold text-[#38696C] mt-1">مهارة</div>
+                </div>
+                <div class="bg-[#F8F6F0] border border-[#1B2C3D]/12 rounded-2xl py-2.5 px-2 flex flex-col items-center justify-center">
+                  <div class="text-xl sm:text-2xl font-bold text-[#1B2C3D] leading-none">4</div>
+                  <div class="text-xs font-semibold text-[#38696C] mt-1">مجالات لغوية</div>
+                </div>
+              </div>
+
+              <!-- 7. Four Assessment Domain Cards in a Compact 2x2 Grid (Informational Only) -->
+              <div class="grid grid-cols-2 gap-2.5 font-en" dir="ltr">
+                <!-- Row 1: Listening | Grammar -->
+                <div class="bg-[#E8EFEC]/55 border border-[#38696C]/20 rounded-2xl p-3 flex flex-col items-center justify-center text-center">
+                  <svg class="w-4 h-4 text-[#38696C] mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+                  <div class="text-xs sm:text-sm font-bold text-[#1B2C3D]">Listening</div>
+                  <div class="text-[11px] font-semibold text-[#38696C] mt-0.5">25 Questions</div>
+                </div>
+
+                <div class="bg-[#E8EFEC]/55 border border-[#38696C]/20 rounded-2xl p-3 flex flex-col items-center justify-center text-center">
+                  <svg class="w-4 h-4 text-[#38696C] mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  <div class="text-xs sm:text-sm font-bold text-[#1B2C3D]">Grammar</div>
+                  <div class="text-[11px] font-semibold text-[#38696C] mt-0.5">40 Questions</div>
+                </div>
+
+                <!-- Row 2: Writing Analysis | Reading -->
+                <div class="bg-[#E8EFEC]/55 border border-[#38696C]/20 rounded-2xl p-3 flex flex-col items-center justify-center text-center">
+                  <svg class="w-4 h-4 text-[#38696C] mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                  <div class="text-xs sm:text-sm font-bold text-[#1B2C3D]">Writing Analysis</div>
+                  <div class="text-[11px] font-semibold text-[#38696C] mt-0.5">10 Questions</div>
+                </div>
+
+                <div class="bg-[#E8EFEC]/55 border border-[#38696C]/20 rounded-2xl p-3 flex flex-col items-center justify-center text-center">
+                  <svg class="w-4 h-4 text-[#38696C] mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                  <div class="text-xs sm:text-sm font-bold text-[#1B2C3D]">Reading</div>
+                  <div class="text-[11px] font-semibold text-[#38696C] mt-0.5">50 Questions</div>
+                </div>
+              </div>
+
+              ${hasUnfinished ? `
+                <!-- Saved Progress Quick Resume -->
+                <div class="bg-[#F8F6F0] border border-[#B69A60] rounded-2xl px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2">
+                  <div class="text-xs">
+                    <span class="font-bold text-[#1B2C3D]">${escapeHtml(saved.studentName)}</span>
+                    <span class="text-[#38696C] mr-1.5">(${answeredCount}/125)</span>
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <button type="button" onclick="resumeSavedAssessment()" class="px-3 py-1.5 rounded-xl bg-[#38696C] text-white font-bold text-xs hover:opacity-95 transition">
+                      متابعة الاختبار
+                    </button>
+                    <button type="button" onclick="promptNewAssessment()" class="px-2.5 py-1.5 rounded-xl border border-[#1B2C3D]/20 text-[#1B2C3D] font-semibold text-xs hover:bg-rose-50 hover:text-rose-800 transition">
+                      جديد
+                    </button>
+                  </div>
+                </div>
+              ` : ""}
+
+              <!-- 8 & 9. Student Registration (No Extra Oversized Wrapper Card) -->
+              <form onsubmit="handleStartAssessment(event)" class="space-y-3 pt-1">
+                <div>
+                  <label for="student-name-input" class="block text-xs sm:text-sm font-bold text-[#1B2C3D] mb-1.5">
+                    اسم الطالبة <span class="text-rose-600">*</span>
+                  </label>
+                  <input
+                    id="student-name-input"
+                    type="text"
+                    required
+                    autocomplete="name"
+                    placeholder="اكتبي اسمك الثلاثي هنا…"
+                    value="${appState.studentName.replace(/"/g, '&quot;')}"
+                    oninput="clearNameError()"
+                    class="w-full px-4 py-2.5 rounded-2xl border border-[#1B2C3D]/20 bg-[#F8F6F0] text-[#1B2C3D] font-semibold text-base focus:outline-none focus:border-[#38696C] focus:bg-white transition"
+                  />
+                  <p id="name-error-msg" class="hidden text-[11px] text-rose-700 font-semibold mt-1">
+                    يرجى إدخال اسم الطالبة قبل بدء الاختبار.
+                  </p>
+                </div>
+
+                <button
+                  type="submit"
+                  class="w-full py-3 px-5 rounded-2xl bg-[#1B2C3D] text-white font-bold text-sm sm:text-base hover:bg-[#253b50] active:scale-[0.99] transition shadow-sm flex items-center justify-center gap-2"
+                >
+                  <span>بدء الاختبار</span>
+                  <svg class="w-4 h-4 text-[#B69A60]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAssessmentScreen() {
+      const q = QUESTIONS[appState.currentIndex];
+      const section = getSectionForQuestion(q);
+      const skill = getSkillForQuestion(q);
+      const isListening = q.sectionId === "listening";
+      const isReading = q.sectionId === "reading1" || q.sectionId === "reading2";
+      const passage = isReading ? READING_PASSAGES[q.passageId] : null;
+      const overallPct = Math.round(((appState.currentIndex + 1) / 125) * 100);
+      const selectedOpt = appState.answers[q.id] || null;
+      const isLastQuestion = appState.currentIndex === QUESTIONS.length - 1;
+
+      const domainShortEn = isReading ? "Reading Comprehension" : section.nameEn;
+
+      return `
+        <div class="w-full max-w-full flex flex-col justify-start">
+          <!-- Spacious Navy Assessment Header -->
+          <div class="w-full max-w-3xl mx-auto px-3.5 sm:px-5 pt-0 shrink-0">
+            <header class="w-full bg-[#1B2C3D] text-white rounded-2xl sm:rounded-3xl shadow-sm border border-[#B69A60]/35 px-4 py-5 sm:py-6">
+              <div class="flex items-center justify-between gap-2 text-xs mb-2.5 min-w-0">
+                <div class="flex flex-wrap items-center gap-x-2 gap-y-1 min-w-0">
+                  <span class="font-bold text-white">السؤال ${q.id} من 125</span>
+                  <span class="text-white/35">•</span>
+                  <span class="font-en font-semibold text-[#B69A60]">${domainShortEn}</span>
+                  <span class="text-white/35">•</span>
+                  <span class="font-semibold text-[#E8EFEC]">المهارة ${skill.id} من 25</span>
+                </div>
+
+                <button
+                  type="button"
+                  onclick="toggleFullscreen()"
+                  title="ملء الشاشة"
+                  aria-label="ملء الشاشة"
+                  class="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[#E8EFEC] transition shrink-0"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                </button>
+              </div>
+
+              <!-- Naturally Wrapping English Skill Title -->
+              <div class="font-en text-xs sm:text-sm font-medium text-white/95 leading-snug break-words mb-3.5 min-w-0">
+                ${skill.nameEn}
+              </div>
+
+              <!-- Single Thin Overall Progress Bar -->
+              <div class="w-full h-1.5 bg-white/15 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-l from-[#B69A60] to-[#E8EFEC] transition-all duration-300" style="width: ${overallPct}%"></div>
+              </div>
+            </header>
+          </div>
+
+          <!-- Main Assessment Content (Top-Aligned with Natural Vertical Scrolling) -->
+          <main class="w-full max-w-3xl mx-auto px-3.5 sm:px-5 pt-4 pb-8 flex flex-col justify-start min-w-0">
+            <!-- Persistent Audio Player Mount (Only for Questions 1-25) -->
+            ${isListening ? `<div id="audio-player-mount" class="w-full min-w-0">${renderAudioPlayerInner()}</div>` : ""}
+
+            ${isReading && passage ? `
+              <!-- Refined Readable Reading Passage Container Above Associated Questions -->
+              <section class="w-full min-w-0 bg-[#FFFDF9] rounded-2xl border border-[#1B2C3D]/15 shadow-xs p-4 sm:p-6 mb-4 font-en">
+                <h2 class="text-base sm:text-lg font-bold text-[#1B2C3D] mb-3 pb-2 border-b border-[#B69A60]/40">
+                  ${passage.title}
+                </h2>
+                <div class="space-y-3 text-sm sm:text-[15px] leading-relaxed text-slate-800">
+                  ${passage.paragraphs.map(p => `<p>${p}</p>`).join("")}
+                </div>
+              </section>
+            ` : ""}
+
+            <!-- Question & Options Card -->
+            <section id="question-card-container" class="w-full min-w-0 bg-[#FFFDF9] rounded-2xl sm:rounded-3xl border border-[#1B2C3D]/12 shadow-xs p-4 sm:p-6">
+              <!-- Compact Question Number Label -->
+              <div class="mb-3">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#F8F6F0] border border-[#B69A60]/45 text-xs font-bold text-[#1B2C3D] font-en">
+                  Question ${q.id}
+                </span>
+              </div>
+
+              <!-- Question Prompt (LTR) -->
+              <div class="font-en mb-4">
+                <h2 class="text-base sm:text-lg font-bold text-[#1B2C3D] leading-relaxed">
+                  ${escapeHtml(q.text)}
+                </h2>
+
+                ${q.sequenceItems ? `
+                  <div class="mt-3 bg-[#F8F6F0] border border-[#B69A60]/45 rounded-xl p-3.5 space-y-1.5 text-sm text-[#1B2C3D] font-medium">
+                    ${q.sequenceItems.map(line => `<div class="leading-relaxed">${escapeHtml(line)}</div>`).join("")}
+                  </div>
+                ` : ""}
+              </div>
+
+              <!-- Four Answer Choices (LTR, Consistent Dimensions, Subtle Teal Highlight) -->
+              <div class="space-y-2.5 font-en" role="radiogroup" aria-label="Answer options">
+                ${["A", "B", "C", "D"].map(letter => {
+                  const isSelected = selectedOpt === letter;
+                  return `
+                    <button
+                      type="button"
+                      role="radio"
+                      aria-checked="${isSelected}"
+                      onclick="selectOption('${letter}')"
+                      class="w-full text-left p-3 sm:p-3.5 rounded-xl border-2 transition-all flex items-center gap-3 ${
+                        isSelected
+                          ? "border-[#38696C] bg-[#E8EFEC]/70"
+                          : "border-slate-200/90 bg-white hover:border-[#B69A60] hover:bg-[#F8F6F0]/70"
+                      }"
+                    >
+                      <span class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs sm:text-sm shrink-0 transition-colors ${
+                        isSelected
+                          ? "bg-[#1B2C3D] text-[#B69A60]"
+                          : "bg-[#F8F6F0] text-[#1B2C3D] border border-slate-200"
+                      }">
+                        ${letter}
+                      </span>
+                      <span class="text-sm sm:text-[15px] font-medium text-[#1B2C3D] leading-snug flex-1">
+                        ${escapeHtml(q.options[letter])}
+                      </span>
+                      <span class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                        isSelected ? "border-[#38696C] bg-[#38696C]" : "border-slate-300"
+                      }">
+                        ${isSelected ? `<span class="w-2 h-2 rounded-full bg-white"></span>` : ""}
+                      </span>
+                    </button>
+                  `;
+                }).join("")}
+              </div>
+
+              <!-- Side-by-Side Navigation Buttons Beneath Answer Choices -->
+              <div class="mt-6 pt-4 border-t border-slate-100 grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onclick="goPrevious()"
+                  ${appState.currentIndex === 0 ? "disabled" : ""}
+                  class="inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl border border-[#1B2C3D]/20 bg-white text-[#1B2C3D] font-bold text-sm hover:bg-[#F8F6F0] disabled:opacity-40 disabled:pointer-events-none transition"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                  <span>السابق</span>
+                </button>
+
+                ${isLastQuestion ? `
+                  <button
+                    type="button"
+                    onclick="initiateFinalSubmission()"
+                    class="inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-[#38696C] text-white font-bold text-xs sm:text-sm hover:opacity-95 active:scale-[0.99] transition shadow-xs"
+                  >
+                    <span>إنهاء الاختبار وعرض النتيجة</span>
+                  </button>
+                ` : `
+                  <button
+                    type="button"
+                    onclick="goNext()"
+                    class="inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-[#1B2C3D] text-white font-bold text-sm hover:bg-[#253b50] active:scale-[0.99] transition shadow-xs"
+                  >
+                    <span>التالي</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                  </button>
+                `}
+              </div>
+            </section>
+          </main>
+        </div>
+      `;
+    }
+
+    // Reusable Real Certificate Component (A4 Landscape 297:210, Proportional CSS Sizing)
+    function renderRealCertificateComponent() {
+      const res = appState.results;
+      return `
+        <div id="printable-certificate" class="cert-card-box rounded-xl">
+          <div class="cert-inner-box rounded-lg">
+            <!-- Header Group -->
+            <div class="w-full flex flex-col items-center">
+              <div class="w-12 sm:w-20 h-0.5 bg-[#C4A36A] mb-1 sm:mb-2"></div>
+              <div class="cert-school">${SCHOOL_INFO.schoolAr}</div>
+              <h2 class="cert-title mt-0.5">شهادة إتمام</h2>
+            </div>
+
+            <!-- Main Body Group -->
+            <div class="w-full flex flex-col items-center justify-center my-auto">
+              <p class="cert-body-text">
+                تتقدم معلمة مادة اللغة الإنجليزية بالثناء والشكر للطالبة
+              </p>
+
+              <div class="my-1 sm:my-2 w-full flex justify-center">
+                <span class="cert-student-name">
+                  ${escapeHtml(appState.studentName)}
+                </span>
+              </div>
+
+              <p class="cert-body-text">
+                لتميزها واجتيازها
+              </p>
+
+              <h3 class="cert-plan-title mt-0.5">
+                ${SCHOOL_INFO.titleAr}
+              </h3>
+
+              <div class="cert-grade mt-0.5">
+                بتقدير <span dir="ltr">${res.overallPercentage}%</span>
+              </div>
+
+              <p class="cert-closing mt-0.5">
+                متمنية لها دوام التفوق والتميز
+              </p>
+            </div>
+
+            <!-- Bottom Row Inside Border: Teacher (Far Right), Gold Seal (Center), Principal (Far Left) -->
+            <div class="cert-footer-row px-1 sm:px-6">
+              <!-- Far Right: المعلمة -->
+              <div class="text-center min-w-0">
+                <div class="cert-sign-role">المعلمة</div>
+                <div class="cert-sign-name">${SCHOOL_INFO.teacherAr}</div>
+              </div>
+
+              <!-- Center Decorative Gold Seal -->
+              <div class="cert-gold-seal">
+                <span class="text-[7px] sm:text-[10px] font-bold text-[#172D40] leading-none">إتقان</span>
+                <span class="text-[6px] sm:text-[8px] font-bold text-[#172D40] font-en leading-none mt-0.5">STEP</span>
+              </div>
+
+              <!-- Far Left: مديرة المدرسة -->
+              <div class="text-center min-w-0">
+                <div class="cert-sign-role">مديرة المدرسة</div>
+                <div class="cert-sign-name">${SCHOOL_INFO.principalAr}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderResultsScreen() {
+      const res = appState.results;
+      const masteredSkills = res.skillResults.filter(s => s.tier === "mastered");
+      const reinforceSkills = res.skillResults.filter(s => s.tier === "reinforce");
+      const reviewSkills = res.skillResults.filter(s => s.tier === "review");
+
+      const areasList = [
+        { ...res.areaStats.listening },
+        { ...res.areaStats.grammar },
+        { ...res.areaStats.writing },
+        { ...res.areaStats.reading }
+      ];
+
+      const groupedSkills = [
+        { key: "listening", titleAr: "فهم المسموع", titleEn: "Listening Comprehension", skills: res.skillResults.filter(s => s.area === "listening") },
+        { key: "grammar", titleAr: "القواعد النحوية", titleEn: "Grammar", skills: res.skillResults.filter(s => s.area === "grammar") },
+        { key: "writing", titleAr: "تحليل الكتابة", titleEn: "Writing Analysis", skills: res.skillResults.filter(s => s.area === "writing") },
+        { key: "reading", titleAr: "فهم المقروء", titleEn: "Reading Comprehension", skills: res.skillResults.filter(s => s.area === "reading") }
+      ];
+
+      const filteredReviewQuestions = QUESTIONS.filter(q => {
+        if (appState.reviewAreaFilter === "all") return true;
+        if (appState.reviewAreaFilter === "reading") return q.sectionId === "reading1" || q.sectionId === "reading2";
+        return q.sectionId === appState.reviewAreaFilter;
+      });
+
+      return `
+        <div class="pb-12">
+          <!-- Top Bar Aligned Naturally Below Top Safe-Area Inset -->
+          <div class="max-w-5xl mx-auto px-[16px] pt-0">
+            <header class="bg-[#172D40] text-white rounded-2xl py-4 px-4 sm:px-6 border border-[#C4A36A]/35 shadow-xs">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <div class="text-xs text-[#C4A36A] font-semibold">${SCHOOL_INFO.schoolAr}</div>
+                  <div class="text-sm sm:text-base font-bold leading-snug">${SCHOOL_INFO.titleAr}</div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button type="button" onclick="promptNewAssessment()" class="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-[#DCECE8] transition">
+                    بدء اختبار جديد
+                  </button>
+                  <button type="button" onclick="toggleFullscreen()" title="ملء الشاشة" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-[#DCECE8] transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                  </button>
+                </div>
+              </div>
+            </header>
+          </div>
+
+          <main class="max-w-5xl mx-auto px-[16px] pt-5 sm:pt-7">
+            <!-- Compact Congratulatory Message -->
+            <div class="text-center max-w-2xl mx-auto mb-5 fade-in">
+              <h1 class="text-base sm:text-lg font-bold text-[#172D40] leading-relaxed">
+                أحسنتِ يا ${escapeHtml(appState.studentName)}، أتممتِ الاختبار بنجاح.
+              </h1>
+            </div>
+
+            <!-- Real Envelope-to-Certificate Continuous Animation -->
+            <section aria-label="الشهادة التقديرية" class="mb-8">
+              <div id="envelope-stage" class="envelope-stage-wrapper stage-closed">
+                <div id="envelope-box" class="envelope-assembly">
+                  <div class="envelope-back"></div>
+                  <div class="envelope-flap"></div>
+                  <div class="envelope-seal">
+                    <span class="font-bold text-xs">إتقان</span>
+                  </div>
+
+                  <!-- Single Real Certificate Component -->
+                  <div class="certificate-carrier">
+                    ${renderRealCertificateComponent()}
+                  </div>
+
+                  <div class="envelope-pocket"></div>
+                </div>
+              </div>
+
+              <!-- Compact Side-by-Side Download Controls Centered Below Certificate -->
+              <div class="mt-3.5 flex flex-col items-center">
+                <div class="flex items-center justify-center gap-2">
+                  <button
+                    id="btn-download-png"
+                    type="button"
+                    onclick="downloadCertificatePNG()"
+                    class="w-[106px] h-[32px] px-2 rounded-lg bg-[#172D40] text-white font-medium text-[11px] hover:bg-[#203d56] active:scale-[0.99] transition shadow-xs inline-flex items-center justify-center gap-1"
+                  >
+                    <svg class="w-3 h-3 text-[#C4A36A] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    <span>تحميل PNG</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onclick="printCertificatePDF()"
+                    class="w-[106px] h-[32px] px-2 rounded-lg bg-[#286B6D] text-white font-medium text-[11px] hover:bg-[#1f5658] active:scale-[0.99] transition shadow-xs inline-flex items-center justify-center gap-1"
+                  >
+                    <svg class="w-3 h-3 text-[#DCECE8] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                    <span>تحميل PDF</span>
+                  </button>
+                </div>
+
+                <!-- Small Secondary Text-Style Replay Button -->
+                <button
+                  type="button"
+                  onclick="runEnvelopeAnimation(true)"
+                  class="mt-1.5 inline-flex items-center gap-1 text-[11px] font-medium text-[#286B6D] hover:text-[#172D40] underline-offset-4 hover:underline transition py-1 px-2"
+                >
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                  <span>إعادة عرض الشهادة</span>
+                </button>
+              </div>
+            </section>
+
+            <!-- =============================================================== -->
+            <!-- FINAL PERFORMANCE ANALYTICS (BELOW CERTIFICATE & DOWNLOAD)      -->
+            <!-- =============================================================== -->
+            <section class="space-y-8 mt-10 pt-8 border-t border-[#172D40]/12">
+              <!-- Overall Summary KPI Cards -->
+              <div>
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                  <h2 class="text-lg sm:text-xl font-bold text-[#172D40]">ملخص الأداء العام</h2>
+                  <span class="text-xs text-slate-500">نسبة إتقان المهارات القبلية (ليست درجة STEP رسمية)</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                  <div class="bg-white rounded-2xl p-4 border border-[#172D40]/12 shadow-xs text-center">
+                    <div class="text-xs text-[#286B6D] font-semibold mb-1">الدرجة الكلية</div>
+                    <div class="text-xl sm:text-2xl font-bold text-[#172D40]" dir="ltr">${res.totalCorrect} / 125</div>
+                  </div>
+                  <div class="bg-white rounded-2xl p-4 border border-[#C4A36A]/50 shadow-xs text-center">
+                    <div class="text-xs text-[#286B6D] font-semibold mb-1">نسبة الإتقان</div>
+                    <div class="text-xl sm:text-2xl font-bold text-[#172D40]" dir="ltr">${res.overallPercentage}%</div>
+                  </div>
+                  <div class="bg-white rounded-2xl p-4 border border-[#172D40]/12 shadow-xs text-center">
+                    <div class="text-xs text-emerald-700 font-semibold mb-1">الإجابات الصحيحة</div>
+                    <div class="text-xl sm:text-2xl font-bold text-emerald-800">${res.totalCorrect}</div>
+                  </div>
+                  <div class="bg-white rounded-2xl p-4 border border-[#172D40]/12 shadow-xs text-center">
+                    <div class="text-xs text-rose-700 font-semibold mb-1">الإجابات غير الصحيحة</div>
+                    <div class="text-xl sm:text-2xl font-bold text-rose-800">${res.totalIncorrect}</div>
+                  </div>
+                  <div class="col-span-2 sm:col-span-1 bg-white rounded-2xl p-4 border border-[#172D40]/12 shadow-xs text-center">
+                    <div class="text-xs text-[#286B6D] font-semibold mb-1">المهارات المتقنة (≥80%)</div>
+                    <div class="text-xl sm:text-2xl font-bold text-[#172D40]" dir="ltr">${res.completedSkillsCount} / 25</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Performance by Language Area (4 Summary Cards) -->
+              <div>
+                <h2 class="text-lg sm:text-xl font-bold text-[#172D40] mb-4">الأداء حسب المجالات اللغوية</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  ${areasList.map(area => `
+                    <div class="bg-white rounded-2xl p-5 border border-[#172D40]/12 shadow-xs flex flex-col justify-between">
+                      <div>
+                        <div class="text-xs font-en font-semibold text-[#286B6D] mb-0.5">${area.nameEn}</div>
+                        <div class="text-base font-bold text-[#172D40] mb-3">${area.nameAr}</div>
+                      </div>
+                      <div>
+                        <div class="flex items-baseline justify-between mb-1.5">
+                          <span class="text-lg font-bold text-[#172D40]" dir="ltr">${area.correct} / ${area.total}</span>
+                          <span class="text-sm font-bold text-[#286B6D]" dir="ltr">${area.percentage}%</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-[#DCECE8] rounded-full overflow-hidden">
+                          <div class="h-full bg-[#286B6D] rounded-full" style="width: ${area.percentage}%"></div>
+                        </div>
+                        ${area.id === "reading" ? `
+                          <div class="mt-3 pt-2.5 border-t border-slate-100 flex justify-between text-[11px] text-slate-600">
+                            <span>القطعة 1: <strong dir="ltr">${res.passage1Score.correct}/25</strong></span>
+                            <span>القطعة 2: <strong dir="ltr">${res.passage2Score.correct}/25</strong></span>
+                          </div>
+                        ` : ""}
+                      </div>
+                    </div>
+                  `).join("")}
+                </div>
+              </div>
+
+              <!-- Remedial Recommendations -->
+              <div class="bg-white rounded-3xl p-5 sm:p-7 border border-[#C4A36A]/45 shadow-xs">
+                <h2 class="text-lg sm:text-xl font-bold text-[#172D40] mb-5">التوصيات العلاجية المخصصة</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <!-- Mastered -->
+                  <div class="bg-[#DCECE8]/45 border border-[#286B6D]/25 rounded-2xl p-4">
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="font-bold text-sm text-[#172D40]">المهارات المتقنة</span>
+                      <span class="px-2.5 py-0.5 rounded-full bg-[#286B6D] text-white text-xs font-bold">${masteredSkills.length}</span>
+                    </div>
+                    <p class="text-xs text-slate-600 mb-2">مهارات حققتِ فيها نسبة 80% فأكثر:</p>
+                    ${masteredSkills.length > 0 ? `
+                      <ul class="space-y-1 text-xs font-medium text-[#172D40]">
+                        ${masteredSkills.map(s => `<li>• المهارة ${s.id}: ${s.nameAr} (${s.percentage}%)</li>`).join("")}
+                      </ul>
+                    ` : `<p class="text-xs text-slate-500 italic">لا توجد مهارات في هذه الفئة حالياً.</p>`}
+                  </div>
+
+                  <!-- Needs Reinforcement -->
+                  <div class="bg-[#FAF8F2] border border-[#C4A36A]/50 rounded-2xl p-4">
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="font-bold text-sm text-[#172D40]">المهارات التي تحتاج إلى تعزيز</span>
+                      <span class="px-2.5 py-0.5 rounded-full bg-[#C4A36A] text-[#172D40] text-xs font-bold">${reinforceSkills.length}</span>
+                    </div>
+                    <p class="text-xs text-slate-600 mb-2">مهارات بنسبة 60% وتحتاج تدريباً إضافياً:</p>
+                    ${reinforceSkills.length > 0 ? `
+                      <ul class="space-y-1 text-xs font-medium text-[#172D40]">
+                        ${reinforceSkills.map(s => `<li>• المهارة ${s.id}: ${s.nameAr} (${s.percentage}%)</li>`).join("")}
+                      </ul>
+                    ` : `<p class="text-xs text-slate-500 italic">لا توجد مهارات في هذه الفئة.</p>`}
+                  </div>
+
+                  <!-- Needs Review -->
+                  <div class="bg-rose-50/70 border border-rose-200 rounded-2xl p-4">
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="font-bold text-sm text-rose-950">المهارات التي تحتاج إلى مراجعة</span>
+                      <span class="px-2.5 py-0.5 rounded-full bg-rose-700 text-white text-xs font-bold">${reviewSkills.length}</span>
+                    </div>
+                    <p class="text-xs text-rose-900/75 mb-2">مهارات بنسبة 40% فأقل وتحتاج مراجعة مركزة:</p>
+                    ${reviewSkills.length > 0 ? `
+                      <ul class="space-y-1 text-xs font-medium text-rose-950">
+                        ${reviewSkills.map(s => `<li>• المهارة ${s.id}: ${s.nameAr} (${s.percentage}%)</li>`).join("")}
+                      </ul>
+                    ` : `<p class="text-xs text-slate-500 italic">ممتاز! لا توجد مهارات تحتاج مراجعة عاجلة.</p>`}
+                  </div>
+                </div>
+
+                ${[...reviewSkills, ...reinforceSkills].length > 0 ? `
+                  <div class="pt-4 border-t border-slate-100">
+                    <h3 class="text-sm font-bold text-[#286B6D] mb-3">إرشادات التطوير المقترحة للمهارات التي تحتاج دعماً:</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      ${[...reviewSkills, ...reinforceSkills].map(s => `
+                        <div class="p-3.5 rounded-xl bg-[#FAF8F2] border border-[#172D40]/10">
+                          <div class="text-xs font-bold text-[#172D40] mb-1">
+                            المهارة ${s.id}: ${s.nameAr} <span class="text-[#286B6D]" dir="ltr">(${s.correct}/5)</span>
+                          </div>
+                          <p class="text-xs text-slate-700 leading-relaxed">${s.recommendationAr}</p>
+                        </div>
+                      `).join("")}
+                    </div>
+                  </div>
+                ` : `
+                  <div class="p-4 rounded-2xl bg-[#DCECE8]/60 text-center text-sm font-semibold text-[#172D40]">
+                    أداء متميز في جميع المهارات! استمري في القراءة والاستماع باللغة الإنجليزية للحفاظ على هذا المستوى.
+                  </div>
+                `}
+              </div>
+
+              <!-- Detailed Skill Analysis (All 25 Skills Grouped by Area) -->
+              <div>
+                <h2 class="text-lg sm:text-xl font-bold text-[#172D40] mb-4">التحليل التفصيلي للمهارات (25 مهارة)</h2>
+                <div class="space-y-4">
+                  ${groupedSkills.map(group => {
+                    const isOpen = appState.expandedSkillGroups[group.key];
+                    return `
+                      <div class="bg-white rounded-2xl border border-[#172D40]/12 shadow-xs overflow-hidden">
+                        <button
+                          type="button"
+                          onclick="toggleSkillGroup('${group.key}')"
+                          class="w-full px-5 py-4 flex items-center justify-between bg-[#FAF8F2] hover:bg-[#DCECE8]/35 transition text-right"
+                        >
+                          <div>
+                            <span class="font-bold text-base text-[#172D40]">${group.titleAr}</span>
+                            <span class="font-en text-xs text-[#286B6D] mr-2">(${group.titleEn})</span>
+                          </div>
+                          <svg class="w-5 h-5 text-[#172D40] transition-transform ${isOpen ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+
+                        ${isOpen ? `
+                          <div class="p-4 sm:p-5 divide-y divide-slate-100">
+                            ${group.skills.map(s => `
+                              <div class="py-3.5 first:pt-0 last:pb-0">
+                                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                                  <div>
+                                    <div class="flex items-center gap-2">
+                                      <span class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-[#172D40] text-[#C4A36A] text-xs font-bold">${s.id}</span>
+                                      <span class="font-en text-sm font-bold text-[#172D40]">${s.nameEn}</span>
+                                    </div>
+                                    <div class="text-xs text-slate-600 mt-0.5 mr-8">${s.nameAr}</div>
+                                  </div>
+                                  <div class="flex items-center gap-2 mr-8 sm:mr-0">
+                                    <span class="text-xs font-bold px-2.5 py-1 rounded-full border ${s.badgeStyle}">
+                                      ${s.classification}
+                                    </span>
+                                    <span class="text-xs font-bold text-[#172D40] bg-[#FAF8F2] px-2.5 py-1 rounded-lg border border-slate-200" dir="ltr">
+                                      ${s.correct}/5 (${s.percentage}%)
+                                    </span>
+                                  </div>
+                                </div>
+                                <div class="mr-8">
+                                  <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                    <div class="h-full rounded-full ${s.percentage >= 80 ? 'bg-[#286B6D]' : s.percentage === 60 ? 'bg-[#C4A36A]' : 'bg-rose-600'}" style="width: ${s.percentage}%"></div>
+                                  </div>
+                                </div>
+                              </div>
+                            `).join("")}
+                          </div>
+                        ` : ""}
+                      </div>
+                    `;
+                  }).join("")}
+                </div>
+              </div>
+
+              <!-- Optional Expandable Answer Review (NO Listening Transcript) -->
+              <div class="bg-white rounded-3xl border border-[#172D40]/15 shadow-xs overflow-hidden">
+                <button
+                  type="button"
+                  onclick="toggleAnswerReview()"
+                  class="w-full px-6 py-5 flex items-center justify-between bg-[#172D40] text-white hover:bg-[#1f3b54] transition"
+                >
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-[#C4A36A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    <span class="font-bold text-base sm:text-lg">مراجعة الإجابات</span>
+                  </div>
+                  <svg class="w-5 h-5 text-[#C4A36A] transition-transform ${appState.reviewExpanded ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+
+                ${appState.reviewExpanded ? `
+                  <div class="p-4 sm:p-6">
+                    <!-- Area Filter Tabs -->
+                    <div class="flex flex-wrap items-center gap-2 mb-5 pb-4 border-b border-slate-100">
+                      ${[
+                        { id: "all", label: "الكل (125)" },
+                        { id: "listening", label: "الاستماع (1–25)" },
+                        { id: "grammar", label: "القواعد (26–65)" },
+                        { id: "writing", label: "الكتابة (66–75)" },
+                        { id: "reading", label: "القراءة (76–125)" }
+                      ].map(tab => `
+                        <button
+                          type="button"
+                          onclick="setReviewFilter('${tab.id}')"
+                          class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
+                            appState.reviewAreaFilter === tab.id
+                              ? "bg-[#286B6D] text-white"
+                              : "bg-[#FAF8F2] text-[#172D40] border border-slate-200 hover:bg-[#DCECE8]/50"
+                          }"
+                        >
+                          ${tab.label}
+                        </button>
+                      `).join("")}
+                    </div>
+
+                    <!-- Questions List (Listening Transcript is NEVER shown here) -->
+                    <div class="space-y-4">
+                      ${filteredReviewQuestions.map(q => {
+                        const studentAns = appState.answers[q.id];
+                        const isCorrect = studentAns === q.correct;
+                        const sk = getSkillForQuestion(q);
+                        return `
+                          <div class="p-4 rounded-2xl border ${isCorrect ? 'border-emerald-200 bg-emerald-50/25' : 'border-rose-200 bg-rose-50/25'}">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                              <div class="flex items-center gap-2">
+                                <span class="px-2.5 py-0.5 rounded-lg bg-[#172D40] text-white text-xs font-bold">سؤال ${q.id}</span>
+                                <span class="font-en text-xs text-[#286B6D] font-semibold">${sk.nameEn}</span>
+                              </div>
+                              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                                ${isCorrect ? '✓ إجابة صحيحة' : '✕ إجابة غير صحيحة'}
+                              </span>
+                            </div>
+
+                            <div class="font-en text-sm font-bold text-[#172D40] mb-2">
+                              ${escapeHtml(q.text)}
+                            </div>
+
+                            ${q.sequenceItems ? `
+                              <div class="font-en text-xs bg-white/80 p-2.5 rounded-xl border border-slate-200 mb-2 space-y-0.5 text-slate-700">
+                                ${q.sequenceItems.map(line => `<div>${escapeHtml(line)}</div>`).join("")}
+                              </div>
+                            ` : ""}
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 font-en text-xs mt-2">
+                              <div class="p-2.5 rounded-xl border ${isCorrect ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900'}">
+                                <span class="font-bold block mb-0.5">Your Answer:</span>
+                                ${studentAns ? `${studentAns}. ${escapeHtml(q.options[studentAns])}` : "No answer selected"}
+                              </div>
+                              <div class="p-2.5 rounded-xl border bg-[#DCECE8]/45 border-[#286B6D]/25 text-[#172D40]">
+                                <span class="font-bold block mb-0.5 text-[#286B6D]">Correct Answer:</span>
+                                ${q.correct}. ${escapeHtml(q.options[q.correct])}
+                              </div>
+                            </div>
+                          </div>
+                        `;
+                      }).join("")}
+                    </div>
+                  </div>
+                ` : ""}
+              </div>
+            </section>
+          </main>
+        </div>
+      `;
+    }
+
+    function scrollToTopSmoothly(instant = true) {
+      try {
+        if (instant) {
+          window.scrollTo(0, 0);
+        } else {
+          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        }
+      } catch (e) {
+        window.scrollTo(0, 0);
+      }
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
+
+    // =========================================================================
+    // 8. MODAL DIALOGS (NO alert() OR confirm())
+    // =========================================================================
+    function renderModal() {
+      if (!appState.modal) return "";
+      const { type, unansweredList } = appState.modal;
+
+      if (type === "confirmReset") {
+        return `
+          <div class="fixed inset-0 z-50 bg-[#172D40]/60 backdrop-blur-xs flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#C4A36A]/40 fade-in">
+              <h3 class="text-lg font-bold text-[#172D40] mb-2">تأكيد بدء اختبار جديد</h3>
+              <p class="text-sm text-slate-600 leading-relaxed mb-6">
+                سيؤدي بدء اختبار جديد إلى حذف التقدم والإجابات المحفوظة حالياً على هذا المتصفح. هل ترغبين في المتابعة؟
+              </p>
+              <div class="flex items-center justify-end gap-2.5">
+                <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-[#172D40] hover:bg-slate-50">
+                  إلغاء
+                </button>
+                <button type="button" onclick="confirmResetAssessment()" class="px-5 py-2.5 rounded-xl bg-rose-700 text-white text-sm font-bold hover:bg-rose-800">
+                  نعم، ابدئي من جديد
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      if (type === "unanswered") {
+        return `
+          <div class="fixed inset-0 z-50 bg-[#172D40]/60 backdrop-blur-xs flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-[#C4A36A]/40 fade-in">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-[#172D40]">توجد أسئلة لم تتم الإجابة عليها</h3>
+                  <p class="text-xs text-[#286B6D] font-semibold">عدد الأسئلة المتبقية: ${unansweredList.length} من 125</p>
+                </div>
+              </div>
+
+              <p class="text-sm text-slate-600 mb-3">
+                يرجى الإجابة عن جميع الأسئلة الـ 125 قبل إنهاء الاختبار. اضغطي على رقم السؤال للانتقال إليه مباشرة:
+              </p>
+
+              <div class="max-h-44 overflow-y-auto p-3 bg-[#FAF8F2] rounded-2xl border border-slate-200 flex flex-wrap gap-2 mb-5">
+                ${unansweredList.map(qNum => `
+                  <button type="button" onclick="jumpToQuestion(${qNum - 1})" class="w-10 h-10 rounded-xl bg-white border border-[#172D40]/20 text-xs font-bold text-[#172D40] hover:bg-[#172D40] hover:text-white transition">
+                    ${qNum}
+                  </button>
+                `).join("")}
+              </div>
+
+              <div class="flex justify-end">
+                <button type="button" onclick="closeModal()" class="px-5 py-2.5 rounded-xl bg-[#172D40] text-white text-sm font-bold">
+                  العودة لإكمال الأسئلة
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      if (type === "confirmSubmit") {
+        return `
+          <div class="fixed inset-0 z-50 bg-[#172D40]/60 backdrop-blur-xs flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#C4A36A]/40 fade-in">
+              <div class="w-12 h-12 rounded-2xl bg-[#DCECE8] text-[#286B6D] flex items-center justify-center mb-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <h3 class="text-lg font-bold text-[#172D40] mb-2">تأكيد إنهاء الاختبار</h3>
+              <p class="text-sm text-slate-700 leading-relaxed mb-6">
+                هل أنتِ متأكدة من إنهاء الاختبار؟ لن تتمكني من تعديل إجاباتك بعد عرض النتيجة.
+              </p>
+              <div class="flex items-center justify-end gap-2.5">
+                <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-[#172D40] hover:bg-slate-50">
+                  مراجعة الإجابات
+                </button>
+                <button type="button" onclick="finalizeAndShowResults()" class="px-5 py-2.5 rounded-xl bg-[#286B6D] text-white text-sm font-bold hover:bg-[#1f5658] shadow-sm">
+                  تأكيد وعرض النتيجة
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      return "";
+    }
+
+    // =========================================================================
+    // 9. INTERACTION HANDLERS & ENVELOPE ANIMATION CONTROLLER
+    // =========================================================================
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function clearNameError() {
+      const err = document.getElementById("name-error-msg");
+      if (err) err.classList.add("hidden");
+    }
+
+    function handleStartAssessment(e) {
+      e.preventDefault();
+      const input = document.getElementById("student-name-input");
+      const val = input ? input.value.trim() : "";
+      if (!val) {
+        const err = document.getElementById("name-error-msg");
+        if (err) err.classList.remove("hidden");
+        if (input) input.focus();
+        return;
+      }
+
+      // Dismiss mobile keyboard and blur active element before transitioning
+      if (input) {
+        input.blur();
+      }
+      if (document.activeElement && typeof document.activeElement.blur === "function") {
+        document.activeElement.blur();
+      }
+
+      appState.studentName = val;
+      appState.currentIndex = 0;
+      appState.answers = {};
+      appState.submitted = false;
+      appState.results = null;
+      appState.completionDate = null;
+      appState.screen = "assessment";
+      saveState();
+
+      setTimeout(() => {
+        renderApp();
+        requestAnimationFrame(() => {
+          scrollToTopSmoothly(true);
+        });
+      }, 250);
+    }
+
+    function resumeSavedAssessment() {
+      const saved = loadSavedState();
+      if (!saved) return;
+      if (document.activeElement && typeof document.activeElement.blur === "function") {
+        document.activeElement.blur();
+      }
+      appState.studentName = saved.studentName;
+      appState.currentIndex = saved.currentIndex || 0;
+      appState.answers = saved.answers || {};
+      appState.submitted = false;
+      appState.screen = "assessment";
+      renderApp();
+      scrollToTopSmoothly(true);
+    }
+
+    function promptNewAssessment() {
+      appState.modal = { type: "confirmReset" };
+      renderModalOnly();
+    }
+
+    function confirmResetAssessment() {
+      audioEngine.stopCompletely();
+      clearSavedState();
+      appState.studentName = "";
+      appState.currentIndex = 0;
+      appState.answers = {};
+      appState.submitted = false;
+      appState.results = null;
+      appState.completionDate = null;
+      appState.modal = null;
+      appState.screen = "welcome";
+      renderApp();
+      scrollToTopSmoothly(true);
+    }
+
+    function closeModal() {
+      appState.modal = null;
+      renderModalOnly();
+    }
+
+    function selectOption(letter) {
+      if (appState.submitted) return;
+      const q = QUESTIONS[appState.currentIndex];
+      appState.answers[q.id] = letter;
+      saveState();
+      // Re-render current screen in place without resetting scroll position
+      const currentScrollY = window.scrollY;
+      renderApp();
+      window.scrollTo({ top: currentScrollY, behavior: "instant" });
+    }
+
+    function goPrevious() {
+      if (appState.currentIndex <= 0) return;
+      const prevSection = QUESTIONS[appState.currentIndex].sectionId;
+      appState.currentIndex -= 1;
+      const nextSection = QUESTIONS[appState.currentIndex].sectionId;
+      if (prevSection === "listening" && nextSection !== "listening") {
+        audioEngine.stopCompletely();
+      }
+      saveState();
+      renderApp();
+    }
+
+    function goNext() {
+      if (appState.currentIndex >= QUESTIONS.length - 1) return;
+      const prevSection = QUESTIONS[appState.currentIndex].sectionId;
+      appState.currentIndex += 1;
+      const nextSection = QUESTIONS[appState.currentIndex].sectionId;
+      // Stop audio playback when leaving the listening section (Q25 -> Q26)
+      if (prevSection === "listening" && nextSection !== "listening") {
+        audioEngine.stopCompletely();
+      }
+      saveState();
+      renderApp();
+    }
+
+    function jumpToQuestion(idx) {
+      const prevSection = QUESTIONS[appState.currentIndex].sectionId;
+      appState.currentIndex = idx;
+      const nextSection = QUESTIONS[appState.currentIndex].sectionId;
+      if (prevSection === "listening" && nextSection !== "listening") {
+        audioEngine.stopCompletely();
+      }
+      appState.modal = null;
+      saveState();
+      renderApp();
+    }
+
+    function toggleMobilePassage() {
+      appState.mobilePassageExpanded = !appState.mobilePassageExpanded;
+      const currentScrollY = window.scrollY;
+      renderApp();
+      window.scrollTo({ top: currentScrollY, behavior: "instant" });
+    }
+
+    function scrollToQuestionCard() {
+      const el = document.getElementById("question-card-container");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function initiateFinalSubmission() {
+      const unanswered = [];
+      for (let i = 1; i <= 125; i++) {
+        if (!appState.answers[i]) {
+          unanswered.push(i);
+        }
+      }
+      if (unanswered.length > 0) {
+        appState.modal = { type: "unanswered", unansweredList: unanswered };
+        renderModalOnly();
+        return;
+      }
+      appState.modal = { type: "confirmSubmit" };
+      renderModalOnly();
+    }
+
+    function finalizeAndShowResults() {
+      audioEngine.stopCompletely();
+      const now = new Date();
+      const formattedDate = now.toLocaleDateString("ar-SA-u-nu-latn", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+
+      appState.results = calculateFinalResults();
+      appState.completionDate = formattedDate;
+      appState.submitted = true;
+      appState.modal = null;
+      appState.screen = "results";
+      saveState();
+      renderApp();
+      scrollToTopSmoothly(false);
+      runEnvelopeAnimation(false);
+    }
+
+    let envelopeTimers = [];
+    function runEnvelopeAnimation(isReplay) {
+      envelopeTimers.forEach(t => clearTimeout(t));
+      envelopeTimers = [];
+
+      const stage = document.getElementById("envelope-stage");
+      const box = document.getElementById("envelope-box");
+      if (!stage || !box) return;
+
+      const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (prefersReduced) {
+        stage.className = "envelope-stage-wrapper stage-revealed";
+        box.style.maxWidth = "820px";
+        box.style.aspectRatio = "auto";
+        box.style.marginTop = "0";
+        return;
+      }
+
+      // Stage 1: Closed Envelope
+      stage.className = "envelope-stage-wrapper stage-closed";
+      box.style.maxWidth = "560px";
+      box.style.aspectRatio = "16 / 10";
+      box.style.marginTop = "1.5rem";
+
+      // Stage 2: Flap Opens
+      envelopeTimers.push(setTimeout(() => {
+        stage.className = "envelope-stage-wrapper stage-opening";
+      }, isReplay ? 250 : 450));
+
+      // Stage 3: Actual Certificate Emerges Upward
+      envelopeTimers.push(setTimeout(() => {
+        stage.className = "envelope-stage-wrapper stage-emerging";
+      }, isReplay ? 950 : 1150));
+
+      // Stage 4 & 5: Certificate Expands to Final Readable Landscape Size
+      envelopeTimers.push(setTimeout(() => {
+        stage.className = "envelope-stage-wrapper stage-revealed";
+        box.style.maxWidth = "820px";
+        box.style.aspectRatio = "auto";
+        box.style.marginTop = "0";
+      }, isReplay ? 1850 : 2050));
+    }
+
+    function toggleSkillGroup(key) {
+      appState.expandedSkillGroups[key] = !appState.expandedSkillGroups[key];
+      const currentScrollY = window.scrollY;
+      renderApp();
+      window.scrollTo({ top: currentScrollY, behavior: "instant" });
+      setInstantRevealedCertificate();
+    }
+
+    function toggleAnswerReview() {
+      appState.reviewExpanded = !appState.reviewExpanded;
+      const currentScrollY = window.scrollY;
+      renderApp();
+      window.scrollTo({ top: currentScrollY, behavior: "instant" });
+      setInstantRevealedCertificate();
+    }
+
+    function setReviewFilter(filterId) {
+      appState.reviewAreaFilter = filterId;
+      const currentScrollY = window.scrollY;
+      renderApp();
+      window.scrollTo({ top: currentScrollY, behavior: "instant" });
+      setInstantRevealedCertificate();
+    }
+
+    function setInstantRevealedCertificate() {
+      const stage = document.getElementById("envelope-stage");
+      const box = document.getElementById("envelope-box");
+      if (stage && box) {
+        stage.className = "envelope-stage-wrapper stage-revealed";
+        box.style.maxWidth = "820px";
+        box.style.aspectRatio = "auto";
+        box.style.marginTop = "0";
+      }
+    }
+
+    function renderModalOnly() {
+      let modalRoot = document.getElementById("modal-root");
+      if (!modalRoot) {
+        modalRoot = document.createElement("div");
+        modalRoot.id = "modal-root";
+        document.body.appendChild(modalRoot);
+      }
+      modalRoot.innerHTML = renderModal();
+    }
+
+    function renderApp() {
+      const root = document.getElementById("app");
+      if (!root) return;
+
+      if (appState.screen === "welcome") {
+        root.className = "w-full flex flex-col justify-start";
+        root.innerHTML = renderWelcomeScreen();
+      } else if (appState.screen === "assessment") {
+        root.className = "w-full flex flex-col justify-start";
+        root.innerHTML = renderAssessmentScreen();
+      } else if (appState.screen === "results") {
+        root.className = "w-full flex flex-col justify-start";
+        root.innerHTML = renderResultsScreen();
+      }
+
+      renderModalOnly();
+    }
+
+    // Boot Application
+    window.addEventListener("DOMContentLoaded", () => {
+      renderApp();
+      if (appState.screen === "results") {
+        runEnvelopeAnimation(false);
+      }
+    });
+  </script>
+</body>
+</html>
